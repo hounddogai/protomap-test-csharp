@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.recruiting.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/recruiting/v1/recruiting.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Recruiting.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/recruiting/v1;recruitingv1";
+option java_multiple_files = true;
+option java_outer_classname = "InterviewValidationServiceProto";
+option java_package = "com.acme.recruiting.v1";
+
+// Checks interviews against the rules before anything acts on them.
+service InterviewValidationService {
+  // Validates an interview.
+  rpc ValidateInterview(ValidateInterviewRequest) returns (ValidateInterviewResponse);
+
+  // Previews an interview.
+  rpc PreviewInterview(PreviewInterviewRequest) returns (PreviewInterviewResponse);
+
+  // Checks an interview.
+  rpc CheckInterviewEligibility(CheckInterviewEligibilityRequest) returns (CheckInterviewEligibilityResponse);
+
+  // Normalizes an interview.
+  rpc NormalizeInterview(NormalizeInterviewRequest) returns (NormalizeInterviewResponse);
+
+  // Explains an interview.
+  rpc ExplainInterviewDecision(ExplainInterviewDecisionRequest) returns (ExplainInterviewDecisionResponse);
+
+  // Scores an interview.
+  rpc ScoreInterview(ScoreInterviewRequest) returns (ScoreInterviewResponse);
+
+  // Lints an interview.
+  rpc LintInterviews(LintInterviewsRequest) returns (LintInterviewsResponse);
+
+  // Returns an interview.
+  rpc GetInterviewRules(GetInterviewRulesRequest) returns (GetInterviewRulesResponse);
+}
+
+// The request of `ValidateInterview`.
+message ValidateInterviewRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  Interview interview = 3;
+  ValidateInterviewRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateInterview`.
+message ValidateInterviewResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Interview interview = 1;
+  ValidateInterviewResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewInterview`.
+message PreviewInterviewRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  Interview interview = 3;
+  PreviewInterviewRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewInterview`.
+message PreviewInterviewResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Interview interview = 1;
+  PreviewInterviewResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckInterviewEligibility`.
+message CheckInterviewEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  Interview interview = 3;
+  CheckInterviewEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckInterviewEligibility`.
+message CheckInterviewEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Interview interview = 1;
+  CheckInterviewEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeInterview`.
+message NormalizeInterviewRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  Interview interview = 3;
+  NormalizeInterviewRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeInterview`.
+message NormalizeInterviewResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Interview interview = 1;
+  NormalizeInterviewResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainInterviewDecision`.
+message ExplainInterviewDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  Interview interview = 3;
+  ExplainInterviewDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainInterviewDecision`.
+message ExplainInterviewDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Interview interview = 1;
+  ExplainInterviewDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreInterview`.
+message ScoreInterviewRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  Interview interview = 3;
+  ScoreInterviewRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreInterview`.
+message ScoreInterviewResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreInterviewResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Interview interview = 1;
+  ScoreInterviewResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintInterviews`.
+message LintInterviewsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  Interview interview = 3;
+  LintInterviewsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintInterviews`.
+message LintInterviewsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Interview interview = 1;
+  LintInterviewsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetInterviewRules`.
+message GetInterviewRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetInterviewRules`.
+message GetInterviewRulesResponse {
+  Interview interview = 1;
+  acme.common.v1.OperationResult result = 2;
+}

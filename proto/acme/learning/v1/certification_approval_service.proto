@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.learning.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/learning/v1/learning.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Learning.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/learning/v1;learningv1";
+option java_multiple_files = true;
+option java_outer_classname = "CertificationApprovalServiceProto";
+option java_package = "com.acme.learning.v1";
+
+// Routes certifications through approval, with escalation and delegation.
+service CertificationApprovalService {
+  // Submits a certification.
+  rpc SubmitCertification(SubmitCertificationRequest) returns (SubmitCertificationResponse);
+
+  // Approves a certification.
+  rpc ApproveCertification(ApproveCertificationRequest) returns (ApproveCertificationResponse);
+
+  // Rejects a certification.
+  rpc RejectCertification(RejectCertificationRequest) returns (RejectCertificationResponse);
+
+  // Escalates a certification.
+  rpc EscalateCertification(EscalateCertificationRequest) returns (EscalateCertificationResponse);
+
+  // Lists certifications a page at a time.
+  rpc ListPendingCertifications(ListPendingCertificationsRequest) returns (ListPendingCertificationsResponse);
+
+  // Delegates a certification.
+  rpc DelegateCertificationApproval(DelegateCertificationApprovalRequest) returns (DelegateCertificationApprovalResponse);
+
+  // Recalls a certification.
+  rpc RecallCertification(RecallCertificationRequest) returns (RecallCertificationResponse);
+
+  // Returns a certification.
+  rpc GetCertificationApprovalStatus(GetCertificationApprovalStatusRequest) returns (GetCertificationApprovalStatusResponse);
+
+  // Comments a certification.
+  rpc CommentCertificationApproval(CommentCertificationApprovalRequest) returns (CommentCertificationApprovalResponse);
+}
+
+// The request of `SubmitCertification`.
+message SubmitCertificationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  SubmitCertificationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitCertification`.
+message SubmitCertificationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  SubmitCertificationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveCertification`.
+message ApproveCertificationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  ApproveCertificationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveCertification`.
+message ApproveCertificationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  ApproveCertificationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectCertification`.
+message RejectCertificationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  RejectCertificationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectCertification`.
+message RejectCertificationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  RejectCertificationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateCertification`.
+message EscalateCertificationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  EscalateCertificationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateCertification`.
+message EscalateCertificationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  EscalateCertificationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingCertifications`.
+message ListPendingCertificationsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated CertificationStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingCertificationsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingCertifications`.
+message ListPendingCertificationsResponse {
+  repeated Certification certifications = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateCertificationApproval`.
+message DelegateCertificationApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  DelegateCertificationApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateCertificationApproval`.
+message DelegateCertificationApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  DelegateCertificationApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallCertification`.
+message RecallCertificationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  RecallCertificationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallCertification`.
+message RecallCertificationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  RecallCertificationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetCertificationApprovalStatus`.
+message GetCertificationApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetCertificationApprovalStatus`.
+message GetCertificationApprovalStatusResponse {
+  Certification certification = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentCertificationApproval`.
+message CommentCertificationApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  CommentCertificationApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentCertificationApproval`.
+message CommentCertificationApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  CommentCertificationApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

@@ -1,0 +1,228 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.helpdesk.v1;
+
+import "acme/common/v1/audit.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/helpdesk/v1/helpdesk.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Helpdesk.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/helpdesk/v1;helpdeskv1";
+option java_multiple_files = true;
+option java_outer_classname = "KnowledgeArticleQueryServiceProto";
+option java_package = "com.acme.helpdesk.v1";
+
+// Answers read-only questions about knowledge articles, for screens and reports.
+service KnowledgeArticleQueryService {
+  // Returns a knowledge article.
+  rpc LookupKnowledgeArticle(LookupKnowledgeArticleRequest) returns (LookupKnowledgeArticleResponse);
+
+  // Lists knowledge articles a page at a time.
+  rpc BrowseKnowledgeArticles(BrowseKnowledgeArticlesRequest) returns (BrowseKnowledgeArticlesResponse);
+
+  // Lists knowledge articles a page at a time.
+  rpc FindKnowledgeArticles(FindKnowledgeArticlesRequest) returns (FindKnowledgeArticlesResponse);
+
+  // Counts knowledge articles by status.
+  rpc CountKnowledgeArticles(CountKnowledgeArticlesRequest) returns (CountKnowledgeArticlesResponse);
+
+  // Streams every matching knowledge article.
+  rpc ExportKnowledgeArticles(ExportKnowledgeArticlesRequest) returns (stream ExportKnowledgeArticlesResponse);
+
+  // Summarizes a knowledge article.
+  rpc SummarizeKnowledgeArticles(SummarizeKnowledgeArticlesRequest) returns (SummarizeKnowledgeArticlesResponse);
+
+  // Lists knowledge articles a page at a time.
+  rpc SuggestKnowledgeArticles(SuggestKnowledgeArticlesRequest) returns (SuggestKnowledgeArticlesResponse);
+
+  // Returns a knowledge article.
+  rpc PeekKnowledgeArticle(PeekKnowledgeArticleRequest) returns (PeekKnowledgeArticleResponse);
+}
+
+// The request of `LookupKnowledgeArticle`.
+message LookupKnowledgeArticleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `LookupKnowledgeArticle`.
+message LookupKnowledgeArticleResponse {
+  KnowledgeArticle knowledge_article = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `BrowseKnowledgeArticles`.
+message BrowseKnowledgeArticlesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated KnowledgeArticleStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  BrowseKnowledgeArticlesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `BrowseKnowledgeArticles`.
+message BrowseKnowledgeArticlesResponse {
+  repeated KnowledgeArticle knowledge_articles = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `FindKnowledgeArticles`.
+message FindKnowledgeArticlesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated KnowledgeArticleStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  FindKnowledgeArticlesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `FindKnowledgeArticles`.
+message FindKnowledgeArticlesResponse {
+  repeated KnowledgeArticle knowledge_articles = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CountKnowledgeArticles`.
+message CountKnowledgeArticlesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated KnowledgeArticleStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  CountKnowledgeArticlesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `CountKnowledgeArticles`.
+message CountKnowledgeArticlesResponse {
+  int64 count = 1;
+  map<string, int64> by_status = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExportKnowledgeArticles`.
+message ExportKnowledgeArticlesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated KnowledgeArticleStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  ExportKnowledgeArticlesRequest.Filter filter = 2;
+  string format = 3;
+  google.protobuf.FieldMask fields = 4;
+  string destination_uri = 5;
+}
+
+// The response of `ExportKnowledgeArticles`.
+message ExportKnowledgeArticlesResponse {
+  KnowledgeArticle knowledge_article = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SummarizeKnowledgeArticles`.
+message SummarizeKnowledgeArticlesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  SummarizeKnowledgeArticlesRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SummarizeKnowledgeArticles`.
+message SummarizeKnowledgeArticlesResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SuggestKnowledgeArticles`.
+message SuggestKnowledgeArticlesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated KnowledgeArticleStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SuggestKnowledgeArticlesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SuggestKnowledgeArticles`.
+message SuggestKnowledgeArticlesResponse {
+  repeated KnowledgeArticle knowledge_articles = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PeekKnowledgeArticle`.
+message PeekKnowledgeArticleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `PeekKnowledgeArticle`.
+message PeekKnowledgeArticleResponse {
+  KnowledgeArticle knowledge_article = 1;
+  acme.common.v1.OperationResult result = 2;
+}

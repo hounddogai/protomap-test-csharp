@@ -1,0 +1,278 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.scheduling.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/scheduling/v1/scheduling.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Scheduling.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/scheduling/v1;schedulingv1";
+option java_multiple_files = true;
+option java_outer_classname = "AvailabilityWindowApprovalServiceProto";
+option java_package = "com.acme.scheduling.v1";
+
+// Routes availability windows through approval, with escalation and delegation.
+service AvailabilityWindowApprovalService {
+  // Submits an availability window.
+  rpc SubmitAvailabilityWindow(SubmitAvailabilityWindowRequest) returns (SubmitAvailabilityWindowResponse);
+
+  // Approves an availability window.
+  rpc ApproveAvailabilityWindow(ApproveAvailabilityWindowRequest) returns (ApproveAvailabilityWindowResponse);
+
+  // Rejects an availability window.
+  rpc RejectAvailabilityWindow(RejectAvailabilityWindowRequest) returns (RejectAvailabilityWindowResponse);
+
+  // Lists availability windows a page at a time.
+  rpc ListPendingAvailabilityWindows(ListPendingAvailabilityWindowsRequest) returns (ListPendingAvailabilityWindowsResponse);
+
+  // Delegates an availability window.
+  rpc DelegateAvailabilityWindowApproval(DelegateAvailabilityWindowApprovalRequest) returns (DelegateAvailabilityWindowApprovalResponse);
+
+  // Recalls an availability window.
+  rpc RecallAvailabilityWindow(RecallAvailabilityWindowRequest) returns (RecallAvailabilityWindowResponse);
+
+  // Comments an availability window.
+  rpc CommentAvailabilityWindowApproval(CommentAvailabilityWindowApprovalRequest) returns (CommentAvailabilityWindowApprovalResponse);
+}
+
+// The request of `SubmitAvailabilityWindow`.
+message SubmitAvailabilityWindowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string availability_window_id = 2;
+  AvailabilityWindow availability_window = 3;
+  SubmitAvailabilityWindowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitAvailabilityWindow`.
+message SubmitAvailabilityWindowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  AvailabilityWindow availability_window = 1;
+  SubmitAvailabilityWindowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveAvailabilityWindow`.
+message ApproveAvailabilityWindowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string availability_window_id = 2;
+  AvailabilityWindow availability_window = 3;
+  ApproveAvailabilityWindowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveAvailabilityWindow`.
+message ApproveAvailabilityWindowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  AvailabilityWindow availability_window = 1;
+  ApproveAvailabilityWindowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectAvailabilityWindow`.
+message RejectAvailabilityWindowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string availability_window_id = 2;
+  AvailabilityWindow availability_window = 3;
+  RejectAvailabilityWindowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectAvailabilityWindow`.
+message RejectAvailabilityWindowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  AvailabilityWindow availability_window = 1;
+  RejectAvailabilityWindowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingAvailabilityWindows`.
+message ListPendingAvailabilityWindowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated AvailabilityWindowStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingAvailabilityWindowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingAvailabilityWindows`.
+message ListPendingAvailabilityWindowsResponse {
+  repeated AvailabilityWindow availability_windows = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateAvailabilityWindowApproval`.
+message DelegateAvailabilityWindowApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string availability_window_id = 2;
+  AvailabilityWindow availability_window = 3;
+  DelegateAvailabilityWindowApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateAvailabilityWindowApproval`.
+message DelegateAvailabilityWindowApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  AvailabilityWindow availability_window = 1;
+  DelegateAvailabilityWindowApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallAvailabilityWindow`.
+message RecallAvailabilityWindowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string availability_window_id = 2;
+  AvailabilityWindow availability_window = 3;
+  RecallAvailabilityWindowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallAvailabilityWindow`.
+message RecallAvailabilityWindowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  AvailabilityWindow availability_window = 1;
+  RecallAvailabilityWindowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CommentAvailabilityWindowApproval`.
+message CommentAvailabilityWindowApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string availability_window_id = 2;
+  AvailabilityWindow availability_window = 3;
+  CommentAvailabilityWindowApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentAvailabilityWindowApproval`.
+message CommentAvailabilityWindowApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  AvailabilityWindow availability_window = 1;
+  CommentAvailabilityWindowApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

@@ -1,0 +1,215 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.corporateevents.v1;
+
+import "acme/common/v1/audit.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/corporateevents/v1/corporateevents.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Corporateevents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/corporateevents/v1;corporateeventsv1";
+option java_multiple_files = true;
+option java_outer_classname = "RegistrationReportingServiceProto";
+option java_package = "com.acme.corporateevents.v1";
+
+// Builds and schedules reports about registrations.
+service RegistrationReportingService {
+  // Generates a registration.
+  rpc GenerateRegistrationReport(GenerateRegistrationReportRequest) returns (GenerateRegistrationReportResponse);
+
+  // Returns a registration.
+  rpc FetchRegistrationReport(FetchRegistrationReportRequest) returns (FetchRegistrationReportResponse);
+
+  // Schedules a registration.
+  rpc ScheduleRegistrationReport(ScheduleRegistrationReportRequest) returns (ScheduleRegistrationReportResponse);
+
+  // Streams the changes of registrations as they happen.
+  rpc StreamRegistrationMetrics(StreamRegistrationMetricsRequest) returns (stream StreamRegistrationMetricsResponse);
+
+  // Lists registrations a page at a time.
+  rpc ListRegistrationReports(ListRegistrationReportsRequest) returns (ListRegistrationReportsResponse);
+
+  // Shares a registration.
+  rpc ShareRegistrationReport(ShareRegistrationReportRequest) returns (ShareRegistrationReportResponse);
+
+  // Deletes a registration.
+  rpc DeleteRegistrationReport(DeleteRegistrationReportRequest) returns (DeleteRegistrationReportResponse);
+}
+
+// The request of `GenerateRegistrationReport`.
+message GenerateRegistrationReportRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  GenerateRegistrationReportRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `GenerateRegistrationReport`.
+message GenerateRegistrationReportResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `FetchRegistrationReport`.
+message FetchRegistrationReportRequest {
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `FetchRegistrationReport`.
+message FetchRegistrationReportResponse {
+  Registration registration = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleRegistrationReport`.
+message ScheduleRegistrationReportRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  ScheduleRegistrationReportRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ScheduleRegistrationReport`.
+message ScheduleRegistrationReportResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `StreamRegistrationMetrics`.
+message StreamRegistrationMetricsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated RegistrationStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  StreamRegistrationMetricsRequest.Filter filter = 2;
+  google.protobuf.Timestamp since = 3;
+  int32 max_events = 4;
+  acme.common.v1.ContactInfo subscriber = 5;
+}
+
+// The response of `StreamRegistrationMetrics`.
+message StreamRegistrationMetricsResponse {
+  Registration registration = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `ListRegistrationReports`.
+message ListRegistrationReportsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated RegistrationStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListRegistrationReportsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListRegistrationReports`.
+message ListRegistrationReportsResponse {
+  repeated Registration registrations = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ShareRegistrationReport`.
+message ShareRegistrationReportRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  ShareRegistrationReportRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ShareRegistrationReport`.
+message ShareRegistrationReportResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  ShareRegistrationReportResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DeleteRegistrationReport`.
+message DeleteRegistrationReportRequest {
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  string reason = 3;
+  string etag = 4;
+  bool force = 5;
+}
+
+// The response of `DeleteRegistrationReport`.
+message DeleteRegistrationReportResponse {
+  acme.common.v1.OperationResult result = 1;
+  google.protobuf.Timestamp effective_at = 2;
+}

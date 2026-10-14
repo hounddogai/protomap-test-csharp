@@ -1,0 +1,295 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.corporateevents.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/corporateevents/v1/corporateevents.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Corporateevents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/corporateevents/v1;corporateeventsv1";
+option java_multiple_files = true;
+option java_outer_classname = "RegistrationApprovalServiceProto";
+option java_package = "com.acme.corporateevents.v1";
+
+// Routes registrations through approval, with escalation and delegation.
+service RegistrationApprovalService {
+  // Submits a registration.
+  rpc SubmitRegistration(SubmitRegistrationRequest) returns (SubmitRegistrationResponse);
+
+  // Approves a registration.
+  rpc ApproveRegistration(ApproveRegistrationRequest) returns (ApproveRegistrationResponse);
+
+  // Rejects a registration.
+  rpc RejectRegistration(RejectRegistrationRequest) returns (RejectRegistrationResponse);
+
+  // Escalates a registration.
+  rpc EscalateRegistration(EscalateRegistrationRequest) returns (EscalateRegistrationResponse);
+
+  // Lists registrations a page at a time.
+  rpc ListPendingRegistrations(ListPendingRegistrationsRequest) returns (ListPendingRegistrationsResponse);
+
+  // Delegates a registration.
+  rpc DelegateRegistrationApproval(DelegateRegistrationApprovalRequest) returns (DelegateRegistrationApprovalResponse);
+
+  // Recalls a registration.
+  rpc RecallRegistration(RecallRegistrationRequest) returns (RecallRegistrationResponse);
+
+  // Returns a registration.
+  rpc GetRegistrationApprovalStatus(GetRegistrationApprovalStatusRequest) returns (GetRegistrationApprovalStatusResponse);
+}
+
+// The request of `SubmitRegistration`.
+message SubmitRegistrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  SubmitRegistrationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitRegistration`.
+message SubmitRegistrationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  SubmitRegistrationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveRegistration`.
+message ApproveRegistrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  ApproveRegistrationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveRegistration`.
+message ApproveRegistrationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  ApproveRegistrationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectRegistration`.
+message RejectRegistrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  RejectRegistrationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectRegistration`.
+message RejectRegistrationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  RejectRegistrationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateRegistration`.
+message EscalateRegistrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  EscalateRegistrationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateRegistration`.
+message EscalateRegistrationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  EscalateRegistrationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingRegistrations`.
+message ListPendingRegistrationsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated RegistrationStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingRegistrationsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingRegistrations`.
+message ListPendingRegistrationsResponse {
+  repeated Registration registrations = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateRegistrationApproval`.
+message DelegateRegistrationApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  DelegateRegistrationApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateRegistrationApproval`.
+message DelegateRegistrationApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  DelegateRegistrationApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallRegistration`.
+message RecallRegistrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  RecallRegistrationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallRegistration`.
+message RecallRegistrationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  RecallRegistrationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetRegistrationApprovalStatus`.
+message GetRegistrationApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetRegistrationApprovalStatus`.
+message GetRegistrationApprovalStatusResponse {
+  Registration registration = 1;
+  acme.common.v1.OperationResult result = 2;
+}

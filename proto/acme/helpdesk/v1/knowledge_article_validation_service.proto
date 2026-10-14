@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.helpdesk.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/helpdesk/v1/helpdesk.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Helpdesk.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/helpdesk/v1;helpdeskv1";
+option java_multiple_files = true;
+option java_outer_classname = "KnowledgeArticleValidationServiceProto";
+option java_package = "com.acme.helpdesk.v1";
+
+// Checks knowledge articles against the rules before anything acts on them.
+service KnowledgeArticleValidationService {
+  // Validates a knowledge article.
+  rpc ValidateKnowledgeArticle(ValidateKnowledgeArticleRequest) returns (ValidateKnowledgeArticleResponse);
+
+  // Previews a knowledge article.
+  rpc PreviewKnowledgeArticle(PreviewKnowledgeArticleRequest) returns (PreviewKnowledgeArticleResponse);
+
+  // Checks a knowledge article.
+  rpc CheckKnowledgeArticleEligibility(CheckKnowledgeArticleEligibilityRequest) returns (CheckKnowledgeArticleEligibilityResponse);
+
+  // Normalizes a knowledge article.
+  rpc NormalizeKnowledgeArticle(NormalizeKnowledgeArticleRequest) returns (NormalizeKnowledgeArticleResponse);
+
+  // Explains a knowledge article.
+  rpc ExplainKnowledgeArticleDecision(ExplainKnowledgeArticleDecisionRequest) returns (ExplainKnowledgeArticleDecisionResponse);
+
+  // Scores a knowledge article.
+  rpc ScoreKnowledgeArticle(ScoreKnowledgeArticleRequest) returns (ScoreKnowledgeArticleResponse);
+
+  // Lints a knowledge article.
+  rpc LintKnowledgeArticles(LintKnowledgeArticlesRequest) returns (LintKnowledgeArticlesResponse);
+
+  // Returns a knowledge article.
+  rpc GetKnowledgeArticleRules(GetKnowledgeArticleRulesRequest) returns (GetKnowledgeArticleRulesResponse);
+}
+
+// The request of `ValidateKnowledgeArticle`.
+message ValidateKnowledgeArticleRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  ValidateKnowledgeArticleRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateKnowledgeArticle`.
+message ValidateKnowledgeArticleResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  ValidateKnowledgeArticleResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewKnowledgeArticle`.
+message PreviewKnowledgeArticleRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  PreviewKnowledgeArticleRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewKnowledgeArticle`.
+message PreviewKnowledgeArticleResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  PreviewKnowledgeArticleResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckKnowledgeArticleEligibility`.
+message CheckKnowledgeArticleEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  CheckKnowledgeArticleEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckKnowledgeArticleEligibility`.
+message CheckKnowledgeArticleEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  CheckKnowledgeArticleEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeKnowledgeArticle`.
+message NormalizeKnowledgeArticleRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  NormalizeKnowledgeArticleRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeKnowledgeArticle`.
+message NormalizeKnowledgeArticleResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  NormalizeKnowledgeArticleResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainKnowledgeArticleDecision`.
+message ExplainKnowledgeArticleDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  ExplainKnowledgeArticleDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainKnowledgeArticleDecision`.
+message ExplainKnowledgeArticleDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  ExplainKnowledgeArticleDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreKnowledgeArticle`.
+message ScoreKnowledgeArticleRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  ScoreKnowledgeArticleRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreKnowledgeArticle`.
+message ScoreKnowledgeArticleResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreKnowledgeArticleResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  ScoreKnowledgeArticleResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintKnowledgeArticles`.
+message LintKnowledgeArticlesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  LintKnowledgeArticlesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintKnowledgeArticles`.
+message LintKnowledgeArticlesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  LintKnowledgeArticlesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetKnowledgeArticleRules`.
+message GetKnowledgeArticleRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetKnowledgeArticleRules`.
+message GetKnowledgeArticleRulesResponse {
+  KnowledgeArticle knowledge_article = 1;
+  acme.common.v1.OperationResult result = 2;
+}

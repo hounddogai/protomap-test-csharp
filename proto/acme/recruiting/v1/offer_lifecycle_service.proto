@@ -1,0 +1,258 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.recruiting.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/recruiting/v1/recruiting.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Recruiting.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/recruiting/v1;recruitingv1";
+option java_multiple_files = true;
+option java_outer_classname = "OfferLifecycleServiceProto";
+option java_package = "com.acme.recruiting.v1";
+
+// Moves an offer between the states of its lifecycle.
+service OfferLifecycleService {
+  // Activates an offer.
+  rpc ActivateOffer(ActivateOfferRequest) returns (ActivateOfferResponse);
+
+  // Suspends an offer.
+  rpc SuspendOffer(SuspendOfferRequest) returns (SuspendOfferResponse);
+
+  // Terminates an offer.
+  rpc TerminateOffer(TerminateOfferRequest) returns (TerminateOfferResponse);
+
+  // Renews an offer.
+  rpc RenewOffer(RenewOfferRequest) returns (RenewOfferResponse);
+
+  // Expires an offer.
+  rpc ExpireOffer(ExpireOfferRequest) returns (ExpireOfferResponse);
+
+  // Returns an offer.
+  rpc GetOfferLifecycle(GetOfferLifecycleRequest) returns (GetOfferLifecycleResponse);
+
+  // Schedules an offer.
+  rpc ScheduleOfferExpiry(ScheduleOfferExpiryRequest) returns (ScheduleOfferExpiryResponse);
+}
+
+// The request of `ActivateOffer`.
+message ActivateOfferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  ActivateOfferRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateOffer`.
+message ActivateOfferResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Offer offer = 1;
+  ActivateOfferResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendOffer`.
+message SuspendOfferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  SuspendOfferRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendOffer`.
+message SuspendOfferResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Offer offer = 1;
+  SuspendOfferResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateOffer`.
+message TerminateOfferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  TerminateOfferRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateOffer`.
+message TerminateOfferResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Offer offer = 1;
+  TerminateOfferResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewOffer`.
+message RenewOfferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  RenewOfferRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewOffer`.
+message RenewOfferResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Offer offer = 1;
+  RenewOfferResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireOffer`.
+message ExpireOfferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  ExpireOfferRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireOffer`.
+message ExpireOfferResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Offer offer = 1;
+  ExpireOfferResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetOfferLifecycle`.
+message GetOfferLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetOfferLifecycle`.
+message GetOfferLifecycleResponse {
+  Offer offer = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleOfferExpiry`.
+message ScheduleOfferExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  Offer offer = 3;
+  ScheduleOfferExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleOfferExpiry`.
+message ScheduleOfferExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Offer offer = 1;
+  ScheduleOfferExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

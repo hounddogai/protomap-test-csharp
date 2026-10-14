@@ -1,0 +1,245 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.devices.v1;
+
+import "acme/common/v1/audit.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/devices/v1/devices.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Devices.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/devices/v1;devicesv1";
+option java_multiple_files = true;
+option java_outer_classname = "DevicePolicyQueryServiceProto";
+option java_package = "com.acme.devices.v1";
+
+// Answers read-only questions about device policies, for screens and reports.
+service DevicePolicyQueryService {
+  // Returns a device policy.
+  rpc LookupDevicePolicy(LookupDevicePolicyRequest) returns (LookupDevicePolicyResponse);
+
+  // Lists device policies a page at a time.
+  rpc BrowseDevicePolicies(BrowseDevicePoliciesRequest) returns (BrowseDevicePoliciesResponse);
+
+  // Lists device policies a page at a time.
+  rpc FindDevicePolicies(FindDevicePoliciesRequest) returns (FindDevicePoliciesResponse);
+
+  // Counts device policies by status.
+  rpc CountDevicePolicies(CountDevicePoliciesRequest) returns (CountDevicePoliciesResponse);
+
+  // Returns several device policies at once.
+  rpc ResolveDevicePolicies(ResolveDevicePoliciesRequest) returns (ResolveDevicePoliciesResponse);
+
+  // Streams every matching device policy.
+  rpc ExportDevicePolicies(ExportDevicePoliciesRequest) returns (stream ExportDevicePoliciesResponse);
+
+  // Summarizes a device policy.
+  rpc SummarizeDevicePolicies(SummarizeDevicePoliciesRequest) returns (SummarizeDevicePoliciesResponse);
+
+  // Lists device policies a page at a time.
+  rpc SuggestDevicePolicies(SuggestDevicePoliciesRequest) returns (SuggestDevicePoliciesResponse);
+
+  // Returns a device policy.
+  rpc PeekDevicePolicy(PeekDevicePolicyRequest) returns (PeekDevicePolicyResponse);
+}
+
+// The request of `LookupDevicePolicy`.
+message LookupDevicePolicyRequest {
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `LookupDevicePolicy`.
+message LookupDevicePolicyResponse {
+  DevicePolicy device_policy = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `BrowseDevicePolicies`.
+message BrowseDevicePoliciesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DevicePolicyStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  BrowseDevicePoliciesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `BrowseDevicePolicies`.
+message BrowseDevicePoliciesResponse {
+  repeated DevicePolicy device_policies = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `FindDevicePolicies`.
+message FindDevicePoliciesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DevicePolicyStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  FindDevicePoliciesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `FindDevicePolicies`.
+message FindDevicePoliciesResponse {
+  repeated DevicePolicy device_policies = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CountDevicePolicies`.
+message CountDevicePoliciesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DevicePolicyStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  CountDevicePoliciesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `CountDevicePolicies`.
+message CountDevicePoliciesResponse {
+  int64 count = 1;
+  map<string, int64> by_status = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResolveDevicePolicies`.
+message ResolveDevicePoliciesRequest {
+  acme.common.v1.RequestContext context = 1;
+  repeated string device_policy_ids = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `ResolveDevicePolicies`.
+message ResolveDevicePoliciesResponse {
+  repeated DevicePolicy device_policies = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExportDevicePolicies`.
+message ExportDevicePoliciesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DevicePolicyStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  ExportDevicePoliciesRequest.Filter filter = 2;
+  string format = 3;
+  google.protobuf.FieldMask fields = 4;
+  string destination_uri = 5;
+}
+
+// The response of `ExportDevicePolicies`.
+message ExportDevicePoliciesResponse {
+  DevicePolicy device_policy = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SummarizeDevicePolicies`.
+message SummarizeDevicePoliciesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  SummarizeDevicePoliciesRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SummarizeDevicePolicies`.
+message SummarizeDevicePoliciesResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SuggestDevicePolicies`.
+message SuggestDevicePoliciesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DevicePolicyStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SuggestDevicePoliciesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SuggestDevicePolicies`.
+message SuggestDevicePoliciesResponse {
+  repeated DevicePolicy device_policies = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PeekDevicePolicy`.
+message PeekDevicePolicyRequest {
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `PeekDevicePolicy`.
+message PeekDevicePolicyResponse {
+  DevicePolicy device_policy = 1;
+  acme.common.v1.OperationResult result = 2;
+}

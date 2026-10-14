@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../Common/Acme.Contracts.Common.csproj" />
+    <ProjectReference Include="../Identity/Acme.Contracts.Identity.csproj" />
+    <ProjectReference Include="../Shows/Acme.Contracts.Shows.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" />
+    <PackageReference Include="Grpc.Core.Api" />
+    <PackageReference Include="Grpc.Tools" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="../../../proto/acme/broadcasts/v1/broadcast_service.proto" ProtoRoot="../../../proto" GrpcServices="Client" />
+    <Protobuf Include="../../../proto/acme/broadcasts/v1/broadcasts.proto" ProtoRoot="../../../proto" GrpcServices="Client" />
+  </ItemGroup>
+</Project>

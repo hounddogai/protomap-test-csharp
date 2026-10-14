@@ -1,0 +1,295 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.employees.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/employees/v1/employees.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Employees.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/employees/v1;employeesv1";
+option java_multiple_files = true;
+option java_outer_classname = "PositionApprovalServiceProto";
+option java_package = "com.acme.employees.v1";
+
+// Routes positions through approval, with escalation and delegation.
+service PositionApprovalService {
+  // Submits a position.
+  rpc SubmitPosition(SubmitPositionRequest) returns (SubmitPositionResponse);
+
+  // Approves a position.
+  rpc ApprovePosition(ApprovePositionRequest) returns (ApprovePositionResponse);
+
+  // Rejects a position.
+  rpc RejectPosition(RejectPositionRequest) returns (RejectPositionResponse);
+
+  // Escalates a position.
+  rpc EscalatePosition(EscalatePositionRequest) returns (EscalatePositionResponse);
+
+  // Lists positions a page at a time.
+  rpc ListPendingPositions(ListPendingPositionsRequest) returns (ListPendingPositionsResponse);
+
+  // Delegates a position.
+  rpc DelegatePositionApproval(DelegatePositionApprovalRequest) returns (DelegatePositionApprovalResponse);
+
+  // Returns a position.
+  rpc GetPositionApprovalStatus(GetPositionApprovalStatusRequest) returns (GetPositionApprovalStatusResponse);
+
+  // Comments a position.
+  rpc CommentPositionApproval(CommentPositionApprovalRequest) returns (CommentPositionApprovalResponse);
+}
+
+// The request of `SubmitPosition`.
+message SubmitPositionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string position_id = 2;
+  Position position = 3;
+  SubmitPositionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitPosition`.
+message SubmitPositionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Position position = 1;
+  SubmitPositionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApprovePosition`.
+message ApprovePositionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string position_id = 2;
+  Position position = 3;
+  ApprovePositionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApprovePosition`.
+message ApprovePositionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Position position = 1;
+  ApprovePositionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectPosition`.
+message RejectPositionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string position_id = 2;
+  Position position = 3;
+  RejectPositionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectPosition`.
+message RejectPositionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Position position = 1;
+  RejectPositionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalatePosition`.
+message EscalatePositionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string position_id = 2;
+  Position position = 3;
+  EscalatePositionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalatePosition`.
+message EscalatePositionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Position position = 1;
+  EscalatePositionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingPositions`.
+message ListPendingPositionsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated PositionStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingPositionsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingPositions`.
+message ListPendingPositionsResponse {
+  repeated Position positions = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegatePositionApproval`.
+message DelegatePositionApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string position_id = 2;
+  Position position = 3;
+  DelegatePositionApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegatePositionApproval`.
+message DelegatePositionApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Position position = 1;
+  DelegatePositionApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetPositionApprovalStatus`.
+message GetPositionApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string position_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetPositionApprovalStatus`.
+message GetPositionApprovalStatusResponse {
+  Position position = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentPositionApproval`.
+message CommentPositionApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string position_id = 2;
+  Position position = 3;
+  CommentPositionApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentPositionApproval`.
+message CommentPositionApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Position position = 1;
+  CommentPositionApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

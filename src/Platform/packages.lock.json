@@ -1,0 +1,1224 @@
+{
+  "version": 2,
+  "dependencies": {
+    "net10.0": {
+      "Dapper": {
+        "type": "Direct",
+        "requested": "[2.1.89, )",
+        "resolved": "2.1.89",
+        "contentHash": "1VjFE664wnxvuhlgP8kS4PeFFF4jqD3VkbIHW6Zlc52zuibgcz5ICnIHcQXlTp6pURpPNGLV0ZpNe5x9KePJnA=="
+      },
+      "Grpc.AspNetCore": {
+        "type": "Direct",
+        "requested": "[2.84.0, )",
+        "resolved": "2.84.0",
+        "contentHash": "mbHMTTCnuimxj2W87YpE6F/EIfJplmrsgMZHRFtdFUaRur3G6dMpO4J1mVsRZCld1Ez/a+yWs3JOElUINXutqA==",
+        "dependencies": {
+          "Google.Protobuf": "3.35.1",
+          "Grpc.AspNetCore.Server.ClientFactory": "2.84.0",
+          "Grpc.Tools": "2.84.0"
+        }
+      },
+      "Grpc.Net.ClientFactory": {
+        "type": "Direct",
+        "requested": "[2.84.0, )",
+        "resolved": "2.84.0",
+        "contentHash": "o14kDW7VGMdam+d60mcpvjRcOC5+klto1Ck8zPpTqqbMP37nh1itrnVahbOL1w1XYZezsbTuIC99iERO7SRXPQ==",
+        "dependencies": {
+          "Grpc.Net.Client": "2.84.0"
+        }
+      },
+      "Microsoft.Data.Sqlite": {
+        "type": "Direct",
+        "requested": "[10.0.13, )",
+        "resolved": "10.0.13",
+        "contentHash": "w37nz3WFmDtRfXxWEwIXX2OgqDRiwhD1JGbFwfpFCF8GkCrV/yO6Y2JF5058J2RGoI2sCcdn02wrk0yEcekWcw==",
+        "dependencies": {
+          "Microsoft.Data.Sqlite.Core": "10.0.13",
+          "SQLitePCLRaw.bundle_e_sqlite3": "2.1.13",
+          "SQLitePCLRaw.core": "2.1.13"
+        }
+      },
+      "Grpc.AspNetCore.Server": {
+        "type": "Transitive",
+        "resolved": "2.84.0",
+        "contentHash": "RXUkMjU+Hu5tvf5EXNoJlKX+ADvR2HERkNRznMFpsQQiHFsaQ+OYyhgomuLxAaiNuPUmCUGPxyiCdqq//lrQdg==",
+        "dependencies": {
+          "Grpc.Net.Common": "2.84.0"
+        }
+      },
+      "Grpc.AspNetCore.Server.ClientFactory": {
+        "type": "Transitive",
+        "resolved": "2.84.0",
+        "contentHash": "cH2s3vbzsyASKZQK2IMK82a6pUyvs+FuGz40i3V5FvpKmWuT9r+vQjn/SqTLtAVY87Vq3x/T/ROTMnT/cIUWqQ==",
+        "dependencies": {
+          "Grpc.AspNetCore.Server": "2.84.0",
+          "Grpc.Net.ClientFactory": "2.84.0"
+        }
+      },
+      "Grpc.Net.Client": {
+        "type": "Transitive",
+        "resolved": "2.84.0",
+        "contentHash": "My6Fms2YCyAbihTBZZ3kLS39iTY2pkMAzGDBTC6XhPOujg70eB07AEJ7tPiW3tZ70bhFzHcc3+d4j3DaIPF3aA==",
+        "dependencies": {
+          "Grpc.Net.Common": "2.84.0"
+        }
+      },
+      "Grpc.Net.Common": {
+        "type": "Transitive",
+        "resolved": "2.84.0",
+        "contentHash": "DPxm/H8G/lDRrz997wM0M2zN/PGqVeZKDakhBbtABEbv6WIW4HI9g3BvntBQT6ZUROuGacMzfyyF9e5kiTVFfQ==",
+        "dependencies": {
+          "Grpc.Core.Api": "2.84.0"
+        }
+      },
+      "Microsoft.Data.Sqlite.Core": {
+        "type": "Transitive",
+        "resolved": "10.0.13",
+        "contentHash": "Gge8XsSCOwcbkbdmt2UDAe6kIv9Q0vA6yb3wsTStjjexaMFLTWfc/1gH4kbhJ+zWiXRTRA4lG2sOQNVfir204w==",
+        "dependencies": {
+          "SQLitePCLRaw.core": "2.1.13"
+        }
+      },
+      "SQLitePCLRaw.bundle_e_sqlite3": {
+        "type": "Transitive",
+        "resolved": "2.1.13",
+        "contentHash": "NlDixlC7uHmo+ojXRgkNvN0tQtVGpLDZ3x2OpgNj+G07VHh5cXSszFDrAiC4BpUiPwkcaeuQkMV9WQ123xVtmQ==",
+        "dependencies": {
+          "SQLitePCLRaw.lib.e_sqlite3": "2.1.13",
+          "SQLitePCLRaw.provider.e_sqlite3": "2.1.13"
+        }
+      },
+      "SQLitePCLRaw.core": {
+        "type": "Transitive",
+        "resolved": "2.1.13",
+        "contentHash": "2joofoinuHBFs0nMX3nKuXgxpXryRkCOdM2Ua6HBqQLLy6IW+5f28ZI+HAvMyF8vG7XfNz/lwfBfE6V4juru8Q=="
+      },
+      "SQLitePCLRaw.lib.e_sqlite3": {
+        "type": "Transitive",
+        "resolved": "2.1.13",
+        "contentHash": "D2UAuiGxFYBqeRXjjjGgvJ5UQifzn6wefmSqeKU7XcNGKLbJRP6X7kcPZ6opOBJGdCIlgbSxTvDpBbLvsN594A=="
+      },
+      "SQLitePCLRaw.provider.e_sqlite3": {
+        "type": "Transitive",
+        "resolved": "2.1.13",
+        "contentHash": "ZU60dSqoSNRe49KcQDUmOVgdRtjITOssVXFtiISs+zJXDI4D2Sndwpn2NOtzDQNPu0ZAvpoLPQ+GLKv6iEZn8Q==",
+        "dependencies": {
+          "SQLitePCLRaw.core": "2.1.13"
+        }
+      },
+      "acme.contracts.admissions": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.analytics": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.anomalies": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Datasets": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.appointments": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.assets": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.audiences": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.audit": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.authorization": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.banking": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.benefits": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Acme.Contracts.Recruiting": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.boxoffice": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.broadcasts": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Acme.Contracts.Shows": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.budgeting": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Acme.Contracts.Suppliers": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.campaigns": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.careplans": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Appointments": "[1.0.0, )",
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Acme.Contracts.Patients": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.cart": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.catalog": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.certificates": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.chat": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.checkout": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.common": {
+        "type": "Project",
+        "dependencies": {
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.community": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Acme.Contracts.Personalization": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.compliance": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.concessions": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.configuration": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.content": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.corporateevents": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.customers": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.datahub": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.datasets": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.deliveries": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Drivers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.devices": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Acme.Contracts.Recruiting": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.dispatch": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Drivers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.documents": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.driverapp": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.drivers": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.edgegateway": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.employeeportal": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.employees": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.experiments": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.fanportal": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Acme.Contracts.Venues": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.featureflags": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.featurestore": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Datasets": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.fleet": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.forecasting": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.forms": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.fraud": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.fuel": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Drivers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.giftcards": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.helpdesk": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Employees": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.identity": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.insurance": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Acme.Contracts.Suppliers": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.invoicing": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.itsm": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Employees": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.keymanagement": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.labeling": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.learning": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Acme.Contracts.Recruiting": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.ledger": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.lending": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.licensing": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.lineage": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.localization": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.loyalty": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.maintenance": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Drivers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.media": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.merchandising": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.messaging": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.metrics": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.modelregistry": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.notifications": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.onboarding": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.orders": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.patientapp": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Acme.Contracts.Patients": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.patients": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.payments": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.payroll": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.performance": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Acme.Contracts.Recruiting": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.performers": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Acme.Contracts.Venues": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.personalization": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.pipelines": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.prescriptions": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Acme.Contracts.Patients": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.pricing": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.procurement": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.promotions": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.ratelimiting": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.recommendations": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.recruiting": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Employees": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.returns": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.reviews": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.risk": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Acme.Contracts.Suppliers": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.routing": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Drivers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.scheduling": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Employees": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.search": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.seating": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.secrets": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.sellers": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.shipping": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.shows": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Acme.Contracts.Venues": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.sponsorships": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Acme.Contracts.Venues": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.subscriptions": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.suppliers": {
+        "type": "Project",
+        "dependencies": {
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.surveys": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.telehealth": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Acme.Contracts.Patients": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.telematics": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.ticketing": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Acme.Contracts.Venues": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.timekeeping": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Employees": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.tours": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Acme.Contracts.Venues": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.travel": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Employees": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.treasury": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.venues": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.warehousing": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Customers": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.webbff": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.webhooks": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.workplaces": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Employees": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "acme.contracts.yards": {
+        "type": "Project",
+        "dependencies": {
+          "Acme.Contracts.Common": "[1.0.0, )",
+          "Acme.Contracts.Identity": "[1.0.0, )",
+          "Google.Protobuf": "[3.36.2, )",
+          "Grpc.Core.Api": "[2.84.0, )"
+        }
+      },
+      "Google.Protobuf": {
+        "type": "CentralTransitive",
+        "requested": "[3.36.2, )",
+        "resolved": "3.36.2",
+        "contentHash": "Ci1q1iJg74qAE5riTA2FbMS0wPbpruPQI/JQ9DrAsRo2VsSxgt1e/pmxGxgrci+pXJEgrSYg2vPl8rrStZkclQ=="
+      },
+      "Grpc.Core.Api": {
+        "type": "CentralTransitive",
+        "requested": "[2.84.0, )",
+        "resolved": "2.84.0",
+        "contentHash": "p2SOMl6q/GZ4/5MLkgboC/z55g4zKUEruRn/g46QgppjQBVnsLZVBU/9VO7n60ll38G3Eo8Zu9b7x+W01GKFVg=="
+      },
+      "Grpc.Tools": {
+        "type": "CentralTransitive",
+        "requested": "[2.84.0, )",
+        "resolved": "2.84.0",
+        "contentHash": "SarjdfpQYU/mmdu/fWgSW8kEHQ54jiyG2+I4THu9eubtAud+QJf+1iJdGtoKTJ/ZRaI0qAG+7ttsK2WUTao2OQ=="
+      }
+    }
+  }
+}

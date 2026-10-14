@@ -1,0 +1,205 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.recruiting.v1;
+
+import "acme/common/v1/audit.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/recruiting/v1/recruiting.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Recruiting.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/recruiting/v1;recruitingv1";
+option java_multiple_files = true;
+option java_outer_classname = "OfferReportingServiceProto";
+option java_package = "com.acme.recruiting.v1";
+
+// Builds and schedules reports about offers.
+service OfferReportingService {
+  // Generates an offer.
+  rpc GenerateOfferReport(GenerateOfferReportRequest) returns (GenerateOfferReportResponse);
+
+  // Returns an offer.
+  rpc FetchOfferReport(FetchOfferReportRequest) returns (FetchOfferReportResponse);
+
+  // Schedules an offer.
+  rpc ScheduleOfferReport(ScheduleOfferReportRequest) returns (ScheduleOfferReportResponse);
+
+  // Streams the changes of offers as they happen.
+  rpc StreamOfferMetrics(StreamOfferMetricsRequest) returns (stream StreamOfferMetricsResponse);
+
+  // Lists offers a page at a time.
+  rpc ListOfferReports(ListOfferReportsRequest) returns (ListOfferReportsResponse);
+
+  // Counts offers by status.
+  rpc CountOfferTotals(CountOfferTotalsRequest) returns (CountOfferTotalsResponse);
+
+  // Deletes an offer.
+  rpc DeleteOfferReport(DeleteOfferReportRequest) returns (DeleteOfferReportResponse);
+}
+
+// The request of `GenerateOfferReport`.
+message GenerateOfferReportRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  GenerateOfferReportRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `GenerateOfferReport`.
+message GenerateOfferReportResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `FetchOfferReport`.
+message FetchOfferReportRequest {
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `FetchOfferReport`.
+message FetchOfferReportResponse {
+  Offer offer = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleOfferReport`.
+message ScheduleOfferReportRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  ScheduleOfferReportRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ScheduleOfferReport`.
+message ScheduleOfferReportResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `StreamOfferMetrics`.
+message StreamOfferMetricsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated OfferStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  StreamOfferMetricsRequest.Filter filter = 2;
+  google.protobuf.Timestamp since = 3;
+  int32 max_events = 4;
+  acme.common.v1.ContactInfo subscriber = 5;
+}
+
+// The response of `StreamOfferMetrics`.
+message StreamOfferMetricsResponse {
+  Offer offer = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `ListOfferReports`.
+message ListOfferReportsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated OfferStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListOfferReportsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListOfferReports`.
+message ListOfferReportsResponse {
+  repeated Offer offers = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CountOfferTotals`.
+message CountOfferTotalsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated OfferStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  CountOfferTotalsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `CountOfferTotals`.
+message CountOfferTotalsResponse {
+  int64 count = 1;
+  map<string, int64> by_status = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DeleteOfferReport`.
+message DeleteOfferReportRequest {
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  string reason = 3;
+  string etag = 4;
+  bool force = 5;
+}
+
+// The response of `DeleteOfferReport`.
+message DeleteOfferReportResponse {
+  acme.common.v1.OperationResult result = 1;
+  google.protobuf.Timestamp effective_at = 2;
+}

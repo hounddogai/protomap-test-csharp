@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.performance.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/performance/v1/performance.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Performance.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/performance/v1;performancev1";
+option java_multiple_files = true;
+option java_outer_classname = "FeedbackCalculationServiceProto";
+option java_package = "com.acme.performance.v1";
+
+// Computes the figures of a feedback, such as totals, taxes, and estimates.
+service FeedbackCalculationService {
+  // Calculates a feedback.
+  rpc CalculateFeedback(CalculateFeedbackRequest) returns (CalculateFeedbackResponse);
+
+  // Estimates a feedback.
+  rpc EstimateFeedback(EstimateFeedbackRequest) returns (EstimateFeedbackResponse);
+
+  // Quotes a feedback.
+  rpc QuoteFeedback(QuoteFeedbackRequest) returns (QuoteFeedbackResponse);
+
+  // Compares a feedback.
+  rpc CompareFeedbackOptions(CompareFeedbackOptionsRequest) returns (CompareFeedbackOptionsResponse);
+
+  // Recalculates a feedback.
+  rpc RecalculateFeedbacks(RecalculateFeedbacksRequest) returns (RecalculateFeedbacksResponse);
+
+  // Simulates a feedback.
+  rpc SimulateFeedback(SimulateFeedbackRequest) returns (SimulateFeedbackResponse);
+
+  // Explains a feedback.
+  rpc ExplainFeedbackCalculation(ExplainFeedbackCalculationRequest) returns (ExplainFeedbackCalculationResponse);
+
+  // Returns a feedback.
+  rpc GetFeedbackRates(GetFeedbackRatesRequest) returns (GetFeedbackRatesResponse);
+}
+
+// The request of `CalculateFeedback`.
+message CalculateFeedbackRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string feedback_id = 2;
+  Feedback feedback = 3;
+  CalculateFeedbackRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateFeedback`.
+message CalculateFeedbackResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateFeedbackResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Feedback feedback = 1;
+  CalculateFeedbackResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateFeedback`.
+message EstimateFeedbackRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string feedback_id = 2;
+  Feedback feedback = 3;
+  EstimateFeedbackRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateFeedback`.
+message EstimateFeedbackResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateFeedbackResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Feedback feedback = 1;
+  EstimateFeedbackResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteFeedback`.
+message QuoteFeedbackRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string feedback_id = 2;
+  Feedback feedback = 3;
+  QuoteFeedbackRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteFeedback`.
+message QuoteFeedbackResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteFeedbackResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Feedback feedback = 1;
+  QuoteFeedbackResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareFeedbackOptions`.
+message CompareFeedbackOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string feedback_id = 2;
+  Feedback feedback = 3;
+  CompareFeedbackOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareFeedbackOptions`.
+message CompareFeedbackOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareFeedbackOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Feedback feedback = 1;
+  CompareFeedbackOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateFeedbacks`.
+message RecalculateFeedbacksRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string feedback_id = 2;
+  Feedback feedback = 3;
+  RecalculateFeedbacksRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateFeedbacks`.
+message RecalculateFeedbacksResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateFeedbacksResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Feedback feedback = 1;
+  RecalculateFeedbacksResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateFeedback`.
+message SimulateFeedbackRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string feedback_id = 2;
+  Feedback feedback = 3;
+  SimulateFeedbackRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateFeedback`.
+message SimulateFeedbackResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateFeedbackResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Feedback feedback = 1;
+  SimulateFeedbackResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainFeedbackCalculation`.
+message ExplainFeedbackCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string feedback_id = 2;
+  Feedback feedback = 3;
+  ExplainFeedbackCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainFeedbackCalculation`.
+message ExplainFeedbackCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Feedback feedback = 1;
+  ExplainFeedbackCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetFeedbackRates`.
+message GetFeedbackRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string feedback_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetFeedbackRates`.
+message GetFeedbackRatesResponse {
+  Feedback feedback = 1;
+  acme.common.v1.OperationResult result = 2;
+}

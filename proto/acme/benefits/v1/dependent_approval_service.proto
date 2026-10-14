@@ -1,0 +1,278 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.benefits.v1;
+
+import "acme/benefits/v1/benefits.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Benefits.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/benefits/v1;benefitsv1";
+option java_multiple_files = true;
+option java_outer_classname = "DependentApprovalServiceProto";
+option java_package = "com.acme.benefits.v1";
+
+// Routes dependents through approval, with escalation and delegation.
+service DependentApprovalService {
+  // Submits a dependent.
+  rpc SubmitDependent(SubmitDependentRequest) returns (SubmitDependentResponse);
+
+  // Approves a dependent.
+  rpc ApproveDependent(ApproveDependentRequest) returns (ApproveDependentResponse);
+
+  // Rejects a dependent.
+  rpc RejectDependent(RejectDependentRequest) returns (RejectDependentResponse);
+
+  // Escalates a dependent.
+  rpc EscalateDependent(EscalateDependentRequest) returns (EscalateDependentResponse);
+
+  // Lists dependents a page at a time.
+  rpc ListPendingDependents(ListPendingDependentsRequest) returns (ListPendingDependentsResponse);
+
+  // Delegates a dependent.
+  rpc DelegateDependentApproval(DelegateDependentApprovalRequest) returns (DelegateDependentApprovalResponse);
+
+  // Recalls a dependent.
+  rpc RecallDependent(RecallDependentRequest) returns (RecallDependentResponse);
+}
+
+// The request of `SubmitDependent`.
+message SubmitDependentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  SubmitDependentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitDependent`.
+message SubmitDependentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Dependent dependent = 1;
+  SubmitDependentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveDependent`.
+message ApproveDependentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  ApproveDependentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveDependent`.
+message ApproveDependentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Dependent dependent = 1;
+  ApproveDependentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectDependent`.
+message RejectDependentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  RejectDependentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectDependent`.
+message RejectDependentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Dependent dependent = 1;
+  RejectDependentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateDependent`.
+message EscalateDependentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  EscalateDependentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateDependent`.
+message EscalateDependentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Dependent dependent = 1;
+  EscalateDependentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingDependents`.
+message ListPendingDependentsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DependentStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingDependentsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingDependents`.
+message ListPendingDependentsResponse {
+  repeated Dependent dependents = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateDependentApproval`.
+message DelegateDependentApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  DelegateDependentApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateDependentApproval`.
+message DelegateDependentApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Dependent dependent = 1;
+  DelegateDependentApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallDependent`.
+message RecallDependentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  RecallDependentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallDependent`.
+message RecallDependentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Dependent dependent = 1;
+  RecallDependentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

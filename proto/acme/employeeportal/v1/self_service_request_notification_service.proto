@@ -1,0 +1,247 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.employeeportal.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/employeeportal/v1/employeeportal.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Employeeportal.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/employeeportal/v1;employeeportalv1";
+option java_multiple_files = true;
+option java_outer_classname = "SelfServiceRequestNotificationServiceProto";
+option java_package = "com.acme.employeeportal.v1";
+
+// Tells the people who follow a self service request what changed.
+service SelfServiceRequestNotificationService {
+  // Subscribes a self service request.
+  rpc SubscribeSelfServiceRequestUpdates(SubscribeSelfServiceRequestUpdatesRequest) returns (SubscribeSelfServiceRequestUpdatesResponse);
+
+  // Unsubscribes a self service request.
+  rpc UnsubscribeSelfServiceRequestUpdates(UnsubscribeSelfServiceRequestUpdatesRequest) returns (UnsubscribeSelfServiceRequestUpdatesResponse);
+
+  // Notifys a self service request.
+  rpc NotifySelfServiceRequestWatchers(NotifySelfServiceRequestWatchersRequest) returns (NotifySelfServiceRequestWatchersResponse);
+
+  // Lists self service requests a page at a time.
+  rpc ListSelfServiceRequestSubscriptions(ListSelfServiceRequestSubscriptionsRequest) returns (ListSelfServiceRequestSubscriptionsResponse);
+
+  // Sends a self service request.
+  rpc SendSelfServiceRequestTestNotice(SendSelfServiceRequestTestNoticeRequest) returns (SendSelfServiceRequestTestNoticeResponse);
+
+  // Returns a self service request.
+  rpc GetSelfServiceRequestPreferences(GetSelfServiceRequestPreferencesRequest) returns (GetSelfServiceRequestPreferencesResponse);
+
+  // Streams the changes of self service requests as they happen.
+  rpc StreamSelfServiceRequestNotices(StreamSelfServiceRequestNoticesRequest) returns (stream StreamSelfServiceRequestNoticesResponse);
+}
+
+// The request of `SubscribeSelfServiceRequestUpdates`.
+message SubscribeSelfServiceRequestUpdatesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string self_service_request_id = 2;
+  SubscribeSelfServiceRequestUpdatesRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SubscribeSelfServiceRequestUpdates`.
+message SubscribeSelfServiceRequestUpdatesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SelfServiceRequest self_service_request = 1;
+  SubscribeSelfServiceRequestUpdatesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `UnsubscribeSelfServiceRequestUpdates`.
+message UnsubscribeSelfServiceRequestUpdatesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string self_service_request_id = 2;
+  UnsubscribeSelfServiceRequestUpdatesRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `UnsubscribeSelfServiceRequestUpdates`.
+message UnsubscribeSelfServiceRequestUpdatesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SelfServiceRequest self_service_request = 1;
+  UnsubscribeSelfServiceRequestUpdatesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NotifySelfServiceRequestWatchers`.
+message NotifySelfServiceRequestWatchersRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string self_service_request_id = 2;
+  NotifySelfServiceRequestWatchersRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `NotifySelfServiceRequestWatchers`.
+message NotifySelfServiceRequestWatchersResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SelfServiceRequest self_service_request = 1;
+  NotifySelfServiceRequestWatchersResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListSelfServiceRequestSubscriptions`.
+message ListSelfServiceRequestSubscriptionsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SelfServiceRequestStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListSelfServiceRequestSubscriptionsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListSelfServiceRequestSubscriptions`.
+message ListSelfServiceRequestSubscriptionsResponse {
+  repeated SelfServiceRequest self_service_requests = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SendSelfServiceRequestTestNotice`.
+message SendSelfServiceRequestTestNoticeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string self_service_request_id = 2;
+  SendSelfServiceRequestTestNoticeRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SendSelfServiceRequestTestNotice`.
+message SendSelfServiceRequestTestNoticeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SelfServiceRequest self_service_request = 1;
+  SendSelfServiceRequestTestNoticeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetSelfServiceRequestPreferences`.
+message GetSelfServiceRequestPreferencesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string self_service_request_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetSelfServiceRequestPreferences`.
+message GetSelfServiceRequestPreferencesResponse {
+  SelfServiceRequest self_service_request = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `StreamSelfServiceRequestNotices`.
+message StreamSelfServiceRequestNoticesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SelfServiceRequestStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  StreamSelfServiceRequestNoticesRequest.Filter filter = 2;
+  google.protobuf.Timestamp since = 3;
+  int32 max_events = 4;
+  acme.common.v1.ContactInfo subscriber = 5;
+}
+
+// The response of `StreamSelfServiceRequestNotices`.
+message StreamSelfServiceRequestNoticesResponse {
+  SelfServiceRequest self_service_request = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}

@@ -1,0 +1,296 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.itsm.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/itsm/v1/itsm.proto";
+import "google/protobuf/field_mask.proto";
+
+option csharp_namespace = "Acme.Itsm.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/itsm/v1;itsmv1";
+option java_multiple_files = true;
+option java_outer_classname = "ChangeRequestCalculationServiceProto";
+option java_package = "com.acme.itsm.v1";
+
+// Computes the figures of a change request, such as totals, taxes, and estimates.
+service ChangeRequestCalculationService {
+  // Calculates a change request.
+  rpc CalculateChangeRequest(CalculateChangeRequestRequest) returns (CalculateChangeRequestResponse);
+
+  // Estimates a change request.
+  rpc EstimateChangeRequest(EstimateChangeRequestRequest) returns (EstimateChangeRequestResponse);
+
+  // Quotes a change request.
+  rpc QuoteChangeRequest(QuoteChangeRequestRequest) returns (QuoteChangeRequestResponse);
+
+  // Compares a change request.
+  rpc CompareChangeRequestOptions(CompareChangeRequestOptionsRequest) returns (CompareChangeRequestOptionsResponse);
+
+  // Recalculates a change request.
+  rpc RecalculateChangeRequests(RecalculateChangeRequestsRequest) returns (RecalculateChangeRequestsResponse);
+
+  // Simulates a change request.
+  rpc SimulateChangeRequest(SimulateChangeRequestRequest) returns (SimulateChangeRequestResponse);
+
+  // Returns a change request.
+  rpc GetChangeRequestRates(GetChangeRequestRatesRequest) returns (GetChangeRequestRatesResponse);
+}
+
+// The request of `CalculateChangeRequest`.
+message CalculateChangeRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  CalculateChangeRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateChangeRequest`.
+message CalculateChangeRequestResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateChangeRequestResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ChangeRequest change_request = 1;
+  CalculateChangeRequestResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateChangeRequest`.
+message EstimateChangeRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  EstimateChangeRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateChangeRequest`.
+message EstimateChangeRequestResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateChangeRequestResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ChangeRequest change_request = 1;
+  EstimateChangeRequestResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteChangeRequest`.
+message QuoteChangeRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  QuoteChangeRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteChangeRequest`.
+message QuoteChangeRequestResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteChangeRequestResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ChangeRequest change_request = 1;
+  QuoteChangeRequestResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareChangeRequestOptions`.
+message CompareChangeRequestOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  CompareChangeRequestOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareChangeRequestOptions`.
+message CompareChangeRequestOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareChangeRequestOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ChangeRequest change_request = 1;
+  CompareChangeRequestOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateChangeRequests`.
+message RecalculateChangeRequestsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  RecalculateChangeRequestsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateChangeRequests`.
+message RecalculateChangeRequestsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateChangeRequestsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ChangeRequest change_request = 1;
+  RecalculateChangeRequestsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateChangeRequest`.
+message SimulateChangeRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  SimulateChangeRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateChangeRequest`.
+message SimulateChangeRequestResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateChangeRequestResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ChangeRequest change_request = 1;
+  SimulateChangeRequestResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetChangeRequestRates`.
+message GetChangeRequestRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetChangeRequestRates`.
+message GetChangeRequestRatesResponse {
+  ChangeRequest change_request = 1;
+  acme.common.v1.OperationResult result = 2;
+}

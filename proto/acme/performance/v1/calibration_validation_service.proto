@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.performance.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/performance/v1/performance.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Performance.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/performance/v1;performancev1";
+option java_multiple_files = true;
+option java_outer_classname = "CalibrationValidationServiceProto";
+option java_package = "com.acme.performance.v1";
+
+// Checks calibrations against the rules before anything acts on them.
+service CalibrationValidationService {
+  // Validates a calibration.
+  rpc ValidateCalibration(ValidateCalibrationRequest) returns (ValidateCalibrationResponse);
+
+  // Previews a calibration.
+  rpc PreviewCalibration(PreviewCalibrationRequest) returns (PreviewCalibrationResponse);
+
+  // Checks a calibration.
+  rpc CheckCalibrationEligibility(CheckCalibrationEligibilityRequest) returns (CheckCalibrationEligibilityResponse);
+
+  // Normalizes a calibration.
+  rpc NormalizeCalibration(NormalizeCalibrationRequest) returns (NormalizeCalibrationResponse);
+
+  // Explains a calibration.
+  rpc ExplainCalibrationDecision(ExplainCalibrationDecisionRequest) returns (ExplainCalibrationDecisionResponse);
+
+  // Scores a calibration.
+  rpc ScoreCalibration(ScoreCalibrationRequest) returns (ScoreCalibrationResponse);
+
+  // Lints a calibration.
+  rpc LintCalibrations(LintCalibrationsRequest) returns (LintCalibrationsResponse);
+
+  // Returns a calibration.
+  rpc GetCalibrationRules(GetCalibrationRulesRequest) returns (GetCalibrationRulesResponse);
+}
+
+// The request of `ValidateCalibration`.
+message ValidateCalibrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string calibration_id = 2;
+  Calibration calibration = 3;
+  ValidateCalibrationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateCalibration`.
+message ValidateCalibrationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Calibration calibration = 1;
+  ValidateCalibrationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewCalibration`.
+message PreviewCalibrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string calibration_id = 2;
+  Calibration calibration = 3;
+  PreviewCalibrationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewCalibration`.
+message PreviewCalibrationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Calibration calibration = 1;
+  PreviewCalibrationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckCalibrationEligibility`.
+message CheckCalibrationEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string calibration_id = 2;
+  Calibration calibration = 3;
+  CheckCalibrationEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckCalibrationEligibility`.
+message CheckCalibrationEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Calibration calibration = 1;
+  CheckCalibrationEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeCalibration`.
+message NormalizeCalibrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string calibration_id = 2;
+  Calibration calibration = 3;
+  NormalizeCalibrationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeCalibration`.
+message NormalizeCalibrationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Calibration calibration = 1;
+  NormalizeCalibrationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainCalibrationDecision`.
+message ExplainCalibrationDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string calibration_id = 2;
+  Calibration calibration = 3;
+  ExplainCalibrationDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainCalibrationDecision`.
+message ExplainCalibrationDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Calibration calibration = 1;
+  ExplainCalibrationDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreCalibration`.
+message ScoreCalibrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string calibration_id = 2;
+  Calibration calibration = 3;
+  ScoreCalibrationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreCalibration`.
+message ScoreCalibrationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreCalibrationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Calibration calibration = 1;
+  ScoreCalibrationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintCalibrations`.
+message LintCalibrationsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string calibration_id = 2;
+  Calibration calibration = 3;
+  LintCalibrationsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintCalibrations`.
+message LintCalibrationsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Calibration calibration = 1;
+  LintCalibrationsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetCalibrationRules`.
+message GetCalibrationRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string calibration_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetCalibrationRules`.
+message GetCalibrationRulesResponse {
+  Calibration calibration = 1;
+  acme.common.v1.OperationResult result = 2;
+}

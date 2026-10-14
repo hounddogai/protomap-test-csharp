@@ -1,0 +1,255 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.learning.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/learning/v1/learning.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Learning.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/learning/v1;learningv1";
+option java_multiple_files = true;
+option java_outer_classname = "CourseEnrollmentLifecycleServiceProto";
+option java_package = "com.acme.learning.v1";
+
+// Moves a course enrollment between the states of its lifecycle.
+service CourseEnrollmentLifecycleService {
+  // Activates a course enrollment.
+  rpc ActivateCourseEnrollment(ActivateCourseEnrollmentRequest) returns (ActivateCourseEnrollmentResponse);
+
+  // Suspends a course enrollment.
+  rpc SuspendCourseEnrollment(SuspendCourseEnrollmentRequest) returns (SuspendCourseEnrollmentResponse);
+
+  // Reinstates a course enrollment.
+  rpc ReinstateCourseEnrollment(ReinstateCourseEnrollmentRequest) returns (ReinstateCourseEnrollmentResponse);
+
+  // Terminates a course enrollment.
+  rpc TerminateCourseEnrollment(TerminateCourseEnrollmentRequest) returns (TerminateCourseEnrollmentResponse);
+
+  // Renews a course enrollment.
+  rpc RenewCourseEnrollment(RenewCourseEnrollmentRequest) returns (RenewCourseEnrollmentResponse);
+
+  // Expires a course enrollment.
+  rpc ExpireCourseEnrollment(ExpireCourseEnrollmentRequest) returns (ExpireCourseEnrollmentResponse);
+
+  // Returns a course enrollment.
+  rpc GetCourseEnrollmentLifecycle(GetCourseEnrollmentLifecycleRequest) returns (GetCourseEnrollmentLifecycleResponse);
+}
+
+// The request of `ActivateCourseEnrollment`.
+message ActivateCourseEnrollmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  ActivateCourseEnrollmentRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateCourseEnrollment`.
+message ActivateCourseEnrollmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CourseEnrollment course_enrollment = 1;
+  ActivateCourseEnrollmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendCourseEnrollment`.
+message SuspendCourseEnrollmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  SuspendCourseEnrollmentRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendCourseEnrollment`.
+message SuspendCourseEnrollmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CourseEnrollment course_enrollment = 1;
+  SuspendCourseEnrollmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateCourseEnrollment`.
+message ReinstateCourseEnrollmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  ReinstateCourseEnrollmentRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateCourseEnrollment`.
+message ReinstateCourseEnrollmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CourseEnrollment course_enrollment = 1;
+  ReinstateCourseEnrollmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateCourseEnrollment`.
+message TerminateCourseEnrollmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  TerminateCourseEnrollmentRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateCourseEnrollment`.
+message TerminateCourseEnrollmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CourseEnrollment course_enrollment = 1;
+  TerminateCourseEnrollmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewCourseEnrollment`.
+message RenewCourseEnrollmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  RenewCourseEnrollmentRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewCourseEnrollment`.
+message RenewCourseEnrollmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CourseEnrollment course_enrollment = 1;
+  RenewCourseEnrollmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireCourseEnrollment`.
+message ExpireCourseEnrollmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  ExpireCourseEnrollmentRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireCourseEnrollment`.
+message ExpireCourseEnrollmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CourseEnrollment course_enrollment = 1;
+  ExpireCourseEnrollmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetCourseEnrollmentLifecycle`.
+message GetCourseEnrollmentLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetCourseEnrollmentLifecycle`.
+message GetCourseEnrollmentLifecycleResponse {
+  CourseEnrollment course_enrollment = 1;
+  acme.common.v1.OperationResult result = 2;
+}

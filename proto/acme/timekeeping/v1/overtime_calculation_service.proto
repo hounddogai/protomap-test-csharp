@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.timekeeping.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/timekeeping/v1/timekeeping.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Timekeeping.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/timekeeping/v1;timekeepingv1";
+option java_multiple_files = true;
+option java_outer_classname = "OvertimeCalculationServiceProto";
+option java_package = "com.acme.timekeeping.v1";
+
+// Computes the figures of an overtime, such as totals, taxes, and estimates.
+service OvertimeCalculationService {
+  // Calculates an overtime.
+  rpc CalculateOvertime(CalculateOvertimeRequest) returns (CalculateOvertimeResponse);
+
+  // Estimates an overtime.
+  rpc EstimateOvertime(EstimateOvertimeRequest) returns (EstimateOvertimeResponse);
+
+  // Quotes an overtime.
+  rpc QuoteOvertime(QuoteOvertimeRequest) returns (QuoteOvertimeResponse);
+
+  // Compares an overtime.
+  rpc CompareOvertimeOptions(CompareOvertimeOptionsRequest) returns (CompareOvertimeOptionsResponse);
+
+  // Recalculates an overtime.
+  rpc RecalculateOvertimes(RecalculateOvertimesRequest) returns (RecalculateOvertimesResponse);
+
+  // Simulates an overtime.
+  rpc SimulateOvertime(SimulateOvertimeRequest) returns (SimulateOvertimeResponse);
+
+  // Explains an overtime.
+  rpc ExplainOvertimeCalculation(ExplainOvertimeCalculationRequest) returns (ExplainOvertimeCalculationResponse);
+
+  // Returns an overtime.
+  rpc GetOvertimeRates(GetOvertimeRatesRequest) returns (GetOvertimeRatesResponse);
+}
+
+// The request of `CalculateOvertime`.
+message CalculateOvertimeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  CalculateOvertimeRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateOvertime`.
+message CalculateOvertimeResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateOvertimeResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Overtime overtime = 1;
+  CalculateOvertimeResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateOvertime`.
+message EstimateOvertimeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  EstimateOvertimeRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateOvertime`.
+message EstimateOvertimeResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateOvertimeResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Overtime overtime = 1;
+  EstimateOvertimeResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteOvertime`.
+message QuoteOvertimeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  QuoteOvertimeRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteOvertime`.
+message QuoteOvertimeResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteOvertimeResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Overtime overtime = 1;
+  QuoteOvertimeResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareOvertimeOptions`.
+message CompareOvertimeOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  CompareOvertimeOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareOvertimeOptions`.
+message CompareOvertimeOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareOvertimeOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Overtime overtime = 1;
+  CompareOvertimeOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateOvertimes`.
+message RecalculateOvertimesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  RecalculateOvertimesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateOvertimes`.
+message RecalculateOvertimesResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateOvertimesResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Overtime overtime = 1;
+  RecalculateOvertimesResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateOvertime`.
+message SimulateOvertimeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  SimulateOvertimeRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateOvertime`.
+message SimulateOvertimeResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateOvertimeResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Overtime overtime = 1;
+  SimulateOvertimeResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainOvertimeCalculation`.
+message ExplainOvertimeCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  ExplainOvertimeCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainOvertimeCalculation`.
+message ExplainOvertimeCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  ExplainOvertimeCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetOvertimeRates`.
+message GetOvertimeRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetOvertimeRates`.
+message GetOvertimeRatesResponse {
+  Overtime overtime = 1;
+  acme.common.v1.OperationResult result = 2;
+}

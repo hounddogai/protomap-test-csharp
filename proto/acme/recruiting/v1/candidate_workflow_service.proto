@@ -1,0 +1,241 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.recruiting.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/recruiting/v1/recruiting.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Recruiting.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/recruiting/v1;recruitingv1";
+option java_multiple_files = true;
+option java_outer_classname = "CandidateWorkflowServiceProto";
+option java_package = "com.acme.recruiting.v1";
+
+// Runs the long-lived workflow that takes a candidate from start to finish.
+service CandidateWorkflowService {
+  // Starts a candidate.
+  rpc StartCandidateWorkflow(StartCandidateWorkflowRequest) returns (StartCandidateWorkflowResponse);
+
+  // Advances a candidate.
+  rpc AdvanceCandidateWorkflow(AdvanceCandidateWorkflowRequest) returns (AdvanceCandidateWorkflowResponse);
+
+  // Cancels a candidate.
+  rpc CancelCandidateWorkflow(CancelCandidateWorkflowRequest) returns (CancelCandidateWorkflowResponse);
+
+  // Pauses a candidate.
+  rpc PauseCandidateWorkflow(PauseCandidateWorkflowRequest) returns (PauseCandidateWorkflowResponse);
+
+  // Lists candidates a page at a time.
+  rpc ListCandidateWorkflows(ListCandidateWorkflowsRequest) returns (ListCandidateWorkflowsResponse);
+
+  // Signals a candidate.
+  rpc SignalCandidateWorkflow(SignalCandidateWorkflowRequest) returns (SignalCandidateWorkflowResponse);
+}
+
+// The request of `StartCandidateWorkflow`.
+message StartCandidateWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string candidate_id = 2;
+  Candidate candidate = 3;
+  StartCandidateWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartCandidateWorkflow`.
+message StartCandidateWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Candidate candidate = 1;
+  StartCandidateWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceCandidateWorkflow`.
+message AdvanceCandidateWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string candidate_id = 2;
+  Candidate candidate = 3;
+  AdvanceCandidateWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceCandidateWorkflow`.
+message AdvanceCandidateWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Candidate candidate = 1;
+  AdvanceCandidateWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelCandidateWorkflow`.
+message CancelCandidateWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string candidate_id = 2;
+  Candidate candidate = 3;
+  CancelCandidateWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelCandidateWorkflow`.
+message CancelCandidateWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Candidate candidate = 1;
+  CancelCandidateWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseCandidateWorkflow`.
+message PauseCandidateWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string candidate_id = 2;
+  Candidate candidate = 3;
+  PauseCandidateWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseCandidateWorkflow`.
+message PauseCandidateWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Candidate candidate = 1;
+  PauseCandidateWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListCandidateWorkflows`.
+message ListCandidateWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated CandidateStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListCandidateWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListCandidateWorkflows`.
+message ListCandidateWorkflowsResponse {
+  repeated Candidate candidates = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalCandidateWorkflow`.
+message SignalCandidateWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string candidate_id = 2;
+  Candidate candidate = 3;
+  SignalCandidateWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalCandidateWorkflow`.
+message SignalCandidateWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Candidate candidate = 1;
+  SignalCandidateWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

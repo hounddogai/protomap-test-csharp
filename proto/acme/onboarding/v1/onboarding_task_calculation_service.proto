@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.onboarding.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/onboarding/v1/onboarding.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Onboarding.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/onboarding/v1;onboardingv1";
+option java_multiple_files = true;
+option java_outer_classname = "OnboardingTaskCalculationServiceProto";
+option java_package = "com.acme.onboarding.v1";
+
+// Computes the figures of an onboarding task, such as totals, taxes, and estimates.
+service OnboardingTaskCalculationService {
+  // Calculates an onboarding task.
+  rpc CalculateOnboardingTask(CalculateOnboardingTaskRequest) returns (CalculateOnboardingTaskResponse);
+
+  // Estimates an onboarding task.
+  rpc EstimateOnboardingTask(EstimateOnboardingTaskRequest) returns (EstimateOnboardingTaskResponse);
+
+  // Quotes an onboarding task.
+  rpc QuoteOnboardingTask(QuoteOnboardingTaskRequest) returns (QuoteOnboardingTaskResponse);
+
+  // Compares an onboarding task.
+  rpc CompareOnboardingTaskOptions(CompareOnboardingTaskOptionsRequest) returns (CompareOnboardingTaskOptionsResponse);
+
+  // Recalculates an onboarding task.
+  rpc RecalculateOnboardingTasks(RecalculateOnboardingTasksRequest) returns (RecalculateOnboardingTasksResponse);
+
+  // Simulates an onboarding task.
+  rpc SimulateOnboardingTask(SimulateOnboardingTaskRequest) returns (SimulateOnboardingTaskResponse);
+
+  // Explains an onboarding task.
+  rpc ExplainOnboardingTaskCalculation(ExplainOnboardingTaskCalculationRequest) returns (ExplainOnboardingTaskCalculationResponse);
+
+  // Returns an onboarding task.
+  rpc GetOnboardingTaskRates(GetOnboardingTaskRatesRequest) returns (GetOnboardingTaskRatesResponse);
+}
+
+// The request of `CalculateOnboardingTask`.
+message CalculateOnboardingTaskRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_task_id = 2;
+  OnboardingTask onboarding_task = 3;
+  CalculateOnboardingTaskRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateOnboardingTask`.
+message CalculateOnboardingTaskResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateOnboardingTaskResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  OnboardingTask onboarding_task = 1;
+  CalculateOnboardingTaskResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateOnboardingTask`.
+message EstimateOnboardingTaskRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_task_id = 2;
+  OnboardingTask onboarding_task = 3;
+  EstimateOnboardingTaskRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateOnboardingTask`.
+message EstimateOnboardingTaskResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateOnboardingTaskResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  OnboardingTask onboarding_task = 1;
+  EstimateOnboardingTaskResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteOnboardingTask`.
+message QuoteOnboardingTaskRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_task_id = 2;
+  OnboardingTask onboarding_task = 3;
+  QuoteOnboardingTaskRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteOnboardingTask`.
+message QuoteOnboardingTaskResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteOnboardingTaskResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  OnboardingTask onboarding_task = 1;
+  QuoteOnboardingTaskResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareOnboardingTaskOptions`.
+message CompareOnboardingTaskOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_task_id = 2;
+  OnboardingTask onboarding_task = 3;
+  CompareOnboardingTaskOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareOnboardingTaskOptions`.
+message CompareOnboardingTaskOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareOnboardingTaskOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  OnboardingTask onboarding_task = 1;
+  CompareOnboardingTaskOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateOnboardingTasks`.
+message RecalculateOnboardingTasksRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_task_id = 2;
+  OnboardingTask onboarding_task = 3;
+  RecalculateOnboardingTasksRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateOnboardingTasks`.
+message RecalculateOnboardingTasksResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateOnboardingTasksResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  OnboardingTask onboarding_task = 1;
+  RecalculateOnboardingTasksResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateOnboardingTask`.
+message SimulateOnboardingTaskRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_task_id = 2;
+  OnboardingTask onboarding_task = 3;
+  SimulateOnboardingTaskRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateOnboardingTask`.
+message SimulateOnboardingTaskResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateOnboardingTaskResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  OnboardingTask onboarding_task = 1;
+  SimulateOnboardingTaskResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainOnboardingTaskCalculation`.
+message ExplainOnboardingTaskCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_task_id = 2;
+  OnboardingTask onboarding_task = 3;
+  ExplainOnboardingTaskCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainOnboardingTaskCalculation`.
+message ExplainOnboardingTaskCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingTask onboarding_task = 1;
+  ExplainOnboardingTaskCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetOnboardingTaskRates`.
+message GetOnboardingTaskRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_task_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetOnboardingTaskRates`.
+message GetOnboardingTaskRatesResponse {
+  OnboardingTask onboarding_task = 1;
+  acme.common.v1.OperationResult result = 2;
+}

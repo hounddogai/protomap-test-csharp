@@ -1,0 +1,195 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.documents.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/documents/v1/documents.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Documents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/documents/v1;documentsv1";
+option java_multiple_files = true;
+option java_outer_classname = "DocumentTemplateHistoryServiceProto";
+option java_package = "com.acme.documents.v1";
+
+// Keeps every version of a document template and restores earlier ones.
+service DocumentTemplateHistoryService {
+  // Records a document template.
+  rpc RecordDocumentTemplateVersion(RecordDocumentTemplateVersionRequest) returns (RecordDocumentTemplateVersionResponse);
+
+  // Lists document templates a page at a time.
+  rpc ListDocumentTemplateVersions(ListDocumentTemplateVersionsRequest) returns (ListDocumentTemplateVersionsResponse);
+
+  // Returns a document template.
+  rpc GetDocumentTemplateVersion(GetDocumentTemplateVersionRequest) returns (GetDocumentTemplateVersionResponse);
+
+  // Reverts a document template.
+  rpc RevertDocumentTemplate(RevertDocumentTemplateRequest) returns (RevertDocumentTemplateResponse);
+
+  // Annotates a document template.
+  rpc AnnotateDocumentTemplateVersion(AnnotateDocumentTemplateVersionRequest) returns (AnnotateDocumentTemplateVersionResponse);
+
+  // Deletes a document template.
+  rpc PruneDocumentTemplateVersions(PruneDocumentTemplateVersionsRequest) returns (PruneDocumentTemplateVersionsResponse);
+}
+
+// The request of `RecordDocumentTemplateVersion`.
+message RecordDocumentTemplateVersionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    int64 version = 1;
+    int64 other_version = 2;
+    bytes snapshot = 3;
+    string author_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  DocumentTemplate document_template = 3;
+  RecordDocumentTemplateVersionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecordDocumentTemplateVersion`.
+message RecordDocumentTemplateVersionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  RecordDocumentTemplateVersionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListDocumentTemplateVersions`.
+message ListDocumentTemplateVersionsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DocumentTemplateStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListDocumentTemplateVersionsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListDocumentTemplateVersions`.
+message ListDocumentTemplateVersionsResponse {
+  repeated DocumentTemplate document_templates = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetDocumentTemplateVersion`.
+message GetDocumentTemplateVersionRequest {
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetDocumentTemplateVersion`.
+message GetDocumentTemplateVersionResponse {
+  DocumentTemplate document_template = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `RevertDocumentTemplate`.
+message RevertDocumentTemplateRequest {
+  // What the operation needs besides the record.
+  message Details {
+    int64 version = 1;
+    int64 other_version = 2;
+    bytes snapshot = 3;
+    string author_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  DocumentTemplate document_template = 3;
+  RevertDocumentTemplateRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RevertDocumentTemplate`.
+message RevertDocumentTemplateResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  RevertDocumentTemplateResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AnnotateDocumentTemplateVersion`.
+message AnnotateDocumentTemplateVersionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    int64 version = 1;
+    int64 other_version = 2;
+    bytes snapshot = 3;
+    string author_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  DocumentTemplate document_template = 3;
+  AnnotateDocumentTemplateVersionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AnnotateDocumentTemplateVersion`.
+message AnnotateDocumentTemplateVersionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  AnnotateDocumentTemplateVersionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PruneDocumentTemplateVersions`.
+message PruneDocumentTemplateVersionsRequest {
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  string reason = 3;
+  string etag = 4;
+  bool force = 5;
+}
+
+// The response of `PruneDocumentTemplateVersions`.
+message PruneDocumentTemplateVersionsResponse {
+  acme.common.v1.OperationResult result = 1;
+  google.protobuf.Timestamp effective_at = 2;
+}

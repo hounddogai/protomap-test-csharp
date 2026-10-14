@@ -1,0 +1,212 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.employeeportal.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/employeeportal/v1/employeeportal.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Employeeportal.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/employeeportal/v1;employeeportalv1";
+option java_multiple_files = true;
+option java_outer_classname = "SelfServiceRequestServiceProto";
+option java_package = "com.acme.employeeportal.v1";
+
+// Manages self service requests: creates, reads, changes, and lists them.
+service SelfServiceRequestService {
+  // Creates a self service request.
+  rpc CreateSelfServiceRequest(CreateSelfServiceRequestRequest) returns (CreateSelfServiceRequestResponse);
+
+  // Returns a self service request.
+  rpc GetSelfServiceRequest(GetSelfServiceRequestRequest) returns (GetSelfServiceRequestResponse);
+
+  // Changes a self service request.
+  rpc UpdateSelfServiceRequest(UpdateSelfServiceRequestRequest) returns (UpdateSelfServiceRequestResponse);
+
+  // Deletes a self service request.
+  rpc DeleteSelfServiceRequest(DeleteSelfServiceRequestRequest) returns (DeleteSelfServiceRequestResponse);
+
+  // Lists self service requests a page at a time.
+  rpc ListSelfServiceRequests(ListSelfServiceRequestsRequest) returns (ListSelfServiceRequestsResponse);
+
+  // Returns several self service requests at once.
+  rpc BatchGetSelfServiceRequests(BatchGetSelfServiceRequestsRequest) returns (BatchGetSelfServiceRequestsResponse);
+
+  // Lists self service requests a page at a time.
+  rpc SearchSelfServiceRequests(SearchSelfServiceRequestsRequest) returns (SearchSelfServiceRequestsResponse);
+
+  // Streams the changes of self service requests as they happen.
+  rpc WatchSelfServiceRequests(WatchSelfServiceRequestsRequest) returns (stream WatchSelfServiceRequestsResponse);
+
+  // Creates a self service request.
+  rpc CloneSelfServiceRequest(CloneSelfServiceRequestRequest) returns (CloneSelfServiceRequestResponse);
+}
+
+// The request of `CreateSelfServiceRequest`.
+message CreateSelfServiceRequestRequest {
+  acme.common.v1.RequestContext context = 1;
+  SelfServiceRequest self_service_request = 2;
+  string request_id = 3;
+  bool validate_only = 4;
+}
+
+// The response of `CreateSelfServiceRequest`.
+message CreateSelfServiceRequestResponse {
+  SelfServiceRequest self_service_request = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `GetSelfServiceRequest`.
+message GetSelfServiceRequestRequest {
+  acme.common.v1.RequestContext context = 1;
+  string self_service_request_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetSelfServiceRequest`.
+message GetSelfServiceRequestResponse {
+  SelfServiceRequest self_service_request = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `UpdateSelfServiceRequest`.
+message UpdateSelfServiceRequestRequest {
+  acme.common.v1.RequestContext context = 1;
+  SelfServiceRequest self_service_request = 2;
+  google.protobuf.FieldMask update_mask = 3;
+  bool allow_missing = 4;
+}
+
+// The response of `UpdateSelfServiceRequest`.
+message UpdateSelfServiceRequestResponse {
+  SelfServiceRequest self_service_request = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `DeleteSelfServiceRequest`.
+message DeleteSelfServiceRequestRequest {
+  acme.common.v1.RequestContext context = 1;
+  string self_service_request_id = 2;
+  string reason = 3;
+  string etag = 4;
+  bool force = 5;
+}
+
+// The response of `DeleteSelfServiceRequest`.
+message DeleteSelfServiceRequestResponse {
+  acme.common.v1.OperationResult result = 1;
+  google.protobuf.Timestamp effective_at = 2;
+}
+
+// The request of `ListSelfServiceRequests`.
+message ListSelfServiceRequestsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SelfServiceRequestStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListSelfServiceRequestsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListSelfServiceRequests`.
+message ListSelfServiceRequestsResponse {
+  repeated SelfServiceRequest self_service_requests = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `BatchGetSelfServiceRequests`.
+message BatchGetSelfServiceRequestsRequest {
+  acme.common.v1.RequestContext context = 1;
+  repeated string self_service_request_ids = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `BatchGetSelfServiceRequests`.
+message BatchGetSelfServiceRequestsResponse {
+  repeated SelfServiceRequest self_service_requests = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SearchSelfServiceRequests`.
+message SearchSelfServiceRequestsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SelfServiceRequestStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SearchSelfServiceRequestsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SearchSelfServiceRequests`.
+message SearchSelfServiceRequestsResponse {
+  repeated SelfServiceRequest self_service_requests = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `WatchSelfServiceRequests`.
+message WatchSelfServiceRequestsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SelfServiceRequestStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  WatchSelfServiceRequestsRequest.Filter filter = 2;
+  google.protobuf.Timestamp since = 3;
+  int32 max_events = 4;
+  acme.common.v1.ContactInfo subscriber = 5;
+}
+
+// The response of `WatchSelfServiceRequests`.
+message WatchSelfServiceRequestsResponse {
+  SelfServiceRequest self_service_request = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `CloneSelfServiceRequest`.
+message CloneSelfServiceRequestRequest {
+  acme.common.v1.RequestContext context = 1;
+  SelfServiceRequest self_service_request = 2;
+  string request_id = 3;
+  bool validate_only = 4;
+}
+
+// The response of `CloneSelfServiceRequest`.
+message CloneSelfServiceRequestResponse {
+  SelfServiceRequest self_service_request = 1;
+  acme.common.v1.OperationResult result = 2;
+}

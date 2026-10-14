@@ -1,0 +1,295 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.benefits.v1;
+
+import "acme/benefits/v1/benefits.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Benefits.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/benefits/v1;benefitsv1";
+option java_multiple_files = true;
+option java_outer_classname = "LifeEventApprovalServiceProto";
+option java_package = "com.acme.benefits.v1";
+
+// Routes life events through approval, with escalation and delegation.
+service LifeEventApprovalService {
+  // Submits a life event.
+  rpc SubmitLifeEvent(SubmitLifeEventRequest) returns (SubmitLifeEventResponse);
+
+  // Approves a life event.
+  rpc ApproveLifeEvent(ApproveLifeEventRequest) returns (ApproveLifeEventResponse);
+
+  // Rejects a life event.
+  rpc RejectLifeEvent(RejectLifeEventRequest) returns (RejectLifeEventResponse);
+
+  // Escalates a life event.
+  rpc EscalateLifeEvent(EscalateLifeEventRequest) returns (EscalateLifeEventResponse);
+
+  // Lists life events a page at a time.
+  rpc ListPendingLifeEvents(ListPendingLifeEventsRequest) returns (ListPendingLifeEventsResponse);
+
+  // Delegates a life event.
+  rpc DelegateLifeEventApproval(DelegateLifeEventApprovalRequest) returns (DelegateLifeEventApprovalResponse);
+
+  // Recalls a life event.
+  rpc RecallLifeEvent(RecallLifeEventRequest) returns (RecallLifeEventResponse);
+
+  // Returns a life event.
+  rpc GetLifeEventApprovalStatus(GetLifeEventApprovalStatusRequest) returns (GetLifeEventApprovalStatusResponse);
+}
+
+// The request of `SubmitLifeEvent`.
+message SubmitLifeEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string life_event_id = 2;
+  LifeEvent life_event = 3;
+  SubmitLifeEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitLifeEvent`.
+message SubmitLifeEventResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LifeEvent life_event = 1;
+  SubmitLifeEventResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveLifeEvent`.
+message ApproveLifeEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string life_event_id = 2;
+  LifeEvent life_event = 3;
+  ApproveLifeEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveLifeEvent`.
+message ApproveLifeEventResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LifeEvent life_event = 1;
+  ApproveLifeEventResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectLifeEvent`.
+message RejectLifeEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string life_event_id = 2;
+  LifeEvent life_event = 3;
+  RejectLifeEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectLifeEvent`.
+message RejectLifeEventResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LifeEvent life_event = 1;
+  RejectLifeEventResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateLifeEvent`.
+message EscalateLifeEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string life_event_id = 2;
+  LifeEvent life_event = 3;
+  EscalateLifeEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateLifeEvent`.
+message EscalateLifeEventResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LifeEvent life_event = 1;
+  EscalateLifeEventResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingLifeEvents`.
+message ListPendingLifeEventsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated LifeEventStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingLifeEventsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingLifeEvents`.
+message ListPendingLifeEventsResponse {
+  repeated LifeEvent life_events = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateLifeEventApproval`.
+message DelegateLifeEventApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string life_event_id = 2;
+  LifeEvent life_event = 3;
+  DelegateLifeEventApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateLifeEventApproval`.
+message DelegateLifeEventApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LifeEvent life_event = 1;
+  DelegateLifeEventApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallLifeEvent`.
+message RecallLifeEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string life_event_id = 2;
+  LifeEvent life_event = 3;
+  RecallLifeEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallLifeEvent`.
+message RecallLifeEventResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LifeEvent life_event = 1;
+  RecallLifeEventResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetLifeEventApprovalStatus`.
+message GetLifeEventApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string life_event_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetLifeEventApprovalStatus`.
+message GetLifeEventApprovalStatusResponse {
+  LifeEvent life_event = 1;
+  acme.common.v1.OperationResult result = 2;
+}

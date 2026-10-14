@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.travel.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/travel/v1/travel.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Travel.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/travel/v1;travelv1";
+option java_multiple_files = true;
+option java_outer_classname = "ItineraryApprovalServiceProto";
+option java_package = "com.acme.travel.v1";
+
+// Routes itineraries through approval, with escalation and delegation.
+service ItineraryApprovalService {
+  // Submits an itinerary.
+  rpc SubmitItinerary(SubmitItineraryRequest) returns (SubmitItineraryResponse);
+
+  // Approves an itinerary.
+  rpc ApproveItinerary(ApproveItineraryRequest) returns (ApproveItineraryResponse);
+
+  // Rejects an itinerary.
+  rpc RejectItinerary(RejectItineraryRequest) returns (RejectItineraryResponse);
+
+  // Escalates an itinerary.
+  rpc EscalateItinerary(EscalateItineraryRequest) returns (EscalateItineraryResponse);
+
+  // Lists itineraries a page at a time.
+  rpc ListPendingItineraries(ListPendingItinerariesRequest) returns (ListPendingItinerariesResponse);
+
+  // Delegates an itinerary.
+  rpc DelegateItineraryApproval(DelegateItineraryApprovalRequest) returns (DelegateItineraryApprovalResponse);
+
+  // Recalls an itinerary.
+  rpc RecallItinerary(RecallItineraryRequest) returns (RecallItineraryResponse);
+
+  // Returns an itinerary.
+  rpc GetItineraryApprovalStatus(GetItineraryApprovalStatusRequest) returns (GetItineraryApprovalStatusResponse);
+
+  // Comments an itinerary.
+  rpc CommentItineraryApproval(CommentItineraryApprovalRequest) returns (CommentItineraryApprovalResponse);
+}
+
+// The request of `SubmitItinerary`.
+message SubmitItineraryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  SubmitItineraryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitItinerary`.
+message SubmitItineraryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  SubmitItineraryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveItinerary`.
+message ApproveItineraryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  ApproveItineraryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveItinerary`.
+message ApproveItineraryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  ApproveItineraryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectItinerary`.
+message RejectItineraryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  RejectItineraryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectItinerary`.
+message RejectItineraryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  RejectItineraryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateItinerary`.
+message EscalateItineraryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  EscalateItineraryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateItinerary`.
+message EscalateItineraryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  EscalateItineraryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingItineraries`.
+message ListPendingItinerariesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated ItineraryStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingItinerariesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingItineraries`.
+message ListPendingItinerariesResponse {
+  repeated Itinerary itineraries = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateItineraryApproval`.
+message DelegateItineraryApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  DelegateItineraryApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateItineraryApproval`.
+message DelegateItineraryApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  DelegateItineraryApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallItinerary`.
+message RecallItineraryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  RecallItineraryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallItinerary`.
+message RecallItineraryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  RecallItineraryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetItineraryApprovalStatus`.
+message GetItineraryApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetItineraryApprovalStatus`.
+message GetItineraryApprovalStatusResponse {
+  Itinerary itinerary = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentItineraryApproval`.
+message CommentItineraryApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  CommentItineraryApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentItineraryApproval`.
+message CommentItineraryApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  CommentItineraryApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

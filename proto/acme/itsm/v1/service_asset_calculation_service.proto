@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.itsm.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/itsm/v1/itsm.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Itsm.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/itsm/v1;itsmv1";
+option java_multiple_files = true;
+option java_outer_classname = "ServiceAssetCalculationServiceProto";
+option java_package = "com.acme.itsm.v1";
+
+// Computes the figures of a service asset, such as totals, taxes, and estimates.
+service ServiceAssetCalculationService {
+  // Calculates a service asset.
+  rpc CalculateServiceAsset(CalculateServiceAssetRequest) returns (CalculateServiceAssetResponse);
+
+  // Estimates a service asset.
+  rpc EstimateServiceAsset(EstimateServiceAssetRequest) returns (EstimateServiceAssetResponse);
+
+  // Quotes a service asset.
+  rpc QuoteServiceAsset(QuoteServiceAssetRequest) returns (QuoteServiceAssetResponse);
+
+  // Compares a service asset.
+  rpc CompareServiceAssetOptions(CompareServiceAssetOptionsRequest) returns (CompareServiceAssetOptionsResponse);
+
+  // Recalculates a service asset.
+  rpc RecalculateServiceAssets(RecalculateServiceAssetsRequest) returns (RecalculateServiceAssetsResponse);
+
+  // Simulates a service asset.
+  rpc SimulateServiceAsset(SimulateServiceAssetRequest) returns (SimulateServiceAssetResponse);
+
+  // Explains a service asset.
+  rpc ExplainServiceAssetCalculation(ExplainServiceAssetCalculationRequest) returns (ExplainServiceAssetCalculationResponse);
+
+  // Returns a service asset.
+  rpc GetServiceAssetRates(GetServiceAssetRatesRequest) returns (GetServiceAssetRatesResponse);
+}
+
+// The request of `CalculateServiceAsset`.
+message CalculateServiceAssetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  ServiceAsset service_asset = 3;
+  CalculateServiceAssetRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateServiceAsset`.
+message CalculateServiceAssetResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateServiceAssetResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ServiceAsset service_asset = 1;
+  CalculateServiceAssetResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateServiceAsset`.
+message EstimateServiceAssetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  ServiceAsset service_asset = 3;
+  EstimateServiceAssetRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateServiceAsset`.
+message EstimateServiceAssetResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateServiceAssetResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ServiceAsset service_asset = 1;
+  EstimateServiceAssetResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteServiceAsset`.
+message QuoteServiceAssetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  ServiceAsset service_asset = 3;
+  QuoteServiceAssetRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteServiceAsset`.
+message QuoteServiceAssetResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteServiceAssetResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ServiceAsset service_asset = 1;
+  QuoteServiceAssetResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareServiceAssetOptions`.
+message CompareServiceAssetOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  ServiceAsset service_asset = 3;
+  CompareServiceAssetOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareServiceAssetOptions`.
+message CompareServiceAssetOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareServiceAssetOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ServiceAsset service_asset = 1;
+  CompareServiceAssetOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateServiceAssets`.
+message RecalculateServiceAssetsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  ServiceAsset service_asset = 3;
+  RecalculateServiceAssetsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateServiceAssets`.
+message RecalculateServiceAssetsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateServiceAssetsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ServiceAsset service_asset = 1;
+  RecalculateServiceAssetsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateServiceAsset`.
+message SimulateServiceAssetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  ServiceAsset service_asset = 3;
+  SimulateServiceAssetRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateServiceAsset`.
+message SimulateServiceAssetResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateServiceAssetResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ServiceAsset service_asset = 1;
+  SimulateServiceAssetResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainServiceAssetCalculation`.
+message ExplainServiceAssetCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  ServiceAsset service_asset = 3;
+  ExplainServiceAssetCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainServiceAssetCalculation`.
+message ExplainServiceAssetCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ServiceAsset service_asset = 1;
+  ExplainServiceAssetCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetServiceAssetRates`.
+message GetServiceAssetRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetServiceAssetRates`.
+message GetServiceAssetRatesResponse {
+  ServiceAsset service_asset = 1;
+  acme.common.v1.OperationResult result = 2;
+}

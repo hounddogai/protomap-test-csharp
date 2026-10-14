@@ -1,0 +1,228 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.itsm.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/itsm/v1/itsm.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Itsm.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/itsm/v1;itsmv1";
+option java_multiple_files = true;
+option java_outer_classname = "ChangeRequestApprovalServiceProto";
+option java_package = "com.acme.itsm.v1";
+
+// Routes change requests through approval, with escalation and delegation.
+service ChangeRequestApprovalService {
+  // Submits a change request.
+  rpc SubmitChangeRequest(SubmitChangeRequestRequest) returns (SubmitChangeRequestResponse);
+
+  // Approves a change request.
+  rpc ApproveChangeRequest(ApproveChangeRequestRequest) returns (ApproveChangeRequestResponse);
+
+  // Delegates a change request.
+  rpc DelegateChangeRequestApproval(DelegateChangeRequestApprovalRequest) returns (DelegateChangeRequestApprovalResponse);
+
+  // Recalls a change request.
+  rpc RecallChangeRequest(RecallChangeRequestRequest) returns (RecallChangeRequestResponse);
+
+  // Returns a change request.
+  rpc GetChangeRequestApprovalStatus(GetChangeRequestApprovalStatusRequest) returns (GetChangeRequestApprovalStatusResponse);
+
+  // Comments a change request.
+  rpc CommentChangeRequestApproval(CommentChangeRequestApprovalRequest) returns (CommentChangeRequestApprovalResponse);
+}
+
+// The request of `SubmitChangeRequest`.
+message SubmitChangeRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  SubmitChangeRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitChangeRequest`.
+message SubmitChangeRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  SubmitChangeRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveChangeRequest`.
+message ApproveChangeRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  ApproveChangeRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveChangeRequest`.
+message ApproveChangeRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  ApproveChangeRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateChangeRequestApproval`.
+message DelegateChangeRequestApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  DelegateChangeRequestApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateChangeRequestApproval`.
+message DelegateChangeRequestApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  DelegateChangeRequestApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallChangeRequest`.
+message RecallChangeRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  RecallChangeRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallChangeRequest`.
+message RecallChangeRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  RecallChangeRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetChangeRequestApprovalStatus`.
+message GetChangeRequestApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetChangeRequestApprovalStatus`.
+message GetChangeRequestApprovalStatusResponse {
+  ChangeRequest change_request = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentChangeRequestApproval`.
+message CommentChangeRequestApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  CommentChangeRequestApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentChangeRequestApproval`.
+message CommentChangeRequestApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  CommentChangeRequestApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

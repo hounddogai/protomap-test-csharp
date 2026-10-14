@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.travel.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/travel/v1/travel.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Travel.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/travel/v1;travelv1";
+option java_multiple_files = true;
+option java_outer_classname = "TravelPolicyCalculationServiceProto";
+option java_package = "com.acme.travel.v1";
+
+// Computes the figures of a travel policy, such as totals, taxes, and estimates.
+service TravelPolicyCalculationService {
+  // Calculates a travel policy.
+  rpc CalculateTravelPolicy(CalculateTravelPolicyRequest) returns (CalculateTravelPolicyResponse);
+
+  // Estimates a travel policy.
+  rpc EstimateTravelPolicy(EstimateTravelPolicyRequest) returns (EstimateTravelPolicyResponse);
+
+  // Quotes a travel policy.
+  rpc QuoteTravelPolicy(QuoteTravelPolicyRequest) returns (QuoteTravelPolicyResponse);
+
+  // Compares a travel policy.
+  rpc CompareTravelPolicyOptions(CompareTravelPolicyOptionsRequest) returns (CompareTravelPolicyOptionsResponse);
+
+  // Recalculates a travel policy.
+  rpc RecalculateTravelPolicies(RecalculateTravelPoliciesRequest) returns (RecalculateTravelPoliciesResponse);
+
+  // Simulates a travel policy.
+  rpc SimulateTravelPolicy(SimulateTravelPolicyRequest) returns (SimulateTravelPolicyResponse);
+
+  // Explains a travel policy.
+  rpc ExplainTravelPolicyCalculation(ExplainTravelPolicyCalculationRequest) returns (ExplainTravelPolicyCalculationResponse);
+
+  // Returns a travel policy.
+  rpc GetTravelPolicyRates(GetTravelPolicyRatesRequest) returns (GetTravelPolicyRatesResponse);
+}
+
+// The request of `CalculateTravelPolicy`.
+message CalculateTravelPolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  TravelPolicy travel_policy = 3;
+  CalculateTravelPolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateTravelPolicy`.
+message CalculateTravelPolicyResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateTravelPolicyResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  TravelPolicy travel_policy = 1;
+  CalculateTravelPolicyResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateTravelPolicy`.
+message EstimateTravelPolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  TravelPolicy travel_policy = 3;
+  EstimateTravelPolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateTravelPolicy`.
+message EstimateTravelPolicyResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateTravelPolicyResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  TravelPolicy travel_policy = 1;
+  EstimateTravelPolicyResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteTravelPolicy`.
+message QuoteTravelPolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  TravelPolicy travel_policy = 3;
+  QuoteTravelPolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteTravelPolicy`.
+message QuoteTravelPolicyResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteTravelPolicyResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  TravelPolicy travel_policy = 1;
+  QuoteTravelPolicyResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareTravelPolicyOptions`.
+message CompareTravelPolicyOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  TravelPolicy travel_policy = 3;
+  CompareTravelPolicyOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareTravelPolicyOptions`.
+message CompareTravelPolicyOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareTravelPolicyOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  TravelPolicy travel_policy = 1;
+  CompareTravelPolicyOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateTravelPolicies`.
+message RecalculateTravelPoliciesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  TravelPolicy travel_policy = 3;
+  RecalculateTravelPoliciesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateTravelPolicies`.
+message RecalculateTravelPoliciesResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateTravelPoliciesResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  TravelPolicy travel_policy = 1;
+  RecalculateTravelPoliciesResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateTravelPolicy`.
+message SimulateTravelPolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  TravelPolicy travel_policy = 3;
+  SimulateTravelPolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateTravelPolicy`.
+message SimulateTravelPolicyResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateTravelPolicyResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  TravelPolicy travel_policy = 1;
+  SimulateTravelPolicyResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainTravelPolicyCalculation`.
+message ExplainTravelPolicyCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  TravelPolicy travel_policy = 3;
+  ExplainTravelPolicyCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainTravelPolicyCalculation`.
+message ExplainTravelPolicyCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelPolicy travel_policy = 1;
+  ExplainTravelPolicyCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetTravelPolicyRates`.
+message GetTravelPolicyRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetTravelPolicyRates`.
+message GetTravelPolicyRatesResponse {
+  TravelPolicy travel_policy = 1;
+  acme.common.v1.OperationResult result = 2;
+}

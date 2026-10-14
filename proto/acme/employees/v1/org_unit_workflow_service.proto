@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.employees.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/employees/v1/employees.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Employees.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/employees/v1;employeesv1";
+option java_multiple_files = true;
+option java_outer_classname = "OrgUnitWorkflowServiceProto";
+option java_package = "com.acme.employees.v1";
+
+// Runs the long-lived workflow that takes an org unit from start to finish.
+service OrgUnitWorkflowService {
+  // Starts an org unit.
+  rpc StartOrgUnitWorkflow(StartOrgUnitWorkflowRequest) returns (StartOrgUnitWorkflowResponse);
+
+  // Advances an org unit.
+  rpc AdvanceOrgUnitWorkflow(AdvanceOrgUnitWorkflowRequest) returns (AdvanceOrgUnitWorkflowResponse);
+
+  // Cancels an org unit.
+  rpc CancelOrgUnitWorkflow(CancelOrgUnitWorkflowRequest) returns (CancelOrgUnitWorkflowResponse);
+
+  // Retrys an org unit.
+  rpc RetryOrgUnitWorkflow(RetryOrgUnitWorkflowRequest) returns (RetryOrgUnitWorkflowResponse);
+
+  // Pauses an org unit.
+  rpc PauseOrgUnitWorkflow(PauseOrgUnitWorkflowRequest) returns (PauseOrgUnitWorkflowResponse);
+
+  // Resumes an org unit.
+  rpc ResumeOrgUnitWorkflow(ResumeOrgUnitWorkflowRequest) returns (ResumeOrgUnitWorkflowResponse);
+
+  // Returns an org unit.
+  rpc InspectOrgUnitWorkflow(InspectOrgUnitWorkflowRequest) returns (InspectOrgUnitWorkflowResponse);
+
+  // Lists org units a page at a time.
+  rpc ListOrgUnitWorkflows(ListOrgUnitWorkflowsRequest) returns (ListOrgUnitWorkflowsResponse);
+
+  // Signals an org unit.
+  rpc SignalOrgUnitWorkflow(SignalOrgUnitWorkflowRequest) returns (SignalOrgUnitWorkflowResponse);
+}
+
+// The request of `StartOrgUnitWorkflow`.
+message StartOrgUnitWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string org_unit_id = 2;
+  OrgUnit org_unit = 3;
+  StartOrgUnitWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartOrgUnitWorkflow`.
+message StartOrgUnitWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OrgUnit org_unit = 1;
+  StartOrgUnitWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceOrgUnitWorkflow`.
+message AdvanceOrgUnitWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string org_unit_id = 2;
+  OrgUnit org_unit = 3;
+  AdvanceOrgUnitWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceOrgUnitWorkflow`.
+message AdvanceOrgUnitWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OrgUnit org_unit = 1;
+  AdvanceOrgUnitWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelOrgUnitWorkflow`.
+message CancelOrgUnitWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string org_unit_id = 2;
+  OrgUnit org_unit = 3;
+  CancelOrgUnitWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelOrgUnitWorkflow`.
+message CancelOrgUnitWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OrgUnit org_unit = 1;
+  CancelOrgUnitWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryOrgUnitWorkflow`.
+message RetryOrgUnitWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string org_unit_id = 2;
+  OrgUnit org_unit = 3;
+  RetryOrgUnitWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryOrgUnitWorkflow`.
+message RetryOrgUnitWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OrgUnit org_unit = 1;
+  RetryOrgUnitWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseOrgUnitWorkflow`.
+message PauseOrgUnitWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string org_unit_id = 2;
+  OrgUnit org_unit = 3;
+  PauseOrgUnitWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseOrgUnitWorkflow`.
+message PauseOrgUnitWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OrgUnit org_unit = 1;
+  PauseOrgUnitWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeOrgUnitWorkflow`.
+message ResumeOrgUnitWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string org_unit_id = 2;
+  OrgUnit org_unit = 3;
+  ResumeOrgUnitWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeOrgUnitWorkflow`.
+message ResumeOrgUnitWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OrgUnit org_unit = 1;
+  ResumeOrgUnitWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectOrgUnitWorkflow`.
+message InspectOrgUnitWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string org_unit_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectOrgUnitWorkflow`.
+message InspectOrgUnitWorkflowResponse {
+  OrgUnit org_unit = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListOrgUnitWorkflows`.
+message ListOrgUnitWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated OrgUnitStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListOrgUnitWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListOrgUnitWorkflows`.
+message ListOrgUnitWorkflowsResponse {
+  repeated OrgUnit org_units = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalOrgUnitWorkflow`.
+message SignalOrgUnitWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string org_unit_id = 2;
+  OrgUnit org_unit = 3;
+  SignalOrgUnitWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalOrgUnitWorkflow`.
+message SignalOrgUnitWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OrgUnit org_unit = 1;
+  SignalOrgUnitWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

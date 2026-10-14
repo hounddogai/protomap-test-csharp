@@ -1,0 +1,295 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.devices.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/devices/v1/devices.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Devices.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/devices/v1;devicesv1";
+option java_multiple_files = true;
+option java_outer_classname = "ManagedDeviceApprovalServiceProto";
+option java_package = "com.acme.devices.v1";
+
+// Routes managed devices through approval, with escalation and delegation.
+service ManagedDeviceApprovalService {
+  // Submits a managed device.
+  rpc SubmitManagedDevice(SubmitManagedDeviceRequest) returns (SubmitManagedDeviceResponse);
+
+  // Approves a managed device.
+  rpc ApproveManagedDevice(ApproveManagedDeviceRequest) returns (ApproveManagedDeviceResponse);
+
+  // Rejects a managed device.
+  rpc RejectManagedDevice(RejectManagedDeviceRequest) returns (RejectManagedDeviceResponse);
+
+  // Escalates a managed device.
+  rpc EscalateManagedDevice(EscalateManagedDeviceRequest) returns (EscalateManagedDeviceResponse);
+
+  // Lists managed devices a page at a time.
+  rpc ListPendingManagedDevices(ListPendingManagedDevicesRequest) returns (ListPendingManagedDevicesResponse);
+
+  // Delegates a managed device.
+  rpc DelegateManagedDeviceApproval(DelegateManagedDeviceApprovalRequest) returns (DelegateManagedDeviceApprovalResponse);
+
+  // Recalls a managed device.
+  rpc RecallManagedDevice(RecallManagedDeviceRequest) returns (RecallManagedDeviceResponse);
+
+  // Returns a managed device.
+  rpc GetManagedDeviceApprovalStatus(GetManagedDeviceApprovalStatusRequest) returns (GetManagedDeviceApprovalStatusResponse);
+}
+
+// The request of `SubmitManagedDevice`.
+message SubmitManagedDeviceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  ManagedDevice managed_device = 3;
+  SubmitManagedDeviceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitManagedDevice`.
+message SubmitManagedDeviceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ManagedDevice managed_device = 1;
+  SubmitManagedDeviceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveManagedDevice`.
+message ApproveManagedDeviceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  ManagedDevice managed_device = 3;
+  ApproveManagedDeviceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveManagedDevice`.
+message ApproveManagedDeviceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ManagedDevice managed_device = 1;
+  ApproveManagedDeviceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectManagedDevice`.
+message RejectManagedDeviceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  ManagedDevice managed_device = 3;
+  RejectManagedDeviceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectManagedDevice`.
+message RejectManagedDeviceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ManagedDevice managed_device = 1;
+  RejectManagedDeviceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateManagedDevice`.
+message EscalateManagedDeviceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  ManagedDevice managed_device = 3;
+  EscalateManagedDeviceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateManagedDevice`.
+message EscalateManagedDeviceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ManagedDevice managed_device = 1;
+  EscalateManagedDeviceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingManagedDevices`.
+message ListPendingManagedDevicesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated ManagedDeviceStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingManagedDevicesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingManagedDevices`.
+message ListPendingManagedDevicesResponse {
+  repeated ManagedDevice managed_devices = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateManagedDeviceApproval`.
+message DelegateManagedDeviceApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  ManagedDevice managed_device = 3;
+  DelegateManagedDeviceApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateManagedDeviceApproval`.
+message DelegateManagedDeviceApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ManagedDevice managed_device = 1;
+  DelegateManagedDeviceApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallManagedDevice`.
+message RecallManagedDeviceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  ManagedDevice managed_device = 3;
+  RecallManagedDeviceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallManagedDevice`.
+message RecallManagedDeviceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ManagedDevice managed_device = 1;
+  RecallManagedDeviceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetManagedDeviceApprovalStatus`.
+message GetManagedDeviceApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetManagedDeviceApprovalStatus`.
+message GetManagedDeviceApprovalStatusResponse {
+  ManagedDevice managed_device = 1;
+  acme.common.v1.OperationResult result = 2;
+}

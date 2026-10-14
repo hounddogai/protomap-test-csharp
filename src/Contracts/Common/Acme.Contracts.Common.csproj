@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" />
+    <PackageReference Include="Grpc.Core.Api" />
+    <PackageReference Include="Grpc.Tools" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="../../../proto/acme/common/v1/address.proto" ProtoRoot="../../../proto" GrpcServices="Client" />
+    <Protobuf Include="../../../proto/acme/common/v1/audit.proto" ProtoRoot="../../../proto" GrpcServices="Client" />
+    <Protobuf Include="../../../proto/acme/common/v1/contact.proto" ProtoRoot="../../../proto" GrpcServices="Client" />
+    <Protobuf Include="../../../proto/acme/common/v1/context.proto" ProtoRoot="../../../proto" GrpcServices="Client" />
+    <Protobuf Include="../../../proto/acme/common/v1/money.proto" ProtoRoot="../../../proto" GrpcServices="Client" />
+    <Protobuf Include="../../../proto/acme/common/v1/operation.proto" ProtoRoot="../../../proto" GrpcServices="Client" />
+    <Protobuf Include="../../../proto/acme/common/v1/paging.proto" ProtoRoot="../../../proto" GrpcServices="Client" />
+  </ItemGroup>
+</Project>

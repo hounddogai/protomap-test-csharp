@@ -1,0 +1,300 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.employeeportal.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/employeeportal/v1/employeeportal.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Employeeportal.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/employeeportal/v1;employeeportalv1";
+option java_multiple_files = true;
+option java_outer_classname = "PortalHomeIntegrationServiceProto";
+option java_package = "com.acme.employeeportal.v1";
+
+// Connects external systems that send portal home events.
+service PortalHomeIntegrationService {
+  // Connects a portal home.
+  rpc ConnectPortalHomeSource(ConnectPortalHomeSourceRequest) returns (ConnectPortalHomeSourceResponse);
+
+  // Disconnects a portal home.
+  rpc DisconnectPortalHomeSource(DisconnectPortalHomeSourceRequest) returns (DisconnectPortalHomeSourceResponse);
+
+  // Takes a stream of portal homes and answers once at the end.
+  rpc IngestPortalHomeEvents(stream IngestPortalHomeEventsRequest) returns (IngestPortalHomeEventsResponse);
+
+  // Replays a portal home.
+  rpc ReplayPortalHomeEvents(ReplayPortalHomeEventsRequest) returns (ReplayPortalHomeEventsResponse);
+
+  // Acknowledges a portal home.
+  rpc AcknowledgePortalHomeEvent(AcknowledgePortalHomeEventRequest) returns (AcknowledgePortalHomeEventResponse);
+
+  // Exchanges changes of portal homes with a peer.
+  rpc RelayPortalHomeMessages(stream RelayPortalHomeMessagesRequest) returns (stream RelayPortalHomeMessagesResponse);
+
+  // Lists portal homes a page at a time.
+  rpc ListPortalHomeSources(ListPortalHomeSourcesRequest) returns (ListPortalHomeSourcesResponse);
+
+  // Tests a portal home.
+  rpc TestPortalHomeConnection(TestPortalHomeConnectionRequest) returns (TestPortalHomeConnectionResponse);
+}
+
+// The request of `ConnectPortalHomeSource`.
+message ConnectPortalHomeSourceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string endpoint = 1;
+    google.protobuf.Any envelope = 2;
+    string message_id = 3;
+    string source_system = 4;
+    google.protobuf.Timestamp received_at = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string portal_home_id = 2;
+  ConnectPortalHomeSourceRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ConnectPortalHomeSource`.
+message ConnectPortalHomeSourceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  PortalHome portal_home = 1;
+  ConnectPortalHomeSourceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DisconnectPortalHomeSource`.
+message DisconnectPortalHomeSourceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string endpoint = 1;
+    google.protobuf.Any envelope = 2;
+    string message_id = 3;
+    string source_system = 4;
+    google.protobuf.Timestamp received_at = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string portal_home_id = 2;
+  DisconnectPortalHomeSourceRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `DisconnectPortalHomeSource`.
+message DisconnectPortalHomeSourceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  PortalHome portal_home = 1;
+  DisconnectPortalHomeSourceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `IngestPortalHomeEvents`.
+message IngestPortalHomeEventsRequest {
+  // What a stream of records starts with.
+  message StreamHeader {
+    string source = 1;
+    string format = 2;
+    int64 total_records = 3;
+    acme.common.v1.ContactInfo submitted_by = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  oneof chunk {
+    IngestPortalHomeEventsRequest.StreamHeader header = 2;
+    PortalHome record = 3;
+  }
+  int64 sequence = 4;
+}
+
+// The response of `IngestPortalHomeEvents`.
+message IngestPortalHomeEventsResponse {
+  // A record the import turned down.
+  message Rejection {
+    int64 sequence = 1;
+    string reason = 2;
+    string portal_home_id = 3;
+  }
+
+  int64 accepted = 1;
+  int64 rejected = 2;
+  repeated IngestPortalHomeEventsResponse.Rejection rejections = 3;
+  acme.common.v1.OperationResult result = 4;
+}
+
+// The request of `ReplayPortalHomeEvents`.
+message ReplayPortalHomeEventsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string endpoint = 1;
+    google.protobuf.Any envelope = 2;
+    string message_id = 3;
+    string source_system = 4;
+    google.protobuf.Timestamp received_at = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string portal_home_id = 2;
+  ReplayPortalHomeEventsRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReplayPortalHomeEvents`.
+message ReplayPortalHomeEventsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  PortalHome portal_home = 1;
+  ReplayPortalHomeEventsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AcknowledgePortalHomeEvent`.
+message AcknowledgePortalHomeEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string endpoint = 1;
+    google.protobuf.Any envelope = 2;
+    string message_id = 3;
+    string source_system = 4;
+    google.protobuf.Timestamp received_at = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string portal_home_id = 2;
+  AcknowledgePortalHomeEventRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `AcknowledgePortalHomeEvent`.
+message AcknowledgePortalHomeEventResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  PortalHome portal_home = 1;
+  AcknowledgePortalHomeEventResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RelayPortalHomeMessages`.
+message RelayPortalHomeMessagesRequest {
+  // An acknowledgment of a change the peer sent.
+  message ChangeAck {
+    int64 sequence = 1;
+    string status = 2;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  oneof frame {
+    PortalHome change = 2;
+    RelayPortalHomeMessagesRequest.ChangeAck ack = 3;
+  }
+  string cursor = 4;
+}
+
+// The response of `RelayPortalHomeMessages`.
+message RelayPortalHomeMessagesResponse {
+  PortalHome portal_home = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `ListPortalHomeSources`.
+message ListPortalHomeSourcesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated PortalHomeStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPortalHomeSourcesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPortalHomeSources`.
+message ListPortalHomeSourcesResponse {
+  repeated PortalHome portal_homes = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TestPortalHomeConnection`.
+message TestPortalHomeConnectionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string endpoint = 1;
+    google.protobuf.Any envelope = 2;
+    string message_id = 3;
+    string source_system = 4;
+    google.protobuf.Timestamp received_at = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string portal_home_id = 2;
+  TestPortalHomeConnectionRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TestPortalHomeConnection`.
+message TestPortalHomeConnectionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  PortalHome portal_home = 1;
+  TestPortalHomeConnectionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

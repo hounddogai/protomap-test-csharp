@@ -1,0 +1,295 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.onboarding.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/onboarding/v1/onboarding.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Onboarding.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/onboarding/v1;onboardingv1";
+option java_multiple_files = true;
+option java_outer_classname = "EquipmentApprovalServiceProto";
+option java_package = "com.acme.onboarding.v1";
+
+// Routes equipments through approval, with escalation and delegation.
+service EquipmentApprovalService {
+  // Submits an equipment.
+  rpc SubmitEquipment(SubmitEquipmentRequest) returns (SubmitEquipmentResponse);
+
+  // Approves an equipment.
+  rpc ApproveEquipment(ApproveEquipmentRequest) returns (ApproveEquipmentResponse);
+
+  // Escalates an equipment.
+  rpc EscalateEquipment(EscalateEquipmentRequest) returns (EscalateEquipmentResponse);
+
+  // Lists equipments a page at a time.
+  rpc ListPendingEquipments(ListPendingEquipmentsRequest) returns (ListPendingEquipmentsResponse);
+
+  // Delegates an equipment.
+  rpc DelegateEquipmentApproval(DelegateEquipmentApprovalRequest) returns (DelegateEquipmentApprovalResponse);
+
+  // Recalls an equipment.
+  rpc RecallEquipment(RecallEquipmentRequest) returns (RecallEquipmentResponse);
+
+  // Returns an equipment.
+  rpc GetEquipmentApprovalStatus(GetEquipmentApprovalStatusRequest) returns (GetEquipmentApprovalStatusResponse);
+
+  // Comments an equipment.
+  rpc CommentEquipmentApproval(CommentEquipmentApprovalRequest) returns (CommentEquipmentApprovalResponse);
+}
+
+// The request of `SubmitEquipment`.
+message SubmitEquipmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  SubmitEquipmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitEquipment`.
+message SubmitEquipmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Equipment equipment = 1;
+  SubmitEquipmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveEquipment`.
+message ApproveEquipmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  ApproveEquipmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveEquipment`.
+message ApproveEquipmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Equipment equipment = 1;
+  ApproveEquipmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateEquipment`.
+message EscalateEquipmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  EscalateEquipmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateEquipment`.
+message EscalateEquipmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Equipment equipment = 1;
+  EscalateEquipmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingEquipments`.
+message ListPendingEquipmentsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EquipmentStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingEquipmentsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingEquipments`.
+message ListPendingEquipmentsResponse {
+  repeated Equipment equipments = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateEquipmentApproval`.
+message DelegateEquipmentApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  DelegateEquipmentApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateEquipmentApproval`.
+message DelegateEquipmentApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Equipment equipment = 1;
+  DelegateEquipmentApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallEquipment`.
+message RecallEquipmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  RecallEquipmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallEquipment`.
+message RecallEquipmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Equipment equipment = 1;
+  RecallEquipmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetEquipmentApprovalStatus`.
+message GetEquipmentApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetEquipmentApprovalStatus`.
+message GetEquipmentApprovalStatusResponse {
+  Equipment equipment = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentEquipmentApproval`.
+message CommentEquipmentApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  CommentEquipmentApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentEquipmentApproval`.
+message CommentEquipmentApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Equipment equipment = 1;
+  CommentEquipmentApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

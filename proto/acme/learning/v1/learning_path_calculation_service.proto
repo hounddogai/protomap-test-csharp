@@ -1,0 +1,292 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.learning.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/learning/v1/learning.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Learning.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/learning/v1;learningv1";
+option java_multiple_files = true;
+option java_outer_classname = "LearningPathCalculationServiceProto";
+option java_package = "com.acme.learning.v1";
+
+// Computes the figures of a learning path, such as totals, taxes, and estimates.
+service LearningPathCalculationService {
+  // Calculates a learning path.
+  rpc CalculateLearningPath(CalculateLearningPathRequest) returns (CalculateLearningPathResponse);
+
+  // Estimates a learning path.
+  rpc EstimateLearningPath(EstimateLearningPathRequest) returns (EstimateLearningPathResponse);
+
+  // Compares a learning path.
+  rpc CompareLearningPathOptions(CompareLearningPathOptionsRequest) returns (CompareLearningPathOptionsResponse);
+
+  // Recalculates a learning path.
+  rpc RecalculateLearningPaths(RecalculateLearningPathsRequest) returns (RecalculateLearningPathsResponse);
+
+  // Simulates a learning path.
+  rpc SimulateLearningPath(SimulateLearningPathRequest) returns (SimulateLearningPathResponse);
+
+  // Explains a learning path.
+  rpc ExplainLearningPathCalculation(ExplainLearningPathCalculationRequest) returns (ExplainLearningPathCalculationResponse);
+
+  // Returns a learning path.
+  rpc GetLearningPathRates(GetLearningPathRatesRequest) returns (GetLearningPathRatesResponse);
+}
+
+// The request of `CalculateLearningPath`.
+message CalculateLearningPathRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  LearningPath learning_path = 3;
+  CalculateLearningPathRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateLearningPath`.
+message CalculateLearningPathResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateLearningPathResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  LearningPath learning_path = 1;
+  CalculateLearningPathResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateLearningPath`.
+message EstimateLearningPathRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  LearningPath learning_path = 3;
+  EstimateLearningPathRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateLearningPath`.
+message EstimateLearningPathResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateLearningPathResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  LearningPath learning_path = 1;
+  EstimateLearningPathResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareLearningPathOptions`.
+message CompareLearningPathOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  LearningPath learning_path = 3;
+  CompareLearningPathOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareLearningPathOptions`.
+message CompareLearningPathOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareLearningPathOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  LearningPath learning_path = 1;
+  CompareLearningPathOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateLearningPaths`.
+message RecalculateLearningPathsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  LearningPath learning_path = 3;
+  RecalculateLearningPathsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateLearningPaths`.
+message RecalculateLearningPathsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateLearningPathsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  LearningPath learning_path = 1;
+  RecalculateLearningPathsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateLearningPath`.
+message SimulateLearningPathRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  LearningPath learning_path = 3;
+  SimulateLearningPathRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateLearningPath`.
+message SimulateLearningPathResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateLearningPathResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  LearningPath learning_path = 1;
+  SimulateLearningPathResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainLearningPathCalculation`.
+message ExplainLearningPathCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  LearningPath learning_path = 3;
+  ExplainLearningPathCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainLearningPathCalculation`.
+message ExplainLearningPathCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LearningPath learning_path = 1;
+  ExplainLearningPathCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetLearningPathRates`.
+message GetLearningPathRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetLearningPathRates`.
+message GetLearningPathRatesResponse {
+  LearningPath learning_path = 1;
+  acme.common.v1.OperationResult result = 2;
+}

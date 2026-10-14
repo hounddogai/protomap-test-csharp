@@ -1,0 +1,311 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.documents.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/documents/v1/documents.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Documents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/documents/v1;documentsv1";
+option java_multiple_files = true;
+option java_outer_classname = "DocumentTemplateAdminServiceProto";
+option java_package = "com.acme.documents.v1";
+
+// Operator actions on document templates that support staff run by hand.
+service DocumentTemplateAdminService {
+  // Archives a document template.
+  rpc ArchiveDocumentTemplate(ArchiveDocumentTemplateRequest) returns (ArchiveDocumentTemplateResponse);
+
+  // Restores a document template.
+  rpc RestoreDocumentTemplate(RestoreDocumentTemplateRequest) returns (RestoreDocumentTemplateResponse);
+
+  // Deletes a document template.
+  rpc PurgeDocumentTemplate(PurgeDocumentTemplateRequest) returns (PurgeDocumentTemplateResponse);
+
+  // Reassigns a document template.
+  rpc ReassignDocumentTemplate(ReassignDocumentTemplateRequest) returns (ReassignDocumentTemplateResponse);
+
+  // Locks a document template.
+  rpc LockDocumentTemplate(LockDocumentTemplateRequest) returns (LockDocumentTemplateResponse);
+
+  // Unlocks a document template.
+  rpc UnlockDocumentTemplate(UnlockDocumentTemplateRequest) returns (UnlockDocumentTemplateResponse);
+
+  // Transfers a document template.
+  rpc TransferDocumentTemplate(TransferDocumentTemplateRequest) returns (TransferDocumentTemplateResponse);
+
+  // Repairs a document template.
+  rpc RepairDocumentTemplate(RepairDocumentTemplateRequest) returns (RepairDocumentTemplateResponse);
+
+  // Returns a document template.
+  rpc InspectDocumentTemplate(InspectDocumentTemplateRequest) returns (InspectDocumentTemplateResponse);
+}
+
+// The request of `ArchiveDocumentTemplate`.
+message ArchiveDocumentTemplateRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  ArchiveDocumentTemplateRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ArchiveDocumentTemplate`.
+message ArchiveDocumentTemplateResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  ArchiveDocumentTemplateResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RestoreDocumentTemplate`.
+message RestoreDocumentTemplateRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  RestoreDocumentTemplateRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RestoreDocumentTemplate`.
+message RestoreDocumentTemplateResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  RestoreDocumentTemplateResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PurgeDocumentTemplate`.
+message PurgeDocumentTemplateRequest {
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  string reason = 3;
+  string etag = 4;
+  bool force = 5;
+}
+
+// The response of `PurgeDocumentTemplate`.
+message PurgeDocumentTemplateResponse {
+  acme.common.v1.OperationResult result = 1;
+  google.protobuf.Timestamp effective_at = 2;
+}
+
+// The request of `ReassignDocumentTemplate`.
+message ReassignDocumentTemplateRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.identity.v1.UserRef assignee = 1;
+    string queue = 2;
+    int32 capacity = 3;
+    string assignee_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  ReassignDocumentTemplateRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReassignDocumentTemplate`.
+message ReassignDocumentTemplateResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  ReassignDocumentTemplateResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LockDocumentTemplate`.
+message LockDocumentTemplateRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  LockDocumentTemplateRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `LockDocumentTemplate`.
+message LockDocumentTemplateResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  LockDocumentTemplateResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `UnlockDocumentTemplate`.
+message UnlockDocumentTemplateRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  UnlockDocumentTemplateRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `UnlockDocumentTemplate`.
+message UnlockDocumentTemplateResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  UnlockDocumentTemplateResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TransferDocumentTemplate`.
+message TransferDocumentTemplateRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  TransferDocumentTemplateRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TransferDocumentTemplate`.
+message TransferDocumentTemplateResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  TransferDocumentTemplateResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RepairDocumentTemplate`.
+message RepairDocumentTemplateRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  DocumentTemplate document_template = 3;
+  RepairDocumentTemplateRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RepairDocumentTemplate`.
+message RepairDocumentTemplateResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  RepairDocumentTemplateResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectDocumentTemplate`.
+message InspectDocumentTemplateRequest {
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectDocumentTemplate`.
+message InspectDocumentTemplateResponse {
+  DocumentTemplate document_template = 1;
+  acme.common.v1.OperationResult result = 2;
+}

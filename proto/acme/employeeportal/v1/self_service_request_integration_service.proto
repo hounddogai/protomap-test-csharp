@@ -1,0 +1,300 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.employeeportal.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/employeeportal/v1/employeeportal.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Employeeportal.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/employeeportal/v1;employeeportalv1";
+option java_multiple_files = true;
+option java_outer_classname = "SelfServiceRequestIntegrationServiceProto";
+option java_package = "com.acme.employeeportal.v1";
+
+// Connects external systems that send self service request events.
+service SelfServiceRequestIntegrationService {
+  // Connects a self service request.
+  rpc ConnectSelfServiceRequestSource(ConnectSelfServiceRequestSourceRequest) returns (ConnectSelfServiceRequestSourceResponse);
+
+  // Disconnects a self service request.
+  rpc DisconnectSelfServiceRequestSource(DisconnectSelfServiceRequestSourceRequest) returns (DisconnectSelfServiceRequestSourceResponse);
+
+  // Takes a stream of self service requests and answers once at the end.
+  rpc IngestSelfServiceRequestEvents(stream IngestSelfServiceRequestEventsRequest) returns (IngestSelfServiceRequestEventsResponse);
+
+  // Replays a self service request.
+  rpc ReplaySelfServiceRequestEvents(ReplaySelfServiceRequestEventsRequest) returns (ReplaySelfServiceRequestEventsResponse);
+
+  // Acknowledges a self service request.
+  rpc AcknowledgeSelfServiceRequestEvent(AcknowledgeSelfServiceRequestEventRequest) returns (AcknowledgeSelfServiceRequestEventResponse);
+
+  // Exchanges changes of self service requests with a peer.
+  rpc RelaySelfServiceRequestMessages(stream RelaySelfServiceRequestMessagesRequest) returns (stream RelaySelfServiceRequestMessagesResponse);
+
+  // Lists self service requests a page at a time.
+  rpc ListSelfServiceRequestSources(ListSelfServiceRequestSourcesRequest) returns (ListSelfServiceRequestSourcesResponse);
+
+  // Tests a self service request.
+  rpc TestSelfServiceRequestConnection(TestSelfServiceRequestConnectionRequest) returns (TestSelfServiceRequestConnectionResponse);
+}
+
+// The request of `ConnectSelfServiceRequestSource`.
+message ConnectSelfServiceRequestSourceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string endpoint = 1;
+    google.protobuf.Any envelope = 2;
+    string message_id = 3;
+    string source_system = 4;
+    google.protobuf.Timestamp received_at = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string self_service_request_id = 2;
+  ConnectSelfServiceRequestSourceRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ConnectSelfServiceRequestSource`.
+message ConnectSelfServiceRequestSourceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SelfServiceRequest self_service_request = 1;
+  ConnectSelfServiceRequestSourceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DisconnectSelfServiceRequestSource`.
+message DisconnectSelfServiceRequestSourceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string endpoint = 1;
+    google.protobuf.Any envelope = 2;
+    string message_id = 3;
+    string source_system = 4;
+    google.protobuf.Timestamp received_at = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string self_service_request_id = 2;
+  DisconnectSelfServiceRequestSourceRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `DisconnectSelfServiceRequestSource`.
+message DisconnectSelfServiceRequestSourceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SelfServiceRequest self_service_request = 1;
+  DisconnectSelfServiceRequestSourceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `IngestSelfServiceRequestEvents`.
+message IngestSelfServiceRequestEventsRequest {
+  // What a stream of records starts with.
+  message StreamHeader {
+    string source = 1;
+    string format = 2;
+    int64 total_records = 3;
+    acme.common.v1.ContactInfo submitted_by = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  oneof chunk {
+    IngestSelfServiceRequestEventsRequest.StreamHeader header = 2;
+    SelfServiceRequest record = 3;
+  }
+  int64 sequence = 4;
+}
+
+// The response of `IngestSelfServiceRequestEvents`.
+message IngestSelfServiceRequestEventsResponse {
+  // A record the import turned down.
+  message Rejection {
+    int64 sequence = 1;
+    string reason = 2;
+    string self_service_request_id = 3;
+  }
+
+  int64 accepted = 1;
+  int64 rejected = 2;
+  repeated IngestSelfServiceRequestEventsResponse.Rejection rejections = 3;
+  acme.common.v1.OperationResult result = 4;
+}
+
+// The request of `ReplaySelfServiceRequestEvents`.
+message ReplaySelfServiceRequestEventsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string endpoint = 1;
+    google.protobuf.Any envelope = 2;
+    string message_id = 3;
+    string source_system = 4;
+    google.protobuf.Timestamp received_at = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string self_service_request_id = 2;
+  ReplaySelfServiceRequestEventsRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReplaySelfServiceRequestEvents`.
+message ReplaySelfServiceRequestEventsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SelfServiceRequest self_service_request = 1;
+  ReplaySelfServiceRequestEventsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AcknowledgeSelfServiceRequestEvent`.
+message AcknowledgeSelfServiceRequestEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string endpoint = 1;
+    google.protobuf.Any envelope = 2;
+    string message_id = 3;
+    string source_system = 4;
+    google.protobuf.Timestamp received_at = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string self_service_request_id = 2;
+  AcknowledgeSelfServiceRequestEventRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `AcknowledgeSelfServiceRequestEvent`.
+message AcknowledgeSelfServiceRequestEventResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SelfServiceRequest self_service_request = 1;
+  AcknowledgeSelfServiceRequestEventResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RelaySelfServiceRequestMessages`.
+message RelaySelfServiceRequestMessagesRequest {
+  // An acknowledgment of a change the peer sent.
+  message ChangeAck {
+    int64 sequence = 1;
+    string status = 2;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  oneof frame {
+    SelfServiceRequest change = 2;
+    RelaySelfServiceRequestMessagesRequest.ChangeAck ack = 3;
+  }
+  string cursor = 4;
+}
+
+// The response of `RelaySelfServiceRequestMessages`.
+message RelaySelfServiceRequestMessagesResponse {
+  SelfServiceRequest self_service_request = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `ListSelfServiceRequestSources`.
+message ListSelfServiceRequestSourcesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SelfServiceRequestStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListSelfServiceRequestSourcesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListSelfServiceRequestSources`.
+message ListSelfServiceRequestSourcesResponse {
+  repeated SelfServiceRequest self_service_requests = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TestSelfServiceRequestConnection`.
+message TestSelfServiceRequestConnectionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string endpoint = 1;
+    google.protobuf.Any envelope = 2;
+    string message_id = 3;
+    string source_system = 4;
+    google.protobuf.Timestamp received_at = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string self_service_request_id = 2;
+  TestSelfServiceRequestConnectionRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TestSelfServiceRequestConnection`.
+message TestSelfServiceRequestConnectionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SelfServiceRequest self_service_request = 1;
+  TestSelfServiceRequestConnectionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

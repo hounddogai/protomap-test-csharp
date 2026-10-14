@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.scheduling.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/scheduling/v1/scheduling.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Scheduling.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/scheduling/v1;schedulingv1";
+option java_multiple_files = true;
+option java_outer_classname = "ShiftApprovalServiceProto";
+option java_package = "com.acme.scheduling.v1";
+
+// Routes shifts through approval, with escalation and delegation.
+service ShiftApprovalService {
+  // Submits a shift.
+  rpc SubmitShift(SubmitShiftRequest) returns (SubmitShiftResponse);
+
+  // Approves a shift.
+  rpc ApproveShift(ApproveShiftRequest) returns (ApproveShiftResponse);
+
+  // Rejects a shift.
+  rpc RejectShift(RejectShiftRequest) returns (RejectShiftResponse);
+
+  // Escalates a shift.
+  rpc EscalateShift(EscalateShiftRequest) returns (EscalateShiftResponse);
+
+  // Lists shifts a page at a time.
+  rpc ListPendingShifts(ListPendingShiftsRequest) returns (ListPendingShiftsResponse);
+
+  // Delegates a shift.
+  rpc DelegateShiftApproval(DelegateShiftApprovalRequest) returns (DelegateShiftApprovalResponse);
+
+  // Recalls a shift.
+  rpc RecallShift(RecallShiftRequest) returns (RecallShiftResponse);
+
+  // Returns a shift.
+  rpc GetShiftApprovalStatus(GetShiftApprovalStatusRequest) returns (GetShiftApprovalStatusResponse);
+
+  // Comments a shift.
+  rpc CommentShiftApproval(CommentShiftApprovalRequest) returns (CommentShiftApprovalResponse);
+}
+
+// The request of `SubmitShift`.
+message SubmitShiftRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  Shift shift = 3;
+  SubmitShiftRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitShift`.
+message SubmitShiftResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Shift shift = 1;
+  SubmitShiftResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveShift`.
+message ApproveShiftRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  Shift shift = 3;
+  ApproveShiftRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveShift`.
+message ApproveShiftResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Shift shift = 1;
+  ApproveShiftResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectShift`.
+message RejectShiftRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  Shift shift = 3;
+  RejectShiftRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectShift`.
+message RejectShiftResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Shift shift = 1;
+  RejectShiftResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateShift`.
+message EscalateShiftRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  Shift shift = 3;
+  EscalateShiftRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateShift`.
+message EscalateShiftResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Shift shift = 1;
+  EscalateShiftResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingShifts`.
+message ListPendingShiftsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated ShiftStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingShiftsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingShifts`.
+message ListPendingShiftsResponse {
+  repeated Shift shifts = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateShiftApproval`.
+message DelegateShiftApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  Shift shift = 3;
+  DelegateShiftApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateShiftApproval`.
+message DelegateShiftApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Shift shift = 1;
+  DelegateShiftApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallShift`.
+message RecallShiftRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  Shift shift = 3;
+  RecallShiftRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallShift`.
+message RecallShiftResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Shift shift = 1;
+  RecallShiftResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetShiftApprovalStatus`.
+message GetShiftApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetShiftApprovalStatus`.
+message GetShiftApprovalStatusResponse {
+  Shift shift = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentShiftApproval`.
+message CommentShiftApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  Shift shift = 3;
+  CommentShiftApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentShiftApproval`.
+message CommentShiftApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Shift shift = 1;
+  CommentShiftApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

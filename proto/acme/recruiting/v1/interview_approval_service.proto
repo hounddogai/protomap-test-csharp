@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.recruiting.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/recruiting/v1/recruiting.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Recruiting.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/recruiting/v1;recruitingv1";
+option java_multiple_files = true;
+option java_outer_classname = "InterviewApprovalServiceProto";
+option java_package = "com.acme.recruiting.v1";
+
+// Routes interviews through approval, with escalation and delegation.
+service InterviewApprovalService {
+  // Submits an interview.
+  rpc SubmitInterview(SubmitInterviewRequest) returns (SubmitInterviewResponse);
+
+  // Approves an interview.
+  rpc ApproveInterview(ApproveInterviewRequest) returns (ApproveInterviewResponse);
+
+  // Rejects an interview.
+  rpc RejectInterview(RejectInterviewRequest) returns (RejectInterviewResponse);
+
+  // Escalates an interview.
+  rpc EscalateInterview(EscalateInterviewRequest) returns (EscalateInterviewResponse);
+
+  // Lists interviews a page at a time.
+  rpc ListPendingInterviews(ListPendingInterviewsRequest) returns (ListPendingInterviewsResponse);
+
+  // Delegates an interview.
+  rpc DelegateInterviewApproval(DelegateInterviewApprovalRequest) returns (DelegateInterviewApprovalResponse);
+
+  // Recalls an interview.
+  rpc RecallInterview(RecallInterviewRequest) returns (RecallInterviewResponse);
+
+  // Returns an interview.
+  rpc GetInterviewApprovalStatus(GetInterviewApprovalStatusRequest) returns (GetInterviewApprovalStatusResponse);
+
+  // Comments an interview.
+  rpc CommentInterviewApproval(CommentInterviewApprovalRequest) returns (CommentInterviewApprovalResponse);
+}
+
+// The request of `SubmitInterview`.
+message SubmitInterviewRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  Interview interview = 3;
+  SubmitInterviewRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitInterview`.
+message SubmitInterviewResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Interview interview = 1;
+  SubmitInterviewResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveInterview`.
+message ApproveInterviewRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  Interview interview = 3;
+  ApproveInterviewRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveInterview`.
+message ApproveInterviewResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Interview interview = 1;
+  ApproveInterviewResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectInterview`.
+message RejectInterviewRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  Interview interview = 3;
+  RejectInterviewRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectInterview`.
+message RejectInterviewResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Interview interview = 1;
+  RejectInterviewResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateInterview`.
+message EscalateInterviewRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  Interview interview = 3;
+  EscalateInterviewRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateInterview`.
+message EscalateInterviewResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Interview interview = 1;
+  EscalateInterviewResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingInterviews`.
+message ListPendingInterviewsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated InterviewStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingInterviewsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingInterviews`.
+message ListPendingInterviewsResponse {
+  repeated Interview interviews = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateInterviewApproval`.
+message DelegateInterviewApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  Interview interview = 3;
+  DelegateInterviewApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateInterviewApproval`.
+message DelegateInterviewApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Interview interview = 1;
+  DelegateInterviewApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallInterview`.
+message RecallInterviewRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  Interview interview = 3;
+  RecallInterviewRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallInterview`.
+message RecallInterviewResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Interview interview = 1;
+  RecallInterviewResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetInterviewApprovalStatus`.
+message GetInterviewApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetInterviewApprovalStatus`.
+message GetInterviewApprovalStatusResponse {
+  Interview interview = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentInterviewApproval`.
+message CommentInterviewApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  Interview interview = 3;
+  CommentInterviewApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentInterviewApproval`.
+message CommentInterviewApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Interview interview = 1;
+  CommentInterviewApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

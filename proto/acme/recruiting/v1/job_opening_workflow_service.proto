@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.recruiting.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/recruiting/v1/recruiting.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Recruiting.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/recruiting/v1;recruitingv1";
+option java_multiple_files = true;
+option java_outer_classname = "JobOpeningWorkflowServiceProto";
+option java_package = "com.acme.recruiting.v1";
+
+// Runs the long-lived workflow that takes a job opening from start to finish.
+service JobOpeningWorkflowService {
+  // Starts a job opening.
+  rpc StartJobOpeningWorkflow(StartJobOpeningWorkflowRequest) returns (StartJobOpeningWorkflowResponse);
+
+  // Advances a job opening.
+  rpc AdvanceJobOpeningWorkflow(AdvanceJobOpeningWorkflowRequest) returns (AdvanceJobOpeningWorkflowResponse);
+
+  // Cancels a job opening.
+  rpc CancelJobOpeningWorkflow(CancelJobOpeningWorkflowRequest) returns (CancelJobOpeningWorkflowResponse);
+
+  // Retrys a job opening.
+  rpc RetryJobOpeningWorkflow(RetryJobOpeningWorkflowRequest) returns (RetryJobOpeningWorkflowResponse);
+
+  // Pauses a job opening.
+  rpc PauseJobOpeningWorkflow(PauseJobOpeningWorkflowRequest) returns (PauseJobOpeningWorkflowResponse);
+
+  // Resumes a job opening.
+  rpc ResumeJobOpeningWorkflow(ResumeJobOpeningWorkflowRequest) returns (ResumeJobOpeningWorkflowResponse);
+
+  // Returns a job opening.
+  rpc InspectJobOpeningWorkflow(InspectJobOpeningWorkflowRequest) returns (InspectJobOpeningWorkflowResponse);
+
+  // Lists job openings a page at a time.
+  rpc ListJobOpeningWorkflows(ListJobOpeningWorkflowsRequest) returns (ListJobOpeningWorkflowsResponse);
+
+  // Signals a job opening.
+  rpc SignalJobOpeningWorkflow(SignalJobOpeningWorkflowRequest) returns (SignalJobOpeningWorkflowResponse);
+}
+
+// The request of `StartJobOpeningWorkflow`.
+message StartJobOpeningWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  JobOpening job_opening = 3;
+  StartJobOpeningWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartJobOpeningWorkflow`.
+message StartJobOpeningWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  StartJobOpeningWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceJobOpeningWorkflow`.
+message AdvanceJobOpeningWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  JobOpening job_opening = 3;
+  AdvanceJobOpeningWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceJobOpeningWorkflow`.
+message AdvanceJobOpeningWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  AdvanceJobOpeningWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelJobOpeningWorkflow`.
+message CancelJobOpeningWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  JobOpening job_opening = 3;
+  CancelJobOpeningWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelJobOpeningWorkflow`.
+message CancelJobOpeningWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  CancelJobOpeningWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryJobOpeningWorkflow`.
+message RetryJobOpeningWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  JobOpening job_opening = 3;
+  RetryJobOpeningWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryJobOpeningWorkflow`.
+message RetryJobOpeningWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  RetryJobOpeningWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseJobOpeningWorkflow`.
+message PauseJobOpeningWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  JobOpening job_opening = 3;
+  PauseJobOpeningWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseJobOpeningWorkflow`.
+message PauseJobOpeningWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  PauseJobOpeningWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeJobOpeningWorkflow`.
+message ResumeJobOpeningWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  JobOpening job_opening = 3;
+  ResumeJobOpeningWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeJobOpeningWorkflow`.
+message ResumeJobOpeningWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  ResumeJobOpeningWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectJobOpeningWorkflow`.
+message InspectJobOpeningWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectJobOpeningWorkflow`.
+message InspectJobOpeningWorkflowResponse {
+  JobOpening job_opening = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListJobOpeningWorkflows`.
+message ListJobOpeningWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated JobOpeningStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListJobOpeningWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListJobOpeningWorkflows`.
+message ListJobOpeningWorkflowsResponse {
+  repeated JobOpening job_openings = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalJobOpeningWorkflow`.
+message SignalJobOpeningWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  JobOpening job_opening = 3;
+  SignalJobOpeningWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalJobOpeningWorkflow`.
+message SignalJobOpeningWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  SignalJobOpeningWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

@@ -1,0 +1,268 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.timekeeping.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/timekeeping/v1/timekeeping.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Timekeeping.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/timekeeping/v1;timekeepingv1";
+option java_multiple_files = true;
+option java_outer_classname = "TimesheetValidationServiceProto";
+option java_package = "com.acme.timekeeping.v1";
+
+// Checks timesheets against the rules before anything acts on them.
+service TimesheetValidationService {
+  // Validates a timesheet.
+  rpc ValidateTimesheet(ValidateTimesheetRequest) returns (ValidateTimesheetResponse);
+
+  // Previews a timesheet.
+  rpc PreviewTimesheet(PreviewTimesheetRequest) returns (PreviewTimesheetResponse);
+
+  // Normalizes a timesheet.
+  rpc NormalizeTimesheet(NormalizeTimesheetRequest) returns (NormalizeTimesheetResponse);
+
+  // Explains a timesheet.
+  rpc ExplainTimesheetDecision(ExplainTimesheetDecisionRequest) returns (ExplainTimesheetDecisionResponse);
+
+  // Scores a timesheet.
+  rpc ScoreTimesheet(ScoreTimesheetRequest) returns (ScoreTimesheetResponse);
+
+  // Lints a timesheet.
+  rpc LintTimesheets(LintTimesheetsRequest) returns (LintTimesheetsResponse);
+
+  // Returns a timesheet.
+  rpc GetTimesheetRules(GetTimesheetRulesRequest) returns (GetTimesheetRulesResponse);
+}
+
+// The request of `ValidateTimesheet`.
+message ValidateTimesheetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string timesheet_id = 2;
+  Timesheet timesheet = 3;
+  ValidateTimesheetRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateTimesheet`.
+message ValidateTimesheetResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Timesheet timesheet = 1;
+  ValidateTimesheetResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewTimesheet`.
+message PreviewTimesheetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string timesheet_id = 2;
+  Timesheet timesheet = 3;
+  PreviewTimesheetRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewTimesheet`.
+message PreviewTimesheetResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Timesheet timesheet = 1;
+  PreviewTimesheetResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeTimesheet`.
+message NormalizeTimesheetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string timesheet_id = 2;
+  Timesheet timesheet = 3;
+  NormalizeTimesheetRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeTimesheet`.
+message NormalizeTimesheetResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Timesheet timesheet = 1;
+  NormalizeTimesheetResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainTimesheetDecision`.
+message ExplainTimesheetDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string timesheet_id = 2;
+  Timesheet timesheet = 3;
+  ExplainTimesheetDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainTimesheetDecision`.
+message ExplainTimesheetDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Timesheet timesheet = 1;
+  ExplainTimesheetDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreTimesheet`.
+message ScoreTimesheetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string timesheet_id = 2;
+  Timesheet timesheet = 3;
+  ScoreTimesheetRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreTimesheet`.
+message ScoreTimesheetResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreTimesheetResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Timesheet timesheet = 1;
+  ScoreTimesheetResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintTimesheets`.
+message LintTimesheetsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string timesheet_id = 2;
+  Timesheet timesheet = 3;
+  LintTimesheetsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintTimesheets`.
+message LintTimesheetsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Timesheet timesheet = 1;
+  LintTimesheetsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetTimesheetRules`.
+message GetTimesheetRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string timesheet_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetTimesheetRules`.
+message GetTimesheetRulesResponse {
+  Timesheet timesheet = 1;
+  acme.common.v1.OperationResult result = 2;
+}

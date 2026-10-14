@@ -1,0 +1,296 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.performance.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/performance/v1/performance.proto";
+import "google/protobuf/field_mask.proto";
+
+option csharp_namespace = "Acme.Performance.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/performance/v1;performancev1";
+option java_multiple_files = true;
+option java_outer_classname = "CalibrationCalculationServiceProto";
+option java_package = "com.acme.performance.v1";
+
+// Computes the figures of a calibration, such as totals, taxes, and estimates.
+service CalibrationCalculationService {
+  // Calculates a calibration.
+  rpc CalculateCalibration(CalculateCalibrationRequest) returns (CalculateCalibrationResponse);
+
+  // Estimates a calibration.
+  rpc EstimateCalibration(EstimateCalibrationRequest) returns (EstimateCalibrationResponse);
+
+  // Quotes a calibration.
+  rpc QuoteCalibration(QuoteCalibrationRequest) returns (QuoteCalibrationResponse);
+
+  // Compares a calibration.
+  rpc CompareCalibrationOptions(CompareCalibrationOptionsRequest) returns (CompareCalibrationOptionsResponse);
+
+  // Recalculates a calibration.
+  rpc RecalculateCalibrations(RecalculateCalibrationsRequest) returns (RecalculateCalibrationsResponse);
+
+  // Simulates a calibration.
+  rpc SimulateCalibration(SimulateCalibrationRequest) returns (SimulateCalibrationResponse);
+
+  // Returns a calibration.
+  rpc GetCalibrationRates(GetCalibrationRatesRequest) returns (GetCalibrationRatesResponse);
+}
+
+// The request of `CalculateCalibration`.
+message CalculateCalibrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string calibration_id = 2;
+  Calibration calibration = 3;
+  CalculateCalibrationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateCalibration`.
+message CalculateCalibrationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateCalibrationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Calibration calibration = 1;
+  CalculateCalibrationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateCalibration`.
+message EstimateCalibrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string calibration_id = 2;
+  Calibration calibration = 3;
+  EstimateCalibrationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateCalibration`.
+message EstimateCalibrationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateCalibrationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Calibration calibration = 1;
+  EstimateCalibrationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteCalibration`.
+message QuoteCalibrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string calibration_id = 2;
+  Calibration calibration = 3;
+  QuoteCalibrationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteCalibration`.
+message QuoteCalibrationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteCalibrationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Calibration calibration = 1;
+  QuoteCalibrationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareCalibrationOptions`.
+message CompareCalibrationOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string calibration_id = 2;
+  Calibration calibration = 3;
+  CompareCalibrationOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareCalibrationOptions`.
+message CompareCalibrationOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareCalibrationOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Calibration calibration = 1;
+  CompareCalibrationOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateCalibrations`.
+message RecalculateCalibrationsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string calibration_id = 2;
+  Calibration calibration = 3;
+  RecalculateCalibrationsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateCalibrations`.
+message RecalculateCalibrationsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateCalibrationsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Calibration calibration = 1;
+  RecalculateCalibrationsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateCalibration`.
+message SimulateCalibrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string calibration_id = 2;
+  Calibration calibration = 3;
+  SimulateCalibrationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateCalibration`.
+message SimulateCalibrationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateCalibrationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Calibration calibration = 1;
+  SimulateCalibrationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetCalibrationRates`.
+message GetCalibrationRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string calibration_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetCalibrationRates`.
+message GetCalibrationRatesResponse {
+  Calibration calibration = 1;
+  acme.common.v1.OperationResult result = 2;
+}

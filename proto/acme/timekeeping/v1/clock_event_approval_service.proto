@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.timekeeping.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/timekeeping/v1/timekeeping.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Timekeeping.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/timekeeping/v1;timekeepingv1";
+option java_multiple_files = true;
+option java_outer_classname = "ClockEventApprovalServiceProto";
+option java_package = "com.acme.timekeeping.v1";
+
+// Routes clock events through approval, with escalation and delegation.
+service ClockEventApprovalService {
+  // Submits a clock event.
+  rpc SubmitClockEvent(SubmitClockEventRequest) returns (SubmitClockEventResponse);
+
+  // Approves a clock event.
+  rpc ApproveClockEvent(ApproveClockEventRequest) returns (ApproveClockEventResponse);
+
+  // Rejects a clock event.
+  rpc RejectClockEvent(RejectClockEventRequest) returns (RejectClockEventResponse);
+
+  // Escalates a clock event.
+  rpc EscalateClockEvent(EscalateClockEventRequest) returns (EscalateClockEventResponse);
+
+  // Lists clock events a page at a time.
+  rpc ListPendingClockEvents(ListPendingClockEventsRequest) returns (ListPendingClockEventsResponse);
+
+  // Delegates a clock event.
+  rpc DelegateClockEventApproval(DelegateClockEventApprovalRequest) returns (DelegateClockEventApprovalResponse);
+
+  // Recalls a clock event.
+  rpc RecallClockEvent(RecallClockEventRequest) returns (RecallClockEventResponse);
+
+  // Returns a clock event.
+  rpc GetClockEventApprovalStatus(GetClockEventApprovalStatusRequest) returns (GetClockEventApprovalStatusResponse);
+
+  // Comments a clock event.
+  rpc CommentClockEventApproval(CommentClockEventApprovalRequest) returns (CommentClockEventApprovalResponse);
+}
+
+// The request of `SubmitClockEvent`.
+message SubmitClockEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  SubmitClockEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitClockEvent`.
+message SubmitClockEventResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  SubmitClockEventResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveClockEvent`.
+message ApproveClockEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  ApproveClockEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveClockEvent`.
+message ApproveClockEventResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  ApproveClockEventResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectClockEvent`.
+message RejectClockEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  RejectClockEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectClockEvent`.
+message RejectClockEventResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  RejectClockEventResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateClockEvent`.
+message EscalateClockEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  EscalateClockEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateClockEvent`.
+message EscalateClockEventResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  EscalateClockEventResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingClockEvents`.
+message ListPendingClockEventsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated ClockEventStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingClockEventsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingClockEvents`.
+message ListPendingClockEventsResponse {
+  repeated ClockEvent clock_events = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateClockEventApproval`.
+message DelegateClockEventApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  DelegateClockEventApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateClockEventApproval`.
+message DelegateClockEventApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  DelegateClockEventApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallClockEvent`.
+message RecallClockEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  RecallClockEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallClockEvent`.
+message RecallClockEventResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  RecallClockEventResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetClockEventApprovalStatus`.
+message GetClockEventApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetClockEventApprovalStatus`.
+message GetClockEventApprovalStatusResponse {
+  ClockEvent clock_event = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentClockEventApproval`.
+message CommentClockEventApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  CommentClockEventApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentClockEventApproval`.
+message CommentClockEventApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  CommentClockEventApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

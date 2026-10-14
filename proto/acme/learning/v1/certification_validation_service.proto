@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.learning.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/learning/v1/learning.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Learning.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/learning/v1;learningv1";
+option java_multiple_files = true;
+option java_outer_classname = "CertificationValidationServiceProto";
+option java_package = "com.acme.learning.v1";
+
+// Checks certifications against the rules before anything acts on them.
+service CertificationValidationService {
+  // Validates a certification.
+  rpc ValidateCertification(ValidateCertificationRequest) returns (ValidateCertificationResponse);
+
+  // Previews a certification.
+  rpc PreviewCertification(PreviewCertificationRequest) returns (PreviewCertificationResponse);
+
+  // Checks a certification.
+  rpc CheckCertificationEligibility(CheckCertificationEligibilityRequest) returns (CheckCertificationEligibilityResponse);
+
+  // Normalizes a certification.
+  rpc NormalizeCertification(NormalizeCertificationRequest) returns (NormalizeCertificationResponse);
+
+  // Explains a certification.
+  rpc ExplainCertificationDecision(ExplainCertificationDecisionRequest) returns (ExplainCertificationDecisionResponse);
+
+  // Scores a certification.
+  rpc ScoreCertification(ScoreCertificationRequest) returns (ScoreCertificationResponse);
+
+  // Lints a certification.
+  rpc LintCertifications(LintCertificationsRequest) returns (LintCertificationsResponse);
+
+  // Returns a certification.
+  rpc GetCertificationRules(GetCertificationRulesRequest) returns (GetCertificationRulesResponse);
+}
+
+// The request of `ValidateCertification`.
+message ValidateCertificationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  ValidateCertificationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateCertification`.
+message ValidateCertificationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  ValidateCertificationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewCertification`.
+message PreviewCertificationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  PreviewCertificationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewCertification`.
+message PreviewCertificationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  PreviewCertificationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckCertificationEligibility`.
+message CheckCertificationEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  CheckCertificationEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckCertificationEligibility`.
+message CheckCertificationEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  CheckCertificationEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeCertification`.
+message NormalizeCertificationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  NormalizeCertificationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeCertification`.
+message NormalizeCertificationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  NormalizeCertificationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainCertificationDecision`.
+message ExplainCertificationDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  ExplainCertificationDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainCertificationDecision`.
+message ExplainCertificationDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  ExplainCertificationDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreCertification`.
+message ScoreCertificationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  ScoreCertificationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreCertification`.
+message ScoreCertificationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreCertificationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Certification certification = 1;
+  ScoreCertificationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintCertifications`.
+message LintCertificationsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  LintCertificationsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintCertifications`.
+message LintCertificationsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  LintCertificationsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetCertificationRules`.
+message GetCertificationRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetCertificationRules`.
+message GetCertificationRulesResponse {
+  Certification certification = 1;
+  acme.common.v1.OperationResult result = 2;
+}

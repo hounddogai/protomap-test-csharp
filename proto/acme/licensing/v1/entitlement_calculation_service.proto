@@ -1,0 +1,275 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.licensing.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/licensing/v1/licensing.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Licensing.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/licensing/v1;licensingv1";
+option java_multiple_files = true;
+option java_outer_classname = "EntitlementCalculationServiceProto";
+option java_package = "com.acme.licensing.v1";
+
+// Computes the figures of an entitlement, such as totals, taxes, and estimates.
+service EntitlementCalculationService {
+  // Calculates an entitlement.
+  rpc CalculateEntitlement(CalculateEntitlementRequest) returns (CalculateEntitlementResponse);
+
+  // Estimates an entitlement.
+  rpc EstimateEntitlement(EstimateEntitlementRequest) returns (EstimateEntitlementResponse);
+
+  // Quotes an entitlement.
+  rpc QuoteEntitlement(QuoteEntitlementRequest) returns (QuoteEntitlementResponse);
+
+  // Compares an entitlement.
+  rpc CompareEntitlementOptions(CompareEntitlementOptionsRequest) returns (CompareEntitlementOptionsResponse);
+
+  // Simulates an entitlement.
+  rpc SimulateEntitlement(SimulateEntitlementRequest) returns (SimulateEntitlementResponse);
+
+  // Explains an entitlement.
+  rpc ExplainEntitlementCalculation(ExplainEntitlementCalculationRequest) returns (ExplainEntitlementCalculationResponse);
+}
+
+// The request of `CalculateEntitlement`.
+message CalculateEntitlementRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  CalculateEntitlementRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateEntitlement`.
+message CalculateEntitlementResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateEntitlementResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Entitlement entitlement = 1;
+  CalculateEntitlementResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateEntitlement`.
+message EstimateEntitlementRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  EstimateEntitlementRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateEntitlement`.
+message EstimateEntitlementResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateEntitlementResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Entitlement entitlement = 1;
+  EstimateEntitlementResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteEntitlement`.
+message QuoteEntitlementRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  QuoteEntitlementRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteEntitlement`.
+message QuoteEntitlementResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteEntitlementResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Entitlement entitlement = 1;
+  QuoteEntitlementResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareEntitlementOptions`.
+message CompareEntitlementOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  CompareEntitlementOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareEntitlementOptions`.
+message CompareEntitlementOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareEntitlementOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Entitlement entitlement = 1;
+  CompareEntitlementOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateEntitlement`.
+message SimulateEntitlementRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  SimulateEntitlementRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateEntitlement`.
+message SimulateEntitlementResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateEntitlementResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Entitlement entitlement = 1;
+  SimulateEntitlementResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainEntitlementCalculation`.
+message ExplainEntitlementCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  ExplainEntitlementCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainEntitlementCalculation`.
+message ExplainEntitlementCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  ExplainEntitlementCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

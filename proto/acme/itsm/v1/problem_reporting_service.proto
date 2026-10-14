@@ -1,0 +1,215 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.itsm.v1;
+
+import "acme/common/v1/audit.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/itsm/v1/itsm.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Itsm.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/itsm/v1;itsmv1";
+option java_multiple_files = true;
+option java_outer_classname = "ProblemReportingServiceProto";
+option java_package = "com.acme.itsm.v1";
+
+// Builds and schedules reports about problems.
+service ProblemReportingService {
+  // Generates a problem.
+  rpc GenerateProblemReport(GenerateProblemReportRequest) returns (GenerateProblemReportResponse);
+
+  // Returns a problem.
+  rpc FetchProblemReport(FetchProblemReportRequest) returns (FetchProblemReportResponse);
+
+  // Schedules a problem.
+  rpc ScheduleProblemReport(ScheduleProblemReportRequest) returns (ScheduleProblemReportResponse);
+
+  // Streams the changes of problems as they happen.
+  rpc StreamProblemMetrics(StreamProblemMetricsRequest) returns (stream StreamProblemMetricsResponse);
+
+  // Lists problems a page at a time.
+  rpc ListProblemReports(ListProblemReportsRequest) returns (ListProblemReportsResponse);
+
+  // Shares a problem.
+  rpc ShareProblemReport(ShareProblemReportRequest) returns (ShareProblemReportResponse);
+
+  // Deletes a problem.
+  rpc DeleteProblemReport(DeleteProblemReportRequest) returns (DeleteProblemReportResponse);
+}
+
+// The request of `GenerateProblemReport`.
+message GenerateProblemReportRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  GenerateProblemReportRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `GenerateProblemReport`.
+message GenerateProblemReportResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `FetchProblemReport`.
+message FetchProblemReportRequest {
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `FetchProblemReport`.
+message FetchProblemReportResponse {
+  Problem problem = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleProblemReport`.
+message ScheduleProblemReportRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  ScheduleProblemReportRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ScheduleProblemReport`.
+message ScheduleProblemReportResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `StreamProblemMetrics`.
+message StreamProblemMetricsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated ProblemStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  StreamProblemMetricsRequest.Filter filter = 2;
+  google.protobuf.Timestamp since = 3;
+  int32 max_events = 4;
+  acme.common.v1.ContactInfo subscriber = 5;
+}
+
+// The response of `StreamProblemMetrics`.
+message StreamProblemMetricsResponse {
+  Problem problem = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `ListProblemReports`.
+message ListProblemReportsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated ProblemStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListProblemReportsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListProblemReports`.
+message ListProblemReportsResponse {
+  repeated Problem problems = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ShareProblemReport`.
+message ShareProblemReportRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  ShareProblemReportRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ShareProblemReport`.
+message ShareProblemReportResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Problem problem = 1;
+  ShareProblemReportResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DeleteProblemReport`.
+message DeleteProblemReportRequest {
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  string reason = 3;
+  string etag = 4;
+  bool force = 5;
+}
+
+// The response of `DeleteProblemReport`.
+message DeleteProblemReportResponse {
+  acme.common.v1.OperationResult result = 1;
+  google.protobuf.Timestamp effective_at = 2;
+}

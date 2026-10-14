@@ -1,0 +1,316 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.helpdesk.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/helpdesk/v1/helpdesk.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Helpdesk.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/helpdesk/v1;helpdeskv1";
+option java_multiple_files = true;
+option java_outer_classname = "EscalationApprovalServiceProto";
+option java_package = "com.acme.helpdesk.v1";
+
+// Routes escalations through approval, with escalation and delegation.
+service EscalationApprovalService {
+  // Submits an escalation.
+  rpc SubmitEscalation(SubmitEscalationRequest) returns (SubmitEscalationResponse);
+
+  // Approves an escalation.
+  rpc ApproveEscalation(ApproveEscalationRequest) returns (ApproveEscalationResponse);
+
+  // Rejects an escalation.
+  rpc RejectEscalation(RejectEscalationRequest) returns (RejectEscalationResponse);
+
+  // Escalates an escalation.
+  rpc EscalateEscalation(EscalateEscalationRequest) returns (EscalateEscalationResponse);
+
+  // Lists escalations a page at a time.
+  rpc ListPendingEscalations(ListPendingEscalationsRequest) returns (ListPendingEscalationsResponse);
+
+  // Delegates an escalation.
+  rpc DelegateEscalationApproval(DelegateEscalationApprovalRequest) returns (DelegateEscalationApprovalResponse);
+
+  // Recalls an escalation.
+  rpc RecallEscalation(RecallEscalationRequest) returns (RecallEscalationResponse);
+
+  // Comments an escalation.
+  rpc CommentEscalationApproval(CommentEscalationApprovalRequest) returns (CommentEscalationApprovalResponse);
+}
+
+// The request of `SubmitEscalation`.
+message SubmitEscalationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  SubmitEscalationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitEscalation`.
+message SubmitEscalationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Escalation escalation = 1;
+  SubmitEscalationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveEscalation`.
+message ApproveEscalationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  ApproveEscalationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveEscalation`.
+message ApproveEscalationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Escalation escalation = 1;
+  ApproveEscalationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectEscalation`.
+message RejectEscalationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  RejectEscalationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectEscalation`.
+message RejectEscalationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Escalation escalation = 1;
+  RejectEscalationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateEscalation`.
+message EscalateEscalationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  EscalateEscalationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateEscalation`.
+message EscalateEscalationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Escalation escalation = 1;
+  EscalateEscalationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingEscalations`.
+message ListPendingEscalationsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EscalationStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingEscalationsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingEscalations`.
+message ListPendingEscalationsResponse {
+  repeated Escalation escalations = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateEscalationApproval`.
+message DelegateEscalationApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  DelegateEscalationApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateEscalationApproval`.
+message DelegateEscalationApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Escalation escalation = 1;
+  DelegateEscalationApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallEscalation`.
+message RecallEscalationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  RecallEscalationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallEscalation`.
+message RecallEscalationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Escalation escalation = 1;
+  RecallEscalationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CommentEscalationApproval`.
+message CommentEscalationApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  CommentEscalationApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentEscalationApproval`.
+message CommentEscalationApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Escalation escalation = 1;
+  CommentEscalationApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

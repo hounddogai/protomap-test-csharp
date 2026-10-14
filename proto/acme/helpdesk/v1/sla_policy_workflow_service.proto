@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.helpdesk.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/helpdesk/v1/helpdesk.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Helpdesk.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/helpdesk/v1;helpdeskv1";
+option java_multiple_files = true;
+option java_outer_classname = "SlaPolicyWorkflowServiceProto";
+option java_package = "com.acme.helpdesk.v1";
+
+// Runs the long-lived workflow that takes a sla policy from start to finish.
+service SlaPolicyWorkflowService {
+  // Starts a sla policy.
+  rpc StartSlaPolicyWorkflow(StartSlaPolicyWorkflowRequest) returns (StartSlaPolicyWorkflowResponse);
+
+  // Advances a sla policy.
+  rpc AdvanceSlaPolicyWorkflow(AdvanceSlaPolicyWorkflowRequest) returns (AdvanceSlaPolicyWorkflowResponse);
+
+  // Cancels a sla policy.
+  rpc CancelSlaPolicyWorkflow(CancelSlaPolicyWorkflowRequest) returns (CancelSlaPolicyWorkflowResponse);
+
+  // Retrys a sla policy.
+  rpc RetrySlaPolicyWorkflow(RetrySlaPolicyWorkflowRequest) returns (RetrySlaPolicyWorkflowResponse);
+
+  // Pauses a sla policy.
+  rpc PauseSlaPolicyWorkflow(PauseSlaPolicyWorkflowRequest) returns (PauseSlaPolicyWorkflowResponse);
+
+  // Resumes a sla policy.
+  rpc ResumeSlaPolicyWorkflow(ResumeSlaPolicyWorkflowRequest) returns (ResumeSlaPolicyWorkflowResponse);
+
+  // Returns a sla policy.
+  rpc InspectSlaPolicyWorkflow(InspectSlaPolicyWorkflowRequest) returns (InspectSlaPolicyWorkflowResponse);
+
+  // Lists sla policies a page at a time.
+  rpc ListSlaPolicyWorkflows(ListSlaPolicyWorkflowsRequest) returns (ListSlaPolicyWorkflowsResponse);
+
+  // Signals a sla policy.
+  rpc SignalSlaPolicyWorkflow(SignalSlaPolicyWorkflowRequest) returns (SignalSlaPolicyWorkflowResponse);
+}
+
+// The request of `StartSlaPolicyWorkflow`.
+message StartSlaPolicyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sla_policy_id = 2;
+  SlaPolicy sla_policy = 3;
+  StartSlaPolicyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartSlaPolicyWorkflow`.
+message StartSlaPolicyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SlaPolicy sla_policy = 1;
+  StartSlaPolicyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceSlaPolicyWorkflow`.
+message AdvanceSlaPolicyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sla_policy_id = 2;
+  SlaPolicy sla_policy = 3;
+  AdvanceSlaPolicyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceSlaPolicyWorkflow`.
+message AdvanceSlaPolicyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SlaPolicy sla_policy = 1;
+  AdvanceSlaPolicyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelSlaPolicyWorkflow`.
+message CancelSlaPolicyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sla_policy_id = 2;
+  SlaPolicy sla_policy = 3;
+  CancelSlaPolicyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelSlaPolicyWorkflow`.
+message CancelSlaPolicyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SlaPolicy sla_policy = 1;
+  CancelSlaPolicyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetrySlaPolicyWorkflow`.
+message RetrySlaPolicyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sla_policy_id = 2;
+  SlaPolicy sla_policy = 3;
+  RetrySlaPolicyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetrySlaPolicyWorkflow`.
+message RetrySlaPolicyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SlaPolicy sla_policy = 1;
+  RetrySlaPolicyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseSlaPolicyWorkflow`.
+message PauseSlaPolicyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sla_policy_id = 2;
+  SlaPolicy sla_policy = 3;
+  PauseSlaPolicyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseSlaPolicyWorkflow`.
+message PauseSlaPolicyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SlaPolicy sla_policy = 1;
+  PauseSlaPolicyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeSlaPolicyWorkflow`.
+message ResumeSlaPolicyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sla_policy_id = 2;
+  SlaPolicy sla_policy = 3;
+  ResumeSlaPolicyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeSlaPolicyWorkflow`.
+message ResumeSlaPolicyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SlaPolicy sla_policy = 1;
+  ResumeSlaPolicyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectSlaPolicyWorkflow`.
+message InspectSlaPolicyWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string sla_policy_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectSlaPolicyWorkflow`.
+message InspectSlaPolicyWorkflowResponse {
+  SlaPolicy sla_policy = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListSlaPolicyWorkflows`.
+message ListSlaPolicyWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SlaPolicyStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListSlaPolicyWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListSlaPolicyWorkflows`.
+message ListSlaPolicyWorkflowsResponse {
+  repeated SlaPolicy sla_policies = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalSlaPolicyWorkflow`.
+message SignalSlaPolicyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sla_policy_id = 2;
+  SlaPolicy sla_policy = 3;
+  SignalSlaPolicyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalSlaPolicyWorkflow`.
+message SignalSlaPolicyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SlaPolicy sla_policy = 1;
+  SignalSlaPolicyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

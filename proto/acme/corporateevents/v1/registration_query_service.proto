@@ -1,0 +1,245 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.corporateevents.v1;
+
+import "acme/common/v1/audit.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/corporateevents/v1/corporateevents.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Corporateevents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/corporateevents/v1;corporateeventsv1";
+option java_multiple_files = true;
+option java_outer_classname = "RegistrationQueryServiceProto";
+option java_package = "com.acme.corporateevents.v1";
+
+// Answers read-only questions about registrations, for screens and reports.
+service RegistrationQueryService {
+  // Returns a registration.
+  rpc LookupRegistration(LookupRegistrationRequest) returns (LookupRegistrationResponse);
+
+  // Lists registrations a page at a time.
+  rpc BrowseRegistrations(BrowseRegistrationsRequest) returns (BrowseRegistrationsResponse);
+
+  // Lists registrations a page at a time.
+  rpc FindRegistrations(FindRegistrationsRequest) returns (FindRegistrationsResponse);
+
+  // Counts registrations by status.
+  rpc CountRegistrations(CountRegistrationsRequest) returns (CountRegistrationsResponse);
+
+  // Returns several registrations at once.
+  rpc ResolveRegistrations(ResolveRegistrationsRequest) returns (ResolveRegistrationsResponse);
+
+  // Streams every matching registration.
+  rpc ExportRegistrations(ExportRegistrationsRequest) returns (stream ExportRegistrationsResponse);
+
+  // Summarizes a registration.
+  rpc SummarizeRegistrations(SummarizeRegistrationsRequest) returns (SummarizeRegistrationsResponse);
+
+  // Lists registrations a page at a time.
+  rpc SuggestRegistrations(SuggestRegistrationsRequest) returns (SuggestRegistrationsResponse);
+
+  // Returns a registration.
+  rpc PeekRegistration(PeekRegistrationRequest) returns (PeekRegistrationResponse);
+}
+
+// The request of `LookupRegistration`.
+message LookupRegistrationRequest {
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `LookupRegistration`.
+message LookupRegistrationResponse {
+  Registration registration = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `BrowseRegistrations`.
+message BrowseRegistrationsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated RegistrationStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  BrowseRegistrationsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `BrowseRegistrations`.
+message BrowseRegistrationsResponse {
+  repeated Registration registrations = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `FindRegistrations`.
+message FindRegistrationsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated RegistrationStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  FindRegistrationsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `FindRegistrations`.
+message FindRegistrationsResponse {
+  repeated Registration registrations = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CountRegistrations`.
+message CountRegistrationsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated RegistrationStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  CountRegistrationsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `CountRegistrations`.
+message CountRegistrationsResponse {
+  int64 count = 1;
+  map<string, int64> by_status = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResolveRegistrations`.
+message ResolveRegistrationsRequest {
+  acme.common.v1.RequestContext context = 1;
+  repeated string registration_ids = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `ResolveRegistrations`.
+message ResolveRegistrationsResponse {
+  repeated Registration registrations = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExportRegistrations`.
+message ExportRegistrationsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated RegistrationStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  ExportRegistrationsRequest.Filter filter = 2;
+  string format = 3;
+  google.protobuf.FieldMask fields = 4;
+  string destination_uri = 5;
+}
+
+// The response of `ExportRegistrations`.
+message ExportRegistrationsResponse {
+  Registration registration = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SummarizeRegistrations`.
+message SummarizeRegistrationsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  SummarizeRegistrationsRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SummarizeRegistrations`.
+message SummarizeRegistrationsResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SuggestRegistrations`.
+message SuggestRegistrationsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated RegistrationStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SuggestRegistrationsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SuggestRegistrations`.
+message SuggestRegistrationsResponse {
+  repeated Registration registrations = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PeekRegistration`.
+message PeekRegistrationRequest {
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `PeekRegistration`.
+message PeekRegistrationResponse {
+  Registration registration = 1;
+  acme.common.v1.OperationResult result = 2;
+}

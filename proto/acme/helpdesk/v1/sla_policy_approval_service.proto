@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.helpdesk.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/helpdesk/v1/helpdesk.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Helpdesk.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/helpdesk/v1;helpdeskv1";
+option java_multiple_files = true;
+option java_outer_classname = "SlaPolicyApprovalServiceProto";
+option java_package = "com.acme.helpdesk.v1";
+
+// Routes sla policies through approval, with escalation and delegation.
+service SlaPolicyApprovalService {
+  // Submits a sla policy.
+  rpc SubmitSlaPolicy(SubmitSlaPolicyRequest) returns (SubmitSlaPolicyResponse);
+
+  // Approves a sla policy.
+  rpc ApproveSlaPolicy(ApproveSlaPolicyRequest) returns (ApproveSlaPolicyResponse);
+
+  // Rejects a sla policy.
+  rpc RejectSlaPolicy(RejectSlaPolicyRequest) returns (RejectSlaPolicyResponse);
+
+  // Escalates a sla policy.
+  rpc EscalateSlaPolicy(EscalateSlaPolicyRequest) returns (EscalateSlaPolicyResponse);
+
+  // Lists sla policies a page at a time.
+  rpc ListPendingSlaPolicies(ListPendingSlaPoliciesRequest) returns (ListPendingSlaPoliciesResponse);
+
+  // Delegates a sla policy.
+  rpc DelegateSlaPolicyApproval(DelegateSlaPolicyApprovalRequest) returns (DelegateSlaPolicyApprovalResponse);
+
+  // Recalls a sla policy.
+  rpc RecallSlaPolicy(RecallSlaPolicyRequest) returns (RecallSlaPolicyResponse);
+
+  // Returns a sla policy.
+  rpc GetSlaPolicyApprovalStatus(GetSlaPolicyApprovalStatusRequest) returns (GetSlaPolicyApprovalStatusResponse);
+
+  // Comments a sla policy.
+  rpc CommentSlaPolicyApproval(CommentSlaPolicyApprovalRequest) returns (CommentSlaPolicyApprovalResponse);
+}
+
+// The request of `SubmitSlaPolicy`.
+message SubmitSlaPolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sla_policy_id = 2;
+  SlaPolicy sla_policy = 3;
+  SubmitSlaPolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitSlaPolicy`.
+message SubmitSlaPolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SlaPolicy sla_policy = 1;
+  SubmitSlaPolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveSlaPolicy`.
+message ApproveSlaPolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sla_policy_id = 2;
+  SlaPolicy sla_policy = 3;
+  ApproveSlaPolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveSlaPolicy`.
+message ApproveSlaPolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SlaPolicy sla_policy = 1;
+  ApproveSlaPolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectSlaPolicy`.
+message RejectSlaPolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sla_policy_id = 2;
+  SlaPolicy sla_policy = 3;
+  RejectSlaPolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectSlaPolicy`.
+message RejectSlaPolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SlaPolicy sla_policy = 1;
+  RejectSlaPolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateSlaPolicy`.
+message EscalateSlaPolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sla_policy_id = 2;
+  SlaPolicy sla_policy = 3;
+  EscalateSlaPolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateSlaPolicy`.
+message EscalateSlaPolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SlaPolicy sla_policy = 1;
+  EscalateSlaPolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingSlaPolicies`.
+message ListPendingSlaPoliciesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SlaPolicyStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingSlaPoliciesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingSlaPolicies`.
+message ListPendingSlaPoliciesResponse {
+  repeated SlaPolicy sla_policies = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateSlaPolicyApproval`.
+message DelegateSlaPolicyApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sla_policy_id = 2;
+  SlaPolicy sla_policy = 3;
+  DelegateSlaPolicyApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateSlaPolicyApproval`.
+message DelegateSlaPolicyApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SlaPolicy sla_policy = 1;
+  DelegateSlaPolicyApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallSlaPolicy`.
+message RecallSlaPolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sla_policy_id = 2;
+  SlaPolicy sla_policy = 3;
+  RecallSlaPolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallSlaPolicy`.
+message RecallSlaPolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SlaPolicy sla_policy = 1;
+  RecallSlaPolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetSlaPolicyApprovalStatus`.
+message GetSlaPolicyApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string sla_policy_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetSlaPolicyApprovalStatus`.
+message GetSlaPolicyApprovalStatusResponse {
+  SlaPolicy sla_policy = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentSlaPolicyApproval`.
+message CommentSlaPolicyApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sla_policy_id = 2;
+  SlaPolicy sla_policy = 3;
+  CommentSlaPolicyApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentSlaPolicyApproval`.
+message CommentSlaPolicyApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SlaPolicy sla_policy = 1;
+  CommentSlaPolicyApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

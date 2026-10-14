@@ -1,0 +1,253 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.timekeeping.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/timekeeping/v1/timekeeping.proto";
+import "google/protobuf/field_mask.proto";
+
+option csharp_namespace = "Acme.Timekeeping.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/timekeeping/v1;timekeepingv1";
+option java_multiple_files = true;
+option java_outer_classname = "ClockEventCalculationServiceProto";
+option java_package = "com.acme.timekeeping.v1";
+
+// Computes the figures of a clock event, such as totals, taxes, and estimates.
+service ClockEventCalculationService {
+  // Calculates a clock event.
+  rpc CalculateClockEvent(CalculateClockEventRequest) returns (CalculateClockEventResponse);
+
+  // Estimates a clock event.
+  rpc EstimateClockEvent(EstimateClockEventRequest) returns (EstimateClockEventResponse);
+
+  // Quotes a clock event.
+  rpc QuoteClockEvent(QuoteClockEventRequest) returns (QuoteClockEventResponse);
+
+  // Recalculates a clock event.
+  rpc RecalculateClockEvents(RecalculateClockEventsRequest) returns (RecalculateClockEventsResponse);
+
+  // Simulates a clock event.
+  rpc SimulateClockEvent(SimulateClockEventRequest) returns (SimulateClockEventResponse);
+
+  // Returns a clock event.
+  rpc GetClockEventRates(GetClockEventRatesRequest) returns (GetClockEventRatesResponse);
+}
+
+// The request of `CalculateClockEvent`.
+message CalculateClockEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  CalculateClockEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateClockEvent`.
+message CalculateClockEventResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateClockEventResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ClockEvent clock_event = 1;
+  CalculateClockEventResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateClockEvent`.
+message EstimateClockEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  EstimateClockEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateClockEvent`.
+message EstimateClockEventResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateClockEventResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ClockEvent clock_event = 1;
+  EstimateClockEventResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteClockEvent`.
+message QuoteClockEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  QuoteClockEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteClockEvent`.
+message QuoteClockEventResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteClockEventResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ClockEvent clock_event = 1;
+  QuoteClockEventResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateClockEvents`.
+message RecalculateClockEventsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  RecalculateClockEventsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateClockEvents`.
+message RecalculateClockEventsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateClockEventsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ClockEvent clock_event = 1;
+  RecalculateClockEventsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateClockEvent`.
+message SimulateClockEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  SimulateClockEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateClockEvent`.
+message SimulateClockEventResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateClockEventResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ClockEvent clock_event = 1;
+  SimulateClockEventResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetClockEventRates`.
+message GetClockEventRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetClockEventRates`.
+message GetClockEventRatesResponse {
+  ClockEvent clock_event = 1;
+  acme.common.v1.OperationResult result = 2;
+}

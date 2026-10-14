@@ -1,0 +1,257 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.performance.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/performance/v1/performance.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Performance.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/performance/v1;performancev1";
+option java_multiple_files = true;
+option java_outer_classname = "ReviewApprovalServiceProto";
+option java_package = "com.acme.performance.v1";
+
+// Routes reviews through approval, with escalation and delegation.
+service ReviewApprovalService {
+  // Submits a review.
+  rpc SubmitReview(SubmitReviewRequest) returns (SubmitReviewResponse);
+
+  // Approves a review.
+  rpc ApproveReview(ApproveReviewRequest) returns (ApproveReviewResponse);
+
+  // Rejects a review.
+  rpc RejectReview(RejectReviewRequest) returns (RejectReviewResponse);
+
+  // Escalates a review.
+  rpc EscalateReview(EscalateReviewRequest) returns (EscalateReviewResponse);
+
+  // Lists reviews a page at a time.
+  rpc ListPendingReviews(ListPendingReviewsRequest) returns (ListPendingReviewsResponse);
+
+  // Returns a review.
+  rpc GetReviewApprovalStatus(GetReviewApprovalStatusRequest) returns (GetReviewApprovalStatusResponse);
+
+  // Comments a review.
+  rpc CommentReviewApproval(CommentReviewApprovalRequest) returns (CommentReviewApprovalResponse);
+}
+
+// The request of `SubmitReview`.
+message SubmitReviewRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string review_id = 2;
+  Review review = 3;
+  SubmitReviewRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitReview`.
+message SubmitReviewResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Review review = 1;
+  SubmitReviewResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveReview`.
+message ApproveReviewRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string review_id = 2;
+  Review review = 3;
+  ApproveReviewRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveReview`.
+message ApproveReviewResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Review review = 1;
+  ApproveReviewResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectReview`.
+message RejectReviewRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string review_id = 2;
+  Review review = 3;
+  RejectReviewRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectReview`.
+message RejectReviewResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Review review = 1;
+  RejectReviewResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateReview`.
+message EscalateReviewRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string review_id = 2;
+  Review review = 3;
+  EscalateReviewRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateReview`.
+message EscalateReviewResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Review review = 1;
+  EscalateReviewResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingReviews`.
+message ListPendingReviewsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated ReviewStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingReviewsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingReviews`.
+message ListPendingReviewsResponse {
+  repeated Review reviews = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetReviewApprovalStatus`.
+message GetReviewApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string review_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetReviewApprovalStatus`.
+message GetReviewApprovalStatusResponse {
+  Review review = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentReviewApproval`.
+message CommentReviewApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string review_id = 2;
+  Review review = 3;
+  CommentReviewApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentReviewApproval`.
+message CommentReviewApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Review review = 1;
+  CommentReviewApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

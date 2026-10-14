@@ -1,0 +1,195 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.documents.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/documents/v1/documents.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Documents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/documents/v1;documentsv1";
+option java_multiple_files = true;
+option java_outer_classname = "SignatureHistoryServiceProto";
+option java_package = "com.acme.documents.v1";
+
+// Keeps every version of a signature and restores earlier ones.
+service SignatureHistoryService {
+  // Records a signature.
+  rpc RecordSignatureVersion(RecordSignatureVersionRequest) returns (RecordSignatureVersionResponse);
+
+  // Lists signatures a page at a time.
+  rpc ListSignatureVersions(ListSignatureVersionsRequest) returns (ListSignatureVersionsResponse);
+
+  // Returns a signature.
+  rpc GetSignatureVersion(GetSignatureVersionRequest) returns (GetSignatureVersionResponse);
+
+  // Compares a signature.
+  rpc CompareSignatureVersions(CompareSignatureVersionsRequest) returns (CompareSignatureVersionsResponse);
+
+  // Annotates a signature.
+  rpc AnnotateSignatureVersion(AnnotateSignatureVersionRequest) returns (AnnotateSignatureVersionResponse);
+
+  // Deletes a signature.
+  rpc PruneSignatureVersions(PruneSignatureVersionsRequest) returns (PruneSignatureVersionsResponse);
+}
+
+// The request of `RecordSignatureVersion`.
+message RecordSignatureVersionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    int64 version = 1;
+    int64 other_version = 2;
+    bytes snapshot = 3;
+    string author_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string signature_id = 2;
+  Signature signature = 3;
+  RecordSignatureVersionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecordSignatureVersion`.
+message RecordSignatureVersionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Signature signature = 1;
+  RecordSignatureVersionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListSignatureVersions`.
+message ListSignatureVersionsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SignatureStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListSignatureVersionsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListSignatureVersions`.
+message ListSignatureVersionsResponse {
+  repeated Signature signatures = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetSignatureVersion`.
+message GetSignatureVersionRequest {
+  acme.common.v1.RequestContext context = 1;
+  string signature_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetSignatureVersion`.
+message GetSignatureVersionResponse {
+  Signature signature = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CompareSignatureVersions`.
+message CompareSignatureVersionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    int64 version = 1;
+    int64 other_version = 2;
+    bytes snapshot = 3;
+    string author_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string signature_id = 2;
+  Signature signature = 3;
+  CompareSignatureVersionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareSignatureVersions`.
+message CompareSignatureVersionsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Signature signature = 1;
+  CompareSignatureVersionsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AnnotateSignatureVersion`.
+message AnnotateSignatureVersionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    int64 version = 1;
+    int64 other_version = 2;
+    bytes snapshot = 3;
+    string author_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string signature_id = 2;
+  Signature signature = 3;
+  AnnotateSignatureVersionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AnnotateSignatureVersion`.
+message AnnotateSignatureVersionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Signature signature = 1;
+  AnnotateSignatureVersionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PruneSignatureVersions`.
+message PruneSignatureVersionsRequest {
+  acme.common.v1.RequestContext context = 1;
+  string signature_id = 2;
+  string reason = 3;
+  string etag = 4;
+  bool force = 5;
+}
+
+// The response of `PruneSignatureVersions`.
+message PruneSignatureVersionsResponse {
+  acme.common.v1.OperationResult result = 1;
+  google.protobuf.Timestamp effective_at = 2;
+}

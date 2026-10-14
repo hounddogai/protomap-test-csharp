@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.licensing.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/licensing/v1/licensing.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Licensing.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/licensing/v1;licensingv1";
+option java_multiple_files = true;
+option java_outer_classname = "LicenseAssignmentWorkflowServiceProto";
+option java_package = "com.acme.licensing.v1";
+
+// Runs the long-lived workflow that takes a license assignment from start to finish.
+service LicenseAssignmentWorkflowService {
+  // Starts a license assignment.
+  rpc StartLicenseAssignmentWorkflow(StartLicenseAssignmentWorkflowRequest) returns (StartLicenseAssignmentWorkflowResponse);
+
+  // Advances a license assignment.
+  rpc AdvanceLicenseAssignmentWorkflow(AdvanceLicenseAssignmentWorkflowRequest) returns (AdvanceLicenseAssignmentWorkflowResponse);
+
+  // Cancels a license assignment.
+  rpc CancelLicenseAssignmentWorkflow(CancelLicenseAssignmentWorkflowRequest) returns (CancelLicenseAssignmentWorkflowResponse);
+
+  // Retrys a license assignment.
+  rpc RetryLicenseAssignmentWorkflow(RetryLicenseAssignmentWorkflowRequest) returns (RetryLicenseAssignmentWorkflowResponse);
+
+  // Pauses a license assignment.
+  rpc PauseLicenseAssignmentWorkflow(PauseLicenseAssignmentWorkflowRequest) returns (PauseLicenseAssignmentWorkflowResponse);
+
+  // Resumes a license assignment.
+  rpc ResumeLicenseAssignmentWorkflow(ResumeLicenseAssignmentWorkflowRequest) returns (ResumeLicenseAssignmentWorkflowResponse);
+
+  // Returns a license assignment.
+  rpc InspectLicenseAssignmentWorkflow(InspectLicenseAssignmentWorkflowRequest) returns (InspectLicenseAssignmentWorkflowResponse);
+
+  // Lists license assignments a page at a time.
+  rpc ListLicenseAssignmentWorkflows(ListLicenseAssignmentWorkflowsRequest) returns (ListLicenseAssignmentWorkflowsResponse);
+
+  // Signals a license assignment.
+  rpc SignalLicenseAssignmentWorkflow(SignalLicenseAssignmentWorkflowRequest) returns (SignalLicenseAssignmentWorkflowResponse);
+}
+
+// The request of `StartLicenseAssignmentWorkflow`.
+message StartLicenseAssignmentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  StartLicenseAssignmentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartLicenseAssignmentWorkflow`.
+message StartLicenseAssignmentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  StartLicenseAssignmentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceLicenseAssignmentWorkflow`.
+message AdvanceLicenseAssignmentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  AdvanceLicenseAssignmentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceLicenseAssignmentWorkflow`.
+message AdvanceLicenseAssignmentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  AdvanceLicenseAssignmentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelLicenseAssignmentWorkflow`.
+message CancelLicenseAssignmentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  CancelLicenseAssignmentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelLicenseAssignmentWorkflow`.
+message CancelLicenseAssignmentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  CancelLicenseAssignmentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryLicenseAssignmentWorkflow`.
+message RetryLicenseAssignmentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  RetryLicenseAssignmentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryLicenseAssignmentWorkflow`.
+message RetryLicenseAssignmentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  RetryLicenseAssignmentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseLicenseAssignmentWorkflow`.
+message PauseLicenseAssignmentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  PauseLicenseAssignmentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseLicenseAssignmentWorkflow`.
+message PauseLicenseAssignmentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  PauseLicenseAssignmentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeLicenseAssignmentWorkflow`.
+message ResumeLicenseAssignmentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  ResumeLicenseAssignmentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeLicenseAssignmentWorkflow`.
+message ResumeLicenseAssignmentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  ResumeLicenseAssignmentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectLicenseAssignmentWorkflow`.
+message InspectLicenseAssignmentWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectLicenseAssignmentWorkflow`.
+message InspectLicenseAssignmentWorkflowResponse {
+  LicenseAssignment license_assignment = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListLicenseAssignmentWorkflows`.
+message ListLicenseAssignmentWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated LicenseAssignmentStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListLicenseAssignmentWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListLicenseAssignmentWorkflows`.
+message ListLicenseAssignmentWorkflowsResponse {
+  repeated LicenseAssignment license_assignments = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalLicenseAssignmentWorkflow`.
+message SignalLicenseAssignmentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  SignalLicenseAssignmentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalLicenseAssignmentWorkflow`.
+message SignalLicenseAssignmentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  SignalLicenseAssignmentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

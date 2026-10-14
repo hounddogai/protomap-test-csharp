@@ -1,0 +1,284 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.itsm.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/itsm/v1/itsm.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Itsm.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/itsm/v1;itsmv1";
+option java_multiple_files = true;
+option java_outer_classname = "ProblemSyncServiceProto";
+option java_package = "com.acme.itsm.v1";
+
+// Keeps problems in step with the systems of record in other regions.
+service ProblemSyncService {
+  // Syncs a problem.
+  rpc SyncProblems(SyncProblemsRequest) returns (SyncProblemsResponse);
+
+  // Pushs a problem.
+  rpc PushProblem(PushProblemRequest) returns (PushProblemResponse);
+
+  // Pulls a problem.
+  rpc PullProblems(PullProblemsRequest) returns (PullProblemsResponse);
+
+  // Reconciles a problem.
+  rpc ReconcileProblems(ReconcileProblemsRequest) returns (ReconcileProblemsResponse);
+
+  // Exchanges changes of problems with a peer.
+  rpc StreamProblemChanges(stream StreamProblemChangesRequest) returns (stream StreamProblemChangesResponse);
+
+  // Resolves a problem.
+  rpc ResolveProblemConflict(ResolveProblemConflictRequest) returns (ResolveProblemConflictResponse);
+
+  // Returns a problem.
+  rpc GetProblemSyncState(GetProblemSyncStateRequest) returns (GetProblemSyncStateResponse);
+
+  // Lists problems a page at a time.
+  rpc ListProblemConflicts(ListProblemConflictsRequest) returns (ListProblemConflictsResponse);
+}
+
+// The request of `SyncProblems`.
+message SyncProblemsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  Problem problem = 3;
+  SyncProblemsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SyncProblems`.
+message SyncProblemsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Problem problem = 1;
+  SyncProblemsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PushProblem`.
+message PushProblemRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  Problem problem = 3;
+  PushProblemRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PushProblem`.
+message PushProblemResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Problem problem = 1;
+  PushProblemResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PullProblems`.
+message PullProblemsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  Problem problem = 3;
+  PullProblemsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PullProblems`.
+message PullProblemsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Problem problem = 1;
+  PullProblemsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReconcileProblems`.
+message ReconcileProblemsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  Problem problem = 3;
+  ReconcileProblemsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ReconcileProblems`.
+message ReconcileProblemsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Problem problem = 1;
+  ReconcileProblemsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `StreamProblemChanges`.
+message StreamProblemChangesRequest {
+  // An acknowledgment of a change the peer sent.
+  message ChangeAck {
+    int64 sequence = 1;
+    string status = 2;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  oneof frame {
+    Problem change = 2;
+    StreamProblemChangesRequest.ChangeAck ack = 3;
+  }
+  string cursor = 4;
+}
+
+// The response of `StreamProblemChanges`.
+message StreamProblemChangesResponse {
+  Problem problem = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `ResolveProblemConflict`.
+message ResolveProblemConflictRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  Problem problem = 3;
+  ResolveProblemConflictRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResolveProblemConflict`.
+message ResolveProblemConflictResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Problem problem = 1;
+  ResolveProblemConflictResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetProblemSyncState`.
+message GetProblemSyncStateRequest {
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetProblemSyncState`.
+message GetProblemSyncStateResponse {
+  Problem problem = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListProblemConflicts`.
+message ListProblemConflictsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated ProblemStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListProblemConflictsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListProblemConflicts`.
+message ListProblemConflictsResponse {
+  repeated Problem problems = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}

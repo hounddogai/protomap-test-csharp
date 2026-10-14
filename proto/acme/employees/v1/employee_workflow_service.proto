@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.employees.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/employees/v1/employees.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Employees.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/employees/v1;employeesv1";
+option java_multiple_files = true;
+option java_outer_classname = "EmployeeWorkflowServiceProto";
+option java_package = "com.acme.employees.v1";
+
+// Runs the long-lived workflow that takes an employee from start to finish.
+service EmployeeWorkflowService {
+  // Starts an employee.
+  rpc StartEmployeeWorkflow(StartEmployeeWorkflowRequest) returns (StartEmployeeWorkflowResponse);
+
+  // Advances an employee.
+  rpc AdvanceEmployeeWorkflow(AdvanceEmployeeWorkflowRequest) returns (AdvanceEmployeeWorkflowResponse);
+
+  // Cancels an employee.
+  rpc CancelEmployeeWorkflow(CancelEmployeeWorkflowRequest) returns (CancelEmployeeWorkflowResponse);
+
+  // Retrys an employee.
+  rpc RetryEmployeeWorkflow(RetryEmployeeWorkflowRequest) returns (RetryEmployeeWorkflowResponse);
+
+  // Pauses an employee.
+  rpc PauseEmployeeWorkflow(PauseEmployeeWorkflowRequest) returns (PauseEmployeeWorkflowResponse);
+
+  // Resumes an employee.
+  rpc ResumeEmployeeWorkflow(ResumeEmployeeWorkflowRequest) returns (ResumeEmployeeWorkflowResponse);
+
+  // Returns an employee.
+  rpc InspectEmployeeWorkflow(InspectEmployeeWorkflowRequest) returns (InspectEmployeeWorkflowResponse);
+
+  // Lists employees a page at a time.
+  rpc ListEmployeeWorkflows(ListEmployeeWorkflowsRequest) returns (ListEmployeeWorkflowsResponse);
+
+  // Signals an employee.
+  rpc SignalEmployeeWorkflow(SignalEmployeeWorkflowRequest) returns (SignalEmployeeWorkflowResponse);
+}
+
+// The request of `StartEmployeeWorkflow`.
+message StartEmployeeWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employee_id = 2;
+  Employee employee = 3;
+  StartEmployeeWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartEmployeeWorkflow`.
+message StartEmployeeWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Employee employee = 1;
+  StartEmployeeWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceEmployeeWorkflow`.
+message AdvanceEmployeeWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employee_id = 2;
+  Employee employee = 3;
+  AdvanceEmployeeWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceEmployeeWorkflow`.
+message AdvanceEmployeeWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Employee employee = 1;
+  AdvanceEmployeeWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelEmployeeWorkflow`.
+message CancelEmployeeWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employee_id = 2;
+  Employee employee = 3;
+  CancelEmployeeWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelEmployeeWorkflow`.
+message CancelEmployeeWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Employee employee = 1;
+  CancelEmployeeWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryEmployeeWorkflow`.
+message RetryEmployeeWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employee_id = 2;
+  Employee employee = 3;
+  RetryEmployeeWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryEmployeeWorkflow`.
+message RetryEmployeeWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Employee employee = 1;
+  RetryEmployeeWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseEmployeeWorkflow`.
+message PauseEmployeeWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employee_id = 2;
+  Employee employee = 3;
+  PauseEmployeeWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseEmployeeWorkflow`.
+message PauseEmployeeWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Employee employee = 1;
+  PauseEmployeeWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeEmployeeWorkflow`.
+message ResumeEmployeeWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employee_id = 2;
+  Employee employee = 3;
+  ResumeEmployeeWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeEmployeeWorkflow`.
+message ResumeEmployeeWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Employee employee = 1;
+  ResumeEmployeeWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectEmployeeWorkflow`.
+message InspectEmployeeWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string employee_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectEmployeeWorkflow`.
+message InspectEmployeeWorkflowResponse {
+  Employee employee = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListEmployeeWorkflows`.
+message ListEmployeeWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EmployeeStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListEmployeeWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListEmployeeWorkflows`.
+message ListEmployeeWorkflowsResponse {
+  repeated Employee employees = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalEmployeeWorkflow`.
+message SignalEmployeeWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employee_id = 2;
+  Employee employee = 3;
+  SignalEmployeeWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalEmployeeWorkflow`.
+message SignalEmployeeWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Employee employee = 1;
+  SignalEmployeeWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

@@ -1,0 +1,258 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.helpdesk.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/helpdesk/v1/helpdesk.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Helpdesk.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/helpdesk/v1;helpdeskv1";
+option java_multiple_files = true;
+option java_outer_classname = "KnowledgeArticleLifecycleServiceProto";
+option java_package = "com.acme.helpdesk.v1";
+
+// Moves a knowledge article between the states of its lifecycle.
+service KnowledgeArticleLifecycleService {
+  // Activates a knowledge article.
+  rpc ActivateKnowledgeArticle(ActivateKnowledgeArticleRequest) returns (ActivateKnowledgeArticleResponse);
+
+  // Suspends a knowledge article.
+  rpc SuspendKnowledgeArticle(SuspendKnowledgeArticleRequest) returns (SuspendKnowledgeArticleResponse);
+
+  // Reinstates a knowledge article.
+  rpc ReinstateKnowledgeArticle(ReinstateKnowledgeArticleRequest) returns (ReinstateKnowledgeArticleResponse);
+
+  // Terminates a knowledge article.
+  rpc TerminateKnowledgeArticle(TerminateKnowledgeArticleRequest) returns (TerminateKnowledgeArticleResponse);
+
+  // Renews a knowledge article.
+  rpc RenewKnowledgeArticle(RenewKnowledgeArticleRequest) returns (RenewKnowledgeArticleResponse);
+
+  // Returns a knowledge article.
+  rpc GetKnowledgeArticleLifecycle(GetKnowledgeArticleLifecycleRequest) returns (GetKnowledgeArticleLifecycleResponse);
+
+  // Schedules a knowledge article.
+  rpc ScheduleKnowledgeArticleExpiry(ScheduleKnowledgeArticleExpiryRequest) returns (ScheduleKnowledgeArticleExpiryResponse);
+}
+
+// The request of `ActivateKnowledgeArticle`.
+message ActivateKnowledgeArticleRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  ActivateKnowledgeArticleRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateKnowledgeArticle`.
+message ActivateKnowledgeArticleResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  ActivateKnowledgeArticleResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendKnowledgeArticle`.
+message SuspendKnowledgeArticleRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  SuspendKnowledgeArticleRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendKnowledgeArticle`.
+message SuspendKnowledgeArticleResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  SuspendKnowledgeArticleResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateKnowledgeArticle`.
+message ReinstateKnowledgeArticleRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  ReinstateKnowledgeArticleRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateKnowledgeArticle`.
+message ReinstateKnowledgeArticleResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  ReinstateKnowledgeArticleResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateKnowledgeArticle`.
+message TerminateKnowledgeArticleRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  TerminateKnowledgeArticleRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateKnowledgeArticle`.
+message TerminateKnowledgeArticleResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  TerminateKnowledgeArticleResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewKnowledgeArticle`.
+message RenewKnowledgeArticleRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  RenewKnowledgeArticleRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewKnowledgeArticle`.
+message RenewKnowledgeArticleResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  RenewKnowledgeArticleResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetKnowledgeArticleLifecycle`.
+message GetKnowledgeArticleLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetKnowledgeArticleLifecycle`.
+message GetKnowledgeArticleLifecycleResponse {
+  KnowledgeArticle knowledge_article = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleKnowledgeArticleExpiry`.
+message ScheduleKnowledgeArticleExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  ScheduleKnowledgeArticleExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleKnowledgeArticleExpiry`.
+message ScheduleKnowledgeArticleExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  ScheduleKnowledgeArticleExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
