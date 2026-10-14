@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.scheduling.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/scheduling/v1/scheduling.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Scheduling.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/scheduling/v1;schedulingv1";
+option java_multiple_files = true;
+option java_outer_classname = "SwapRequestCalculationServiceProto";
+option java_package = "com.acme.scheduling.v1";
+
+// Computes the figures of a swap request, such as totals, taxes, and estimates.
+service SwapRequestCalculationService {
+  // Calculates a swap request.
+  rpc CalculateSwapRequest(CalculateSwapRequestRequest) returns (CalculateSwapRequestResponse);
+
+  // Estimates a swap request.
+  rpc EstimateSwapRequest(EstimateSwapRequestRequest) returns (EstimateSwapRequestResponse);
+
+  // Quotes a swap request.
+  rpc QuoteSwapRequest(QuoteSwapRequestRequest) returns (QuoteSwapRequestResponse);
+
+  // Compares a swap request.
+  rpc CompareSwapRequestOptions(CompareSwapRequestOptionsRequest) returns (CompareSwapRequestOptionsResponse);
+
+  // Recalculates a swap request.
+  rpc RecalculateSwapRequests(RecalculateSwapRequestsRequest) returns (RecalculateSwapRequestsResponse);
+
+  // Simulates a swap request.
+  rpc SimulateSwapRequest(SimulateSwapRequestRequest) returns (SimulateSwapRequestResponse);
+
+  // Explains a swap request.
+  rpc ExplainSwapRequestCalculation(ExplainSwapRequestCalculationRequest) returns (ExplainSwapRequestCalculationResponse);
+
+  // Returns a swap request.
+  rpc GetSwapRequestRates(GetSwapRequestRatesRequest) returns (GetSwapRequestRatesResponse);
+}
+
+// The request of `CalculateSwapRequest`.
+message CalculateSwapRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  CalculateSwapRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateSwapRequest`.
+message CalculateSwapRequestResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateSwapRequestResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  SwapRequest swap_request = 1;
+  CalculateSwapRequestResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateSwapRequest`.
+message EstimateSwapRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  EstimateSwapRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateSwapRequest`.
+message EstimateSwapRequestResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateSwapRequestResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  SwapRequest swap_request = 1;
+  EstimateSwapRequestResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteSwapRequest`.
+message QuoteSwapRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  QuoteSwapRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteSwapRequest`.
+message QuoteSwapRequestResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteSwapRequestResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  SwapRequest swap_request = 1;
+  QuoteSwapRequestResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareSwapRequestOptions`.
+message CompareSwapRequestOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  CompareSwapRequestOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareSwapRequestOptions`.
+message CompareSwapRequestOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareSwapRequestOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  SwapRequest swap_request = 1;
+  CompareSwapRequestOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateSwapRequests`.
+message RecalculateSwapRequestsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  RecalculateSwapRequestsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateSwapRequests`.
+message RecalculateSwapRequestsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateSwapRequestsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  SwapRequest swap_request = 1;
+  RecalculateSwapRequestsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateSwapRequest`.
+message SimulateSwapRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  SimulateSwapRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateSwapRequest`.
+message SimulateSwapRequestResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateSwapRequestResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  SwapRequest swap_request = 1;
+  SimulateSwapRequestResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainSwapRequestCalculation`.
+message ExplainSwapRequestCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  ExplainSwapRequestCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainSwapRequestCalculation`.
+message ExplainSwapRequestCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SwapRequest swap_request = 1;
+  ExplainSwapRequestCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetSwapRequestRates`.
+message GetSwapRequestRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetSwapRequestRates`.
+message GetSwapRequestRatesResponse {
+  SwapRequest swap_request = 1;
+  acme.common.v1.OperationResult result = 2;
+}

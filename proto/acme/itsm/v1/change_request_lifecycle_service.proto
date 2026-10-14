@@ -1,0 +1,258 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.itsm.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/itsm/v1/itsm.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Itsm.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/itsm/v1;itsmv1";
+option java_multiple_files = true;
+option java_outer_classname = "ChangeRequestLifecycleServiceProto";
+option java_package = "com.acme.itsm.v1";
+
+// Moves a change request between the states of its lifecycle.
+service ChangeRequestLifecycleService {
+  // Activates a change request.
+  rpc ActivateChangeRequest(ActivateChangeRequestRequest) returns (ActivateChangeRequestResponse);
+
+  // Suspends a change request.
+  rpc SuspendChangeRequest(SuspendChangeRequestRequest) returns (SuspendChangeRequestResponse);
+
+  // Reinstates a change request.
+  rpc ReinstateChangeRequest(ReinstateChangeRequestRequest) returns (ReinstateChangeRequestResponse);
+
+  // Terminates a change request.
+  rpc TerminateChangeRequest(TerminateChangeRequestRequest) returns (TerminateChangeRequestResponse);
+
+  // Expires a change request.
+  rpc ExpireChangeRequest(ExpireChangeRequestRequest) returns (ExpireChangeRequestResponse);
+
+  // Returns a change request.
+  rpc GetChangeRequestLifecycle(GetChangeRequestLifecycleRequest) returns (GetChangeRequestLifecycleResponse);
+
+  // Schedules a change request.
+  rpc ScheduleChangeRequestExpiry(ScheduleChangeRequestExpiryRequest) returns (ScheduleChangeRequestExpiryResponse);
+}
+
+// The request of `ActivateChangeRequest`.
+message ActivateChangeRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ActivateChangeRequestRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateChangeRequest`.
+message ActivateChangeRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  ActivateChangeRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendChangeRequest`.
+message SuspendChangeRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  SuspendChangeRequestRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendChangeRequest`.
+message SuspendChangeRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  SuspendChangeRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateChangeRequest`.
+message ReinstateChangeRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ReinstateChangeRequestRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateChangeRequest`.
+message ReinstateChangeRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  ReinstateChangeRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateChangeRequest`.
+message TerminateChangeRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  TerminateChangeRequestRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateChangeRequest`.
+message TerminateChangeRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  TerminateChangeRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireChangeRequest`.
+message ExpireChangeRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ExpireChangeRequestRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireChangeRequest`.
+message ExpireChangeRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  ExpireChangeRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetChangeRequestLifecycle`.
+message GetChangeRequestLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetChangeRequestLifecycle`.
+message GetChangeRequestLifecycleResponse {
+  ChangeRequest change_request = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleChangeRequestExpiry`.
+message ScheduleChangeRequestExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  ScheduleChangeRequestExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleChangeRequestExpiry`.
+message ScheduleChangeRequestExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  ScheduleChangeRequestExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

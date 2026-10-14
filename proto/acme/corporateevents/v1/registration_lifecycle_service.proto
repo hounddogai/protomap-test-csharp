@@ -1,0 +1,294 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.corporateevents.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/corporateevents/v1/corporateevents.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Corporateevents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/corporateevents/v1;corporateeventsv1";
+option java_multiple_files = true;
+option java_outer_classname = "RegistrationLifecycleServiceProto";
+option java_package = "com.acme.corporateevents.v1";
+
+// Moves a registration between the states of its lifecycle.
+service RegistrationLifecycleService {
+  // Activates a registration.
+  rpc ActivateRegistration(ActivateRegistrationRequest) returns (ActivateRegistrationResponse);
+
+  // Suspends a registration.
+  rpc SuspendRegistration(SuspendRegistrationRequest) returns (SuspendRegistrationResponse);
+
+  // Reinstates a registration.
+  rpc ReinstateRegistration(ReinstateRegistrationRequest) returns (ReinstateRegistrationResponse);
+
+  // Terminates a registration.
+  rpc TerminateRegistration(TerminateRegistrationRequest) returns (TerminateRegistrationResponse);
+
+  // Renews a registration.
+  rpc RenewRegistration(RenewRegistrationRequest) returns (RenewRegistrationResponse);
+
+  // Expires a registration.
+  rpc ExpireRegistration(ExpireRegistrationRequest) returns (ExpireRegistrationResponse);
+
+  // Returns a registration.
+  rpc GetRegistrationLifecycle(GetRegistrationLifecycleRequest) returns (GetRegistrationLifecycleResponse);
+
+  // Schedules a registration.
+  rpc ScheduleRegistrationExpiry(ScheduleRegistrationExpiryRequest) returns (ScheduleRegistrationExpiryResponse);
+}
+
+// The request of `ActivateRegistration`.
+message ActivateRegistrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  ActivateRegistrationRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateRegistration`.
+message ActivateRegistrationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  ActivateRegistrationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendRegistration`.
+message SuspendRegistrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  SuspendRegistrationRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendRegistration`.
+message SuspendRegistrationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  SuspendRegistrationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateRegistration`.
+message ReinstateRegistrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  ReinstateRegistrationRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateRegistration`.
+message ReinstateRegistrationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  ReinstateRegistrationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateRegistration`.
+message TerminateRegistrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  TerminateRegistrationRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateRegistration`.
+message TerminateRegistrationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  TerminateRegistrationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewRegistration`.
+message RenewRegistrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  RenewRegistrationRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewRegistration`.
+message RenewRegistrationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  RenewRegistrationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireRegistration`.
+message ExpireRegistrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  ExpireRegistrationRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireRegistration`.
+message ExpireRegistrationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  ExpireRegistrationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetRegistrationLifecycle`.
+message GetRegistrationLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetRegistrationLifecycle`.
+message GetRegistrationLifecycleResponse {
+  Registration registration = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleRegistrationExpiry`.
+message ScheduleRegistrationExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  ScheduleRegistrationExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleRegistrationExpiry`.
+message ScheduleRegistrationExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  ScheduleRegistrationExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

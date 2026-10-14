@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.employees.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/employees/v1/employees.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Employees.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/employees/v1;employeesv1";
+option java_multiple_files = true;
+option java_outer_classname = "EmploymentContractValidationServiceProto";
+option java_package = "com.acme.employees.v1";
+
+// Checks employment contracts against the rules before anything acts on them.
+service EmploymentContractValidationService {
+  // Validates an employment contract.
+  rpc ValidateEmploymentContract(ValidateEmploymentContractRequest) returns (ValidateEmploymentContractResponse);
+
+  // Previews an employment contract.
+  rpc PreviewEmploymentContract(PreviewEmploymentContractRequest) returns (PreviewEmploymentContractResponse);
+
+  // Checks an employment contract.
+  rpc CheckEmploymentContractEligibility(CheckEmploymentContractEligibilityRequest) returns (CheckEmploymentContractEligibilityResponse);
+
+  // Normalizes an employment contract.
+  rpc NormalizeEmploymentContract(NormalizeEmploymentContractRequest) returns (NormalizeEmploymentContractResponse);
+
+  // Explains an employment contract.
+  rpc ExplainEmploymentContractDecision(ExplainEmploymentContractDecisionRequest) returns (ExplainEmploymentContractDecisionResponse);
+
+  // Scores an employment contract.
+  rpc ScoreEmploymentContract(ScoreEmploymentContractRequest) returns (ScoreEmploymentContractResponse);
+
+  // Lints an employment contract.
+  rpc LintEmploymentContracts(LintEmploymentContractsRequest) returns (LintEmploymentContractsResponse);
+
+  // Returns an employment contract.
+  rpc GetEmploymentContractRules(GetEmploymentContractRulesRequest) returns (GetEmploymentContractRulesResponse);
+}
+
+// The request of `ValidateEmploymentContract`.
+message ValidateEmploymentContractRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  ValidateEmploymentContractRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateEmploymentContract`.
+message ValidateEmploymentContractResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  EmploymentContract employment_contract = 1;
+  ValidateEmploymentContractResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewEmploymentContract`.
+message PreviewEmploymentContractRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  PreviewEmploymentContractRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewEmploymentContract`.
+message PreviewEmploymentContractResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  EmploymentContract employment_contract = 1;
+  PreviewEmploymentContractResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckEmploymentContractEligibility`.
+message CheckEmploymentContractEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  CheckEmploymentContractEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckEmploymentContractEligibility`.
+message CheckEmploymentContractEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  EmploymentContract employment_contract = 1;
+  CheckEmploymentContractEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeEmploymentContract`.
+message NormalizeEmploymentContractRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  NormalizeEmploymentContractRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeEmploymentContract`.
+message NormalizeEmploymentContractResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  EmploymentContract employment_contract = 1;
+  NormalizeEmploymentContractResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainEmploymentContractDecision`.
+message ExplainEmploymentContractDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  ExplainEmploymentContractDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainEmploymentContractDecision`.
+message ExplainEmploymentContractDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  EmploymentContract employment_contract = 1;
+  ExplainEmploymentContractDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreEmploymentContract`.
+message ScoreEmploymentContractRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  ScoreEmploymentContractRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreEmploymentContract`.
+message ScoreEmploymentContractResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreEmploymentContractResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  EmploymentContract employment_contract = 1;
+  ScoreEmploymentContractResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintEmploymentContracts`.
+message LintEmploymentContractsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  LintEmploymentContractsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintEmploymentContracts`.
+message LintEmploymentContractsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  EmploymentContract employment_contract = 1;
+  LintEmploymentContractsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetEmploymentContractRules`.
+message GetEmploymentContractRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetEmploymentContractRules`.
+message GetEmploymentContractRulesResponse {
+  EmploymentContract employment_contract = 1;
+  acme.common.v1.OperationResult result = 2;
+}

@@ -1,0 +1,253 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.licensing.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/licensing/v1/licensing.proto";
+import "google/protobuf/field_mask.proto";
+
+option csharp_namespace = "Acme.Licensing.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/licensing/v1;licensingv1";
+option java_multiple_files = true;
+option java_outer_classname = "LicenseAssignmentCalculationServiceProto";
+option java_package = "com.acme.licensing.v1";
+
+// Computes the figures of a license assignment, such as totals, taxes, and estimates.
+service LicenseAssignmentCalculationService {
+  // Calculates a license assignment.
+  rpc CalculateLicenseAssignment(CalculateLicenseAssignmentRequest) returns (CalculateLicenseAssignmentResponse);
+
+  // Estimates a license assignment.
+  rpc EstimateLicenseAssignment(EstimateLicenseAssignmentRequest) returns (EstimateLicenseAssignmentResponse);
+
+  // Compares a license assignment.
+  rpc CompareLicenseAssignmentOptions(CompareLicenseAssignmentOptionsRequest) returns (CompareLicenseAssignmentOptionsResponse);
+
+  // Recalculates a license assignment.
+  rpc RecalculateLicenseAssignments(RecalculateLicenseAssignmentsRequest) returns (RecalculateLicenseAssignmentsResponse);
+
+  // Simulates a license assignment.
+  rpc SimulateLicenseAssignment(SimulateLicenseAssignmentRequest) returns (SimulateLicenseAssignmentResponse);
+
+  // Returns a license assignment.
+  rpc GetLicenseAssignmentRates(GetLicenseAssignmentRatesRequest) returns (GetLicenseAssignmentRatesResponse);
+}
+
+// The request of `CalculateLicenseAssignment`.
+message CalculateLicenseAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  CalculateLicenseAssignmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateLicenseAssignment`.
+message CalculateLicenseAssignmentResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateLicenseAssignmentResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  CalculateLicenseAssignmentResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateLicenseAssignment`.
+message EstimateLicenseAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  EstimateLicenseAssignmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateLicenseAssignment`.
+message EstimateLicenseAssignmentResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateLicenseAssignmentResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  EstimateLicenseAssignmentResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareLicenseAssignmentOptions`.
+message CompareLicenseAssignmentOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  CompareLicenseAssignmentOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareLicenseAssignmentOptions`.
+message CompareLicenseAssignmentOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareLicenseAssignmentOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  CompareLicenseAssignmentOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateLicenseAssignments`.
+message RecalculateLicenseAssignmentsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  RecalculateLicenseAssignmentsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateLicenseAssignments`.
+message RecalculateLicenseAssignmentsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateLicenseAssignmentsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  RecalculateLicenseAssignmentsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateLicenseAssignment`.
+message SimulateLicenseAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  SimulateLicenseAssignmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateLicenseAssignment`.
+message SimulateLicenseAssignmentResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateLicenseAssignmentResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  SimulateLicenseAssignmentResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetLicenseAssignmentRates`.
+message GetLicenseAssignmentRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetLicenseAssignmentRates`.
+message GetLicenseAssignmentRatesResponse {
+  LicenseAssignment license_assignment = 1;
+  acme.common.v1.OperationResult result = 2;
+}

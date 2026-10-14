@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.performance.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/performance/v1/performance.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Performance.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/performance/v1;performancev1";
+option java_multiple_files = true;
+option java_outer_classname = "GoalApprovalServiceProto";
+option java_package = "com.acme.performance.v1";
+
+// Routes goals through approval, with escalation and delegation.
+service GoalApprovalService {
+  // Submits a goal.
+  rpc SubmitGoal(SubmitGoalRequest) returns (SubmitGoalResponse);
+
+  // Approves a goal.
+  rpc ApproveGoal(ApproveGoalRequest) returns (ApproveGoalResponse);
+
+  // Rejects a goal.
+  rpc RejectGoal(RejectGoalRequest) returns (RejectGoalResponse);
+
+  // Escalates a goal.
+  rpc EscalateGoal(EscalateGoalRequest) returns (EscalateGoalResponse);
+
+  // Lists goals a page at a time.
+  rpc ListPendingGoals(ListPendingGoalsRequest) returns (ListPendingGoalsResponse);
+
+  // Delegates a goal.
+  rpc DelegateGoalApproval(DelegateGoalApprovalRequest) returns (DelegateGoalApprovalResponse);
+
+  // Recalls a goal.
+  rpc RecallGoal(RecallGoalRequest) returns (RecallGoalResponse);
+
+  // Returns a goal.
+  rpc GetGoalApprovalStatus(GetGoalApprovalStatusRequest) returns (GetGoalApprovalStatusResponse);
+
+  // Comments a goal.
+  rpc CommentGoalApproval(CommentGoalApprovalRequest) returns (CommentGoalApprovalResponse);
+}
+
+// The request of `SubmitGoal`.
+message SubmitGoalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string goal_id = 2;
+  Goal goal = 3;
+  SubmitGoalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitGoal`.
+message SubmitGoalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Goal goal = 1;
+  SubmitGoalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveGoal`.
+message ApproveGoalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string goal_id = 2;
+  Goal goal = 3;
+  ApproveGoalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveGoal`.
+message ApproveGoalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Goal goal = 1;
+  ApproveGoalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectGoal`.
+message RejectGoalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string goal_id = 2;
+  Goal goal = 3;
+  RejectGoalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectGoal`.
+message RejectGoalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Goal goal = 1;
+  RejectGoalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateGoal`.
+message EscalateGoalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string goal_id = 2;
+  Goal goal = 3;
+  EscalateGoalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateGoal`.
+message EscalateGoalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Goal goal = 1;
+  EscalateGoalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingGoals`.
+message ListPendingGoalsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated GoalStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingGoalsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingGoals`.
+message ListPendingGoalsResponse {
+  repeated Goal goals = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateGoalApproval`.
+message DelegateGoalApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string goal_id = 2;
+  Goal goal = 3;
+  DelegateGoalApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateGoalApproval`.
+message DelegateGoalApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Goal goal = 1;
+  DelegateGoalApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallGoal`.
+message RecallGoalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string goal_id = 2;
+  Goal goal = 3;
+  RecallGoalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallGoal`.
+message RecallGoalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Goal goal = 1;
+  RecallGoalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetGoalApprovalStatus`.
+message GetGoalApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string goal_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetGoalApprovalStatus`.
+message GetGoalApprovalStatusResponse {
+  Goal goal = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentGoalApproval`.
+message CommentGoalApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string goal_id = 2;
+  Goal goal = 3;
+  CommentGoalApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentGoalApproval`.
+message CommentGoalApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Goal goal = 1;
+  CommentGoalApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

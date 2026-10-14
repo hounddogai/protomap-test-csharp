@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.onboarding.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/onboarding/v1/onboarding.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Onboarding.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/onboarding/v1;onboardingv1";
+option java_multiple_files = true;
+option java_outer_classname = "EquipmentValidationServiceProto";
+option java_package = "com.acme.onboarding.v1";
+
+// Checks equipments against the rules before anything acts on them.
+service EquipmentValidationService {
+  // Validates an equipment.
+  rpc ValidateEquipment(ValidateEquipmentRequest) returns (ValidateEquipmentResponse);
+
+  // Previews an equipment.
+  rpc PreviewEquipment(PreviewEquipmentRequest) returns (PreviewEquipmentResponse);
+
+  // Checks an equipment.
+  rpc CheckEquipmentEligibility(CheckEquipmentEligibilityRequest) returns (CheckEquipmentEligibilityResponse);
+
+  // Normalizes an equipment.
+  rpc NormalizeEquipment(NormalizeEquipmentRequest) returns (NormalizeEquipmentResponse);
+
+  // Explains an equipment.
+  rpc ExplainEquipmentDecision(ExplainEquipmentDecisionRequest) returns (ExplainEquipmentDecisionResponse);
+
+  // Scores an equipment.
+  rpc ScoreEquipment(ScoreEquipmentRequest) returns (ScoreEquipmentResponse);
+
+  // Lints an equipment.
+  rpc LintEquipments(LintEquipmentsRequest) returns (LintEquipmentsResponse);
+
+  // Returns an equipment.
+  rpc GetEquipmentRules(GetEquipmentRulesRequest) returns (GetEquipmentRulesResponse);
+}
+
+// The request of `ValidateEquipment`.
+message ValidateEquipmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  ValidateEquipmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateEquipment`.
+message ValidateEquipmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Equipment equipment = 1;
+  ValidateEquipmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewEquipment`.
+message PreviewEquipmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  PreviewEquipmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewEquipment`.
+message PreviewEquipmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Equipment equipment = 1;
+  PreviewEquipmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckEquipmentEligibility`.
+message CheckEquipmentEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  CheckEquipmentEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckEquipmentEligibility`.
+message CheckEquipmentEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Equipment equipment = 1;
+  CheckEquipmentEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeEquipment`.
+message NormalizeEquipmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  NormalizeEquipmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeEquipment`.
+message NormalizeEquipmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Equipment equipment = 1;
+  NormalizeEquipmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainEquipmentDecision`.
+message ExplainEquipmentDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  ExplainEquipmentDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainEquipmentDecision`.
+message ExplainEquipmentDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Equipment equipment = 1;
+  ExplainEquipmentDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreEquipment`.
+message ScoreEquipmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  ScoreEquipmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreEquipment`.
+message ScoreEquipmentResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreEquipmentResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Equipment equipment = 1;
+  ScoreEquipmentResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintEquipments`.
+message LintEquipmentsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  LintEquipmentsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintEquipments`.
+message LintEquipmentsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Equipment equipment = 1;
+  LintEquipmentsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetEquipmentRules`.
+message GetEquipmentRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetEquipmentRules`.
+message GetEquipmentRulesResponse {
+  Equipment equipment = 1;
+  acme.common.v1.OperationResult result = 2;
+}

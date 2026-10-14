@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.travel.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/travel/v1/travel.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Travel.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/travel/v1;travelv1";
+option java_multiple_files = true;
+option java_outer_classname = "TripWorkflowServiceProto";
+option java_package = "com.acme.travel.v1";
+
+// Runs the long-lived workflow that takes a trip from start to finish.
+service TripWorkflowService {
+  // Starts a trip.
+  rpc StartTripWorkflow(StartTripWorkflowRequest) returns (StartTripWorkflowResponse);
+
+  // Advances a trip.
+  rpc AdvanceTripWorkflow(AdvanceTripWorkflowRequest) returns (AdvanceTripWorkflowResponse);
+
+  // Cancels a trip.
+  rpc CancelTripWorkflow(CancelTripWorkflowRequest) returns (CancelTripWorkflowResponse);
+
+  // Retrys a trip.
+  rpc RetryTripWorkflow(RetryTripWorkflowRequest) returns (RetryTripWorkflowResponse);
+
+  // Pauses a trip.
+  rpc PauseTripWorkflow(PauseTripWorkflowRequest) returns (PauseTripWorkflowResponse);
+
+  // Resumes a trip.
+  rpc ResumeTripWorkflow(ResumeTripWorkflowRequest) returns (ResumeTripWorkflowResponse);
+
+  // Returns a trip.
+  rpc InspectTripWorkflow(InspectTripWorkflowRequest) returns (InspectTripWorkflowResponse);
+
+  // Lists trips a page at a time.
+  rpc ListTripWorkflows(ListTripWorkflowsRequest) returns (ListTripWorkflowsResponse);
+
+  // Signals a trip.
+  rpc SignalTripWorkflow(SignalTripWorkflowRequest) returns (SignalTripWorkflowResponse);
+}
+
+// The request of `StartTripWorkflow`.
+message StartTripWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  StartTripWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartTripWorkflow`.
+message StartTripWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Trip trip = 1;
+  StartTripWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceTripWorkflow`.
+message AdvanceTripWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  AdvanceTripWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceTripWorkflow`.
+message AdvanceTripWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Trip trip = 1;
+  AdvanceTripWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelTripWorkflow`.
+message CancelTripWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  CancelTripWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelTripWorkflow`.
+message CancelTripWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Trip trip = 1;
+  CancelTripWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryTripWorkflow`.
+message RetryTripWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  RetryTripWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryTripWorkflow`.
+message RetryTripWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Trip trip = 1;
+  RetryTripWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseTripWorkflow`.
+message PauseTripWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  PauseTripWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseTripWorkflow`.
+message PauseTripWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Trip trip = 1;
+  PauseTripWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeTripWorkflow`.
+message ResumeTripWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  ResumeTripWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeTripWorkflow`.
+message ResumeTripWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Trip trip = 1;
+  ResumeTripWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectTripWorkflow`.
+message InspectTripWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectTripWorkflow`.
+message InspectTripWorkflowResponse {
+  Trip trip = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListTripWorkflows`.
+message ListTripWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated TripStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListTripWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListTripWorkflows`.
+message ListTripWorkflowsResponse {
+  repeated Trip trips = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalTripWorkflow`.
+message SignalTripWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  SignalTripWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalTripWorkflow`.
+message SignalTripWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Trip trip = 1;
+  SignalTripWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

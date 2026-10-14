@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.itsm.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/itsm/v1/itsm.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Itsm.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/itsm/v1;itsmv1";
+option java_multiple_files = true;
+option java_outer_classname = "ChangeRequestValidationServiceProto";
+option java_package = "com.acme.itsm.v1";
+
+// Checks change requests against the rules before anything acts on them.
+service ChangeRequestValidationService {
+  // Validates a change request.
+  rpc ValidateChangeRequest(ValidateChangeRequestRequest) returns (ValidateChangeRequestResponse);
+
+  // Previews a change request.
+  rpc PreviewChangeRequest(PreviewChangeRequestRequest) returns (PreviewChangeRequestResponse);
+
+  // Checks a change request.
+  rpc CheckChangeRequestEligibility(CheckChangeRequestEligibilityRequest) returns (CheckChangeRequestEligibilityResponse);
+
+  // Normalizes a change request.
+  rpc NormalizeChangeRequest(NormalizeChangeRequestRequest) returns (NormalizeChangeRequestResponse);
+
+  // Explains a change request.
+  rpc ExplainChangeRequestDecision(ExplainChangeRequestDecisionRequest) returns (ExplainChangeRequestDecisionResponse);
+
+  // Scores a change request.
+  rpc ScoreChangeRequest(ScoreChangeRequestRequest) returns (ScoreChangeRequestResponse);
+
+  // Lints a change request.
+  rpc LintChangeRequests(LintChangeRequestsRequest) returns (LintChangeRequestsResponse);
+
+  // Returns a change request.
+  rpc GetChangeRequestRules(GetChangeRequestRulesRequest) returns (GetChangeRequestRulesResponse);
+}
+
+// The request of `ValidateChangeRequest`.
+message ValidateChangeRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  ValidateChangeRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateChangeRequest`.
+message ValidateChangeRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  ValidateChangeRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewChangeRequest`.
+message PreviewChangeRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  PreviewChangeRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewChangeRequest`.
+message PreviewChangeRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  PreviewChangeRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckChangeRequestEligibility`.
+message CheckChangeRequestEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  CheckChangeRequestEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckChangeRequestEligibility`.
+message CheckChangeRequestEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  CheckChangeRequestEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeChangeRequest`.
+message NormalizeChangeRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  NormalizeChangeRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeChangeRequest`.
+message NormalizeChangeRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  NormalizeChangeRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainChangeRequestDecision`.
+message ExplainChangeRequestDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  ExplainChangeRequestDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainChangeRequestDecision`.
+message ExplainChangeRequestDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  ExplainChangeRequestDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreChangeRequest`.
+message ScoreChangeRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  ScoreChangeRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreChangeRequest`.
+message ScoreChangeRequestResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreChangeRequestResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ChangeRequest change_request = 1;
+  ScoreChangeRequestResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintChangeRequests`.
+message LintChangeRequestsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  LintChangeRequestsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintChangeRequests`.
+message LintChangeRequestsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  LintChangeRequestsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetChangeRequestRules`.
+message GetChangeRequestRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetChangeRequestRules`.
+message GetChangeRequestRulesResponse {
+  ChangeRequest change_request = 1;
+  acme.common.v1.OperationResult result = 2;
+}

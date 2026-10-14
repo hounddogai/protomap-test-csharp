@@ -1,0 +1,287 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.scheduling.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/scheduling/v1/scheduling.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Scheduling.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/scheduling/v1;schedulingv1";
+option java_multiple_files = true;
+option java_outer_classname = "SwapRequestApprovalServiceProto";
+option java_package = "com.acme.scheduling.v1";
+
+// Routes swap requests through approval, with escalation and delegation.
+service SwapRequestApprovalService {
+  // Submits a swap request.
+  rpc SubmitSwapRequest(SubmitSwapRequestRequest) returns (SubmitSwapRequestResponse);
+
+  // Approves a swap request.
+  rpc ApproveSwapRequest(ApproveSwapRequestRequest) returns (ApproveSwapRequestResponse);
+
+  // Rejects a swap request.
+  rpc RejectSwapRequest(RejectSwapRequestRequest) returns (RejectSwapRequestResponse);
+
+  // Escalates a swap request.
+  rpc EscalateSwapRequest(EscalateSwapRequestRequest) returns (EscalateSwapRequestResponse);
+
+  // Delegates a swap request.
+  rpc DelegateSwapRequestApproval(DelegateSwapRequestApprovalRequest) returns (DelegateSwapRequestApprovalResponse);
+
+  // Recalls a swap request.
+  rpc RecallSwapRequest(RecallSwapRequestRequest) returns (RecallSwapRequestResponse);
+
+  // Comments a swap request.
+  rpc CommentSwapRequestApproval(CommentSwapRequestApprovalRequest) returns (CommentSwapRequestApprovalResponse);
+}
+
+// The request of `SubmitSwapRequest`.
+message SubmitSwapRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  SubmitSwapRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitSwapRequest`.
+message SubmitSwapRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SwapRequest swap_request = 1;
+  SubmitSwapRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveSwapRequest`.
+message ApproveSwapRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  ApproveSwapRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveSwapRequest`.
+message ApproveSwapRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SwapRequest swap_request = 1;
+  ApproveSwapRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectSwapRequest`.
+message RejectSwapRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  RejectSwapRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectSwapRequest`.
+message RejectSwapRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SwapRequest swap_request = 1;
+  RejectSwapRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateSwapRequest`.
+message EscalateSwapRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  EscalateSwapRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateSwapRequest`.
+message EscalateSwapRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SwapRequest swap_request = 1;
+  EscalateSwapRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateSwapRequestApproval`.
+message DelegateSwapRequestApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  DelegateSwapRequestApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateSwapRequestApproval`.
+message DelegateSwapRequestApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SwapRequest swap_request = 1;
+  DelegateSwapRequestApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallSwapRequest`.
+message RecallSwapRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  RecallSwapRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallSwapRequest`.
+message RecallSwapRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SwapRequest swap_request = 1;
+  RecallSwapRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CommentSwapRequestApproval`.
+message CommentSwapRequestApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  CommentSwapRequestApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentSwapRequestApproval`.
+message CommentSwapRequestApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SwapRequest swap_request = 1;
+  CommentSwapRequestApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

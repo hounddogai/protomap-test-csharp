@@ -1,0 +1,258 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.recruiting.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/recruiting/v1/recruiting.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Recruiting.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/recruiting/v1;recruitingv1";
+option java_multiple_files = true;
+option java_outer_classname = "JobOpeningLifecycleServiceProto";
+option java_package = "com.acme.recruiting.v1";
+
+// Moves a job opening between the states of its lifecycle.
+service JobOpeningLifecycleService {
+  // Activates a job opening.
+  rpc ActivateJobOpening(ActivateJobOpeningRequest) returns (ActivateJobOpeningResponse);
+
+  // Suspends a job opening.
+  rpc SuspendJobOpening(SuspendJobOpeningRequest) returns (SuspendJobOpeningResponse);
+
+  // Reinstates a job opening.
+  rpc ReinstateJobOpening(ReinstateJobOpeningRequest) returns (ReinstateJobOpeningResponse);
+
+  // Terminates a job opening.
+  rpc TerminateJobOpening(TerminateJobOpeningRequest) returns (TerminateJobOpeningResponse);
+
+  // Renews a job opening.
+  rpc RenewJobOpening(RenewJobOpeningRequest) returns (RenewJobOpeningResponse);
+
+  // Returns a job opening.
+  rpc GetJobOpeningLifecycle(GetJobOpeningLifecycleRequest) returns (GetJobOpeningLifecycleResponse);
+
+  // Schedules a job opening.
+  rpc ScheduleJobOpeningExpiry(ScheduleJobOpeningExpiryRequest) returns (ScheduleJobOpeningExpiryResponse);
+}
+
+// The request of `ActivateJobOpening`.
+message ActivateJobOpeningRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  ActivateJobOpeningRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateJobOpening`.
+message ActivateJobOpeningResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  ActivateJobOpeningResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendJobOpening`.
+message SuspendJobOpeningRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  SuspendJobOpeningRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendJobOpening`.
+message SuspendJobOpeningResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  SuspendJobOpeningResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateJobOpening`.
+message ReinstateJobOpeningRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  ReinstateJobOpeningRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateJobOpening`.
+message ReinstateJobOpeningResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  ReinstateJobOpeningResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateJobOpening`.
+message TerminateJobOpeningRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  TerminateJobOpeningRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateJobOpening`.
+message TerminateJobOpeningResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  TerminateJobOpeningResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewJobOpening`.
+message RenewJobOpeningRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  RenewJobOpeningRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewJobOpening`.
+message RenewJobOpeningResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  RenewJobOpeningResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetJobOpeningLifecycle`.
+message GetJobOpeningLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetJobOpeningLifecycle`.
+message GetJobOpeningLifecycleResponse {
+  JobOpening job_opening = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleJobOpeningExpiry`.
+message ScheduleJobOpeningExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  JobOpening job_opening = 3;
+  ScheduleJobOpeningExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleJobOpeningExpiry`.
+message ScheduleJobOpeningExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  ScheduleJobOpeningExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

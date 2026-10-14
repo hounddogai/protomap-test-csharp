@@ -1,0 +1,268 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.scheduling.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/scheduling/v1/scheduling.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Scheduling.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/scheduling/v1;schedulingv1";
+option java_multiple_files = true;
+option java_outer_classname = "AvailabilityWindowValidationServiceProto";
+option java_package = "com.acme.scheduling.v1";
+
+// Checks availability windows against the rules before anything acts on them.
+service AvailabilityWindowValidationService {
+  // Validates an availability window.
+  rpc ValidateAvailabilityWindow(ValidateAvailabilityWindowRequest) returns (ValidateAvailabilityWindowResponse);
+
+  // Previews an availability window.
+  rpc PreviewAvailabilityWindow(PreviewAvailabilityWindowRequest) returns (PreviewAvailabilityWindowResponse);
+
+  // Checks an availability window.
+  rpc CheckAvailabilityWindowEligibility(CheckAvailabilityWindowEligibilityRequest) returns (CheckAvailabilityWindowEligibilityResponse);
+
+  // Explains an availability window.
+  rpc ExplainAvailabilityWindowDecision(ExplainAvailabilityWindowDecisionRequest) returns (ExplainAvailabilityWindowDecisionResponse);
+
+  // Scores an availability window.
+  rpc ScoreAvailabilityWindow(ScoreAvailabilityWindowRequest) returns (ScoreAvailabilityWindowResponse);
+
+  // Lints an availability window.
+  rpc LintAvailabilityWindows(LintAvailabilityWindowsRequest) returns (LintAvailabilityWindowsResponse);
+
+  // Returns an availability window.
+  rpc GetAvailabilityWindowRules(GetAvailabilityWindowRulesRequest) returns (GetAvailabilityWindowRulesResponse);
+}
+
+// The request of `ValidateAvailabilityWindow`.
+message ValidateAvailabilityWindowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string availability_window_id = 2;
+  AvailabilityWindow availability_window = 3;
+  ValidateAvailabilityWindowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateAvailabilityWindow`.
+message ValidateAvailabilityWindowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  AvailabilityWindow availability_window = 1;
+  ValidateAvailabilityWindowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewAvailabilityWindow`.
+message PreviewAvailabilityWindowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string availability_window_id = 2;
+  AvailabilityWindow availability_window = 3;
+  PreviewAvailabilityWindowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewAvailabilityWindow`.
+message PreviewAvailabilityWindowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  AvailabilityWindow availability_window = 1;
+  PreviewAvailabilityWindowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckAvailabilityWindowEligibility`.
+message CheckAvailabilityWindowEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string availability_window_id = 2;
+  AvailabilityWindow availability_window = 3;
+  CheckAvailabilityWindowEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckAvailabilityWindowEligibility`.
+message CheckAvailabilityWindowEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  AvailabilityWindow availability_window = 1;
+  CheckAvailabilityWindowEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainAvailabilityWindowDecision`.
+message ExplainAvailabilityWindowDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string availability_window_id = 2;
+  AvailabilityWindow availability_window = 3;
+  ExplainAvailabilityWindowDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainAvailabilityWindowDecision`.
+message ExplainAvailabilityWindowDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  AvailabilityWindow availability_window = 1;
+  ExplainAvailabilityWindowDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreAvailabilityWindow`.
+message ScoreAvailabilityWindowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string availability_window_id = 2;
+  AvailabilityWindow availability_window = 3;
+  ScoreAvailabilityWindowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreAvailabilityWindow`.
+message ScoreAvailabilityWindowResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreAvailabilityWindowResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  AvailabilityWindow availability_window = 1;
+  ScoreAvailabilityWindowResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintAvailabilityWindows`.
+message LintAvailabilityWindowsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string availability_window_id = 2;
+  AvailabilityWindow availability_window = 3;
+  LintAvailabilityWindowsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintAvailabilityWindows`.
+message LintAvailabilityWindowsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  AvailabilityWindow availability_window = 1;
+  LintAvailabilityWindowsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetAvailabilityWindowRules`.
+message GetAvailabilityWindowRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string availability_window_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetAvailabilityWindowRules`.
+message GetAvailabilityWindowRulesResponse {
+  AvailabilityWindow availability_window = 1;
+  acme.common.v1.OperationResult result = 2;
+}

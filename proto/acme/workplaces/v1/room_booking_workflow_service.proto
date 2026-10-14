@@ -1,0 +1,296 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.workplaces.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/workplaces/v1/workplaces.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Workplaces.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/workplaces/v1;workplacesv1";
+option java_multiple_files = true;
+option java_outer_classname = "RoomBookingWorkflowServiceProto";
+option java_package = "com.acme.workplaces.v1";
+
+// Runs the long-lived workflow that takes a room booking from start to finish.
+service RoomBookingWorkflowService {
+  // Starts a room booking.
+  rpc StartRoomBookingWorkflow(StartRoomBookingWorkflowRequest) returns (StartRoomBookingWorkflowResponse);
+
+  // Advances a room booking.
+  rpc AdvanceRoomBookingWorkflow(AdvanceRoomBookingWorkflowRequest) returns (AdvanceRoomBookingWorkflowResponse);
+
+  // Cancels a room booking.
+  rpc CancelRoomBookingWorkflow(CancelRoomBookingWorkflowRequest) returns (CancelRoomBookingWorkflowResponse);
+
+  // Pauses a room booking.
+  rpc PauseRoomBookingWorkflow(PauseRoomBookingWorkflowRequest) returns (PauseRoomBookingWorkflowResponse);
+
+  // Resumes a room booking.
+  rpc ResumeRoomBookingWorkflow(ResumeRoomBookingWorkflowRequest) returns (ResumeRoomBookingWorkflowResponse);
+
+  // Returns a room booking.
+  rpc InspectRoomBookingWorkflow(InspectRoomBookingWorkflowRequest) returns (InspectRoomBookingWorkflowResponse);
+
+  // Lists room bookings a page at a time.
+  rpc ListRoomBookingWorkflows(ListRoomBookingWorkflowsRequest) returns (ListRoomBookingWorkflowsResponse);
+
+  // Signals a room booking.
+  rpc SignalRoomBookingWorkflow(SignalRoomBookingWorkflowRequest) returns (SignalRoomBookingWorkflowResponse);
+}
+
+// The request of `StartRoomBookingWorkflow`.
+message StartRoomBookingWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  RoomBooking room_booking = 3;
+  StartRoomBookingWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartRoomBookingWorkflow`.
+message StartRoomBookingWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  StartRoomBookingWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceRoomBookingWorkflow`.
+message AdvanceRoomBookingWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  RoomBooking room_booking = 3;
+  AdvanceRoomBookingWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceRoomBookingWorkflow`.
+message AdvanceRoomBookingWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  AdvanceRoomBookingWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelRoomBookingWorkflow`.
+message CancelRoomBookingWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  RoomBooking room_booking = 3;
+  CancelRoomBookingWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelRoomBookingWorkflow`.
+message CancelRoomBookingWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  CancelRoomBookingWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseRoomBookingWorkflow`.
+message PauseRoomBookingWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  RoomBooking room_booking = 3;
+  PauseRoomBookingWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseRoomBookingWorkflow`.
+message PauseRoomBookingWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  PauseRoomBookingWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeRoomBookingWorkflow`.
+message ResumeRoomBookingWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  RoomBooking room_booking = 3;
+  ResumeRoomBookingWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeRoomBookingWorkflow`.
+message ResumeRoomBookingWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  ResumeRoomBookingWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectRoomBookingWorkflow`.
+message InspectRoomBookingWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectRoomBookingWorkflow`.
+message InspectRoomBookingWorkflowResponse {
+  RoomBooking room_booking = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListRoomBookingWorkflows`.
+message ListRoomBookingWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated RoomBookingStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListRoomBookingWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListRoomBookingWorkflows`.
+message ListRoomBookingWorkflowsResponse {
+  repeated RoomBooking room_bookings = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalRoomBookingWorkflow`.
+message SignalRoomBookingWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  RoomBooking room_booking = 3;
+  SignalRoomBookingWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalRoomBookingWorkflow`.
+message SignalRoomBookingWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  SignalRoomBookingWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

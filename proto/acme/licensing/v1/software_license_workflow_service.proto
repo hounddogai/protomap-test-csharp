@@ -1,0 +1,267 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.licensing.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/licensing/v1/licensing.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Licensing.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/licensing/v1;licensingv1";
+option java_multiple_files = true;
+option java_outer_classname = "SoftwareLicenseWorkflowServiceProto";
+option java_package = "com.acme.licensing.v1";
+
+// Runs the long-lived workflow that takes a software license from start to finish.
+service SoftwareLicenseWorkflowService {
+  // Starts a software license.
+  rpc StartSoftwareLicenseWorkflow(StartSoftwareLicenseWorkflowRequest) returns (StartSoftwareLicenseWorkflowResponse);
+
+  // Advances a software license.
+  rpc AdvanceSoftwareLicenseWorkflow(AdvanceSoftwareLicenseWorkflowRequest) returns (AdvanceSoftwareLicenseWorkflowResponse);
+
+  // Cancels a software license.
+  rpc CancelSoftwareLicenseWorkflow(CancelSoftwareLicenseWorkflowRequest) returns (CancelSoftwareLicenseWorkflowResponse);
+
+  // Retrys a software license.
+  rpc RetrySoftwareLicenseWorkflow(RetrySoftwareLicenseWorkflowRequest) returns (RetrySoftwareLicenseWorkflowResponse);
+
+  // Pauses a software license.
+  rpc PauseSoftwareLicenseWorkflow(PauseSoftwareLicenseWorkflowRequest) returns (PauseSoftwareLicenseWorkflowResponse);
+
+  // Returns a software license.
+  rpc InspectSoftwareLicenseWorkflow(InspectSoftwareLicenseWorkflowRequest) returns (InspectSoftwareLicenseWorkflowResponse);
+
+  // Signals a software license.
+  rpc SignalSoftwareLicenseWorkflow(SignalSoftwareLicenseWorkflowRequest) returns (SignalSoftwareLicenseWorkflowResponse);
+}
+
+// The request of `StartSoftwareLicenseWorkflow`.
+message StartSoftwareLicenseWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  SoftwareLicense software_license = 3;
+  StartSoftwareLicenseWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartSoftwareLicenseWorkflow`.
+message StartSoftwareLicenseWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SoftwareLicense software_license = 1;
+  StartSoftwareLicenseWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceSoftwareLicenseWorkflow`.
+message AdvanceSoftwareLicenseWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  SoftwareLicense software_license = 3;
+  AdvanceSoftwareLicenseWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceSoftwareLicenseWorkflow`.
+message AdvanceSoftwareLicenseWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SoftwareLicense software_license = 1;
+  AdvanceSoftwareLicenseWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelSoftwareLicenseWorkflow`.
+message CancelSoftwareLicenseWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  SoftwareLicense software_license = 3;
+  CancelSoftwareLicenseWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelSoftwareLicenseWorkflow`.
+message CancelSoftwareLicenseWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SoftwareLicense software_license = 1;
+  CancelSoftwareLicenseWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetrySoftwareLicenseWorkflow`.
+message RetrySoftwareLicenseWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  SoftwareLicense software_license = 3;
+  RetrySoftwareLicenseWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetrySoftwareLicenseWorkflow`.
+message RetrySoftwareLicenseWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SoftwareLicense software_license = 1;
+  RetrySoftwareLicenseWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseSoftwareLicenseWorkflow`.
+message PauseSoftwareLicenseWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  SoftwareLicense software_license = 3;
+  PauseSoftwareLicenseWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseSoftwareLicenseWorkflow`.
+message PauseSoftwareLicenseWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SoftwareLicense software_license = 1;
+  PauseSoftwareLicenseWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectSoftwareLicenseWorkflow`.
+message InspectSoftwareLicenseWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectSoftwareLicenseWorkflow`.
+message InspectSoftwareLicenseWorkflowResponse {
+  SoftwareLicense software_license = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `SignalSoftwareLicenseWorkflow`.
+message SignalSoftwareLicenseWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  SoftwareLicense software_license = 3;
+  SignalSoftwareLicenseWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalSoftwareLicenseWorkflow`.
+message SignalSoftwareLicenseWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SoftwareLicense software_license = 1;
+  SignalSoftwareLicenseWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

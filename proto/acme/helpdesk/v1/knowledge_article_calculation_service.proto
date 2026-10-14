@@ -1,0 +1,318 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.helpdesk.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/helpdesk/v1/helpdesk.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Helpdesk.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/helpdesk/v1;helpdeskv1";
+option java_multiple_files = true;
+option java_outer_classname = "KnowledgeArticleCalculationServiceProto";
+option java_package = "com.acme.helpdesk.v1";
+
+// Computes the figures of a knowledge article, such as totals, taxes, and estimates.
+service KnowledgeArticleCalculationService {
+  // Calculates a knowledge article.
+  rpc CalculateKnowledgeArticle(CalculateKnowledgeArticleRequest) returns (CalculateKnowledgeArticleResponse);
+
+  // Estimates a knowledge article.
+  rpc EstimateKnowledgeArticle(EstimateKnowledgeArticleRequest) returns (EstimateKnowledgeArticleResponse);
+
+  // Quotes a knowledge article.
+  rpc QuoteKnowledgeArticle(QuoteKnowledgeArticleRequest) returns (QuoteKnowledgeArticleResponse);
+
+  // Compares a knowledge article.
+  rpc CompareKnowledgeArticleOptions(CompareKnowledgeArticleOptionsRequest) returns (CompareKnowledgeArticleOptionsResponse);
+
+  // Recalculates a knowledge article.
+  rpc RecalculateKnowledgeArticles(RecalculateKnowledgeArticlesRequest) returns (RecalculateKnowledgeArticlesResponse);
+
+  // Simulates a knowledge article.
+  rpc SimulateKnowledgeArticle(SimulateKnowledgeArticleRequest) returns (SimulateKnowledgeArticleResponse);
+
+  // Explains a knowledge article.
+  rpc ExplainKnowledgeArticleCalculation(ExplainKnowledgeArticleCalculationRequest) returns (ExplainKnowledgeArticleCalculationResponse);
+}
+
+// The request of `CalculateKnowledgeArticle`.
+message CalculateKnowledgeArticleRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  CalculateKnowledgeArticleRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateKnowledgeArticle`.
+message CalculateKnowledgeArticleResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateKnowledgeArticleResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  CalculateKnowledgeArticleResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateKnowledgeArticle`.
+message EstimateKnowledgeArticleRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  EstimateKnowledgeArticleRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateKnowledgeArticle`.
+message EstimateKnowledgeArticleResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateKnowledgeArticleResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  EstimateKnowledgeArticleResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteKnowledgeArticle`.
+message QuoteKnowledgeArticleRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  QuoteKnowledgeArticleRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteKnowledgeArticle`.
+message QuoteKnowledgeArticleResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteKnowledgeArticleResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  QuoteKnowledgeArticleResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareKnowledgeArticleOptions`.
+message CompareKnowledgeArticleOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  CompareKnowledgeArticleOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareKnowledgeArticleOptions`.
+message CompareKnowledgeArticleOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareKnowledgeArticleOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  CompareKnowledgeArticleOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateKnowledgeArticles`.
+message RecalculateKnowledgeArticlesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  RecalculateKnowledgeArticlesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateKnowledgeArticles`.
+message RecalculateKnowledgeArticlesResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateKnowledgeArticlesResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  RecalculateKnowledgeArticlesResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateKnowledgeArticle`.
+message SimulateKnowledgeArticleRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  SimulateKnowledgeArticleRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateKnowledgeArticle`.
+message SimulateKnowledgeArticleResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateKnowledgeArticleResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  SimulateKnowledgeArticleResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainKnowledgeArticleCalculation`.
+message ExplainKnowledgeArticleCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  ExplainKnowledgeArticleCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainKnowledgeArticleCalculation`.
+message ExplainKnowledgeArticleCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  ExplainKnowledgeArticleCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

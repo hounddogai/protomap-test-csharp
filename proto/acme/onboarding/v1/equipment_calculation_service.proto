@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.onboarding.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/onboarding/v1/onboarding.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Onboarding.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/onboarding/v1;onboardingv1";
+option java_multiple_files = true;
+option java_outer_classname = "EquipmentCalculationServiceProto";
+option java_package = "com.acme.onboarding.v1";
+
+// Computes the figures of an equipment, such as totals, taxes, and estimates.
+service EquipmentCalculationService {
+  // Calculates an equipment.
+  rpc CalculateEquipment(CalculateEquipmentRequest) returns (CalculateEquipmentResponse);
+
+  // Estimates an equipment.
+  rpc EstimateEquipment(EstimateEquipmentRequest) returns (EstimateEquipmentResponse);
+
+  // Quotes an equipment.
+  rpc QuoteEquipment(QuoteEquipmentRequest) returns (QuoteEquipmentResponse);
+
+  // Compares an equipment.
+  rpc CompareEquipmentOptions(CompareEquipmentOptionsRequest) returns (CompareEquipmentOptionsResponse);
+
+  // Recalculates an equipment.
+  rpc RecalculateEquipments(RecalculateEquipmentsRequest) returns (RecalculateEquipmentsResponse);
+
+  // Simulates an equipment.
+  rpc SimulateEquipment(SimulateEquipmentRequest) returns (SimulateEquipmentResponse);
+
+  // Explains an equipment.
+  rpc ExplainEquipmentCalculation(ExplainEquipmentCalculationRequest) returns (ExplainEquipmentCalculationResponse);
+
+  // Returns an equipment.
+  rpc GetEquipmentRates(GetEquipmentRatesRequest) returns (GetEquipmentRatesResponse);
+}
+
+// The request of `CalculateEquipment`.
+message CalculateEquipmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  CalculateEquipmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateEquipment`.
+message CalculateEquipmentResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateEquipmentResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Equipment equipment = 1;
+  CalculateEquipmentResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateEquipment`.
+message EstimateEquipmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  EstimateEquipmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateEquipment`.
+message EstimateEquipmentResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateEquipmentResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Equipment equipment = 1;
+  EstimateEquipmentResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteEquipment`.
+message QuoteEquipmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  QuoteEquipmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteEquipment`.
+message QuoteEquipmentResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteEquipmentResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Equipment equipment = 1;
+  QuoteEquipmentResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareEquipmentOptions`.
+message CompareEquipmentOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  CompareEquipmentOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareEquipmentOptions`.
+message CompareEquipmentOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareEquipmentOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Equipment equipment = 1;
+  CompareEquipmentOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateEquipments`.
+message RecalculateEquipmentsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  RecalculateEquipmentsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateEquipments`.
+message RecalculateEquipmentsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateEquipmentsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Equipment equipment = 1;
+  RecalculateEquipmentsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateEquipment`.
+message SimulateEquipmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  SimulateEquipmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateEquipment`.
+message SimulateEquipmentResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateEquipmentResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Equipment equipment = 1;
+  SimulateEquipmentResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainEquipmentCalculation`.
+message ExplainEquipmentCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  ExplainEquipmentCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainEquipmentCalculation`.
+message ExplainEquipmentCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Equipment equipment = 1;
+  ExplainEquipmentCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetEquipmentRates`.
+message GetEquipmentRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetEquipmentRates`.
+message GetEquipmentRatesResponse {
+  Equipment equipment = 1;
+  acme.common.v1.OperationResult result = 2;
+}

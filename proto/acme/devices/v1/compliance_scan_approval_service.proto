@@ -1,0 +1,266 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.devices.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/devices/v1/devices.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Devices.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/devices/v1;devicesv1";
+option java_multiple_files = true;
+option java_outer_classname = "ComplianceScanApprovalServiceProto";
+option java_package = "com.acme.devices.v1";
+
+// Routes compliance scans through approval, with escalation and delegation.
+service ComplianceScanApprovalService {
+  // Submits a compliance scan.
+  rpc SubmitComplianceScan(SubmitComplianceScanRequest) returns (SubmitComplianceScanResponse);
+
+  // Approves a compliance scan.
+  rpc ApproveComplianceScan(ApproveComplianceScanRequest) returns (ApproveComplianceScanResponse);
+
+  // Escalates a compliance scan.
+  rpc EscalateComplianceScan(EscalateComplianceScanRequest) returns (EscalateComplianceScanResponse);
+
+  // Delegates a compliance scan.
+  rpc DelegateComplianceScanApproval(DelegateComplianceScanApprovalRequest) returns (DelegateComplianceScanApprovalResponse);
+
+  // Recalls a compliance scan.
+  rpc RecallComplianceScan(RecallComplianceScanRequest) returns (RecallComplianceScanResponse);
+
+  // Returns a compliance scan.
+  rpc GetComplianceScanApprovalStatus(GetComplianceScanApprovalStatusRequest) returns (GetComplianceScanApprovalStatusResponse);
+
+  // Comments a compliance scan.
+  rpc CommentComplianceScanApproval(CommentComplianceScanApprovalRequest) returns (CommentComplianceScanApprovalResponse);
+}
+
+// The request of `SubmitComplianceScan`.
+message SubmitComplianceScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ComplianceScan compliance_scan = 3;
+  SubmitComplianceScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitComplianceScan`.
+message SubmitComplianceScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  SubmitComplianceScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveComplianceScan`.
+message ApproveComplianceScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ComplianceScan compliance_scan = 3;
+  ApproveComplianceScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveComplianceScan`.
+message ApproveComplianceScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  ApproveComplianceScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateComplianceScan`.
+message EscalateComplianceScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ComplianceScan compliance_scan = 3;
+  EscalateComplianceScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateComplianceScan`.
+message EscalateComplianceScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  EscalateComplianceScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateComplianceScanApproval`.
+message DelegateComplianceScanApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ComplianceScan compliance_scan = 3;
+  DelegateComplianceScanApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateComplianceScanApproval`.
+message DelegateComplianceScanApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  DelegateComplianceScanApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallComplianceScan`.
+message RecallComplianceScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ComplianceScan compliance_scan = 3;
+  RecallComplianceScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallComplianceScan`.
+message RecallComplianceScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  RecallComplianceScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetComplianceScanApprovalStatus`.
+message GetComplianceScanApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetComplianceScanApprovalStatus`.
+message GetComplianceScanApprovalStatusResponse {
+  ComplianceScan compliance_scan = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentComplianceScanApproval`.
+message CommentComplianceScanApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ComplianceScan compliance_scan = 3;
+  CommentComplianceScanApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentComplianceScanApproval`.
+message CommentComplianceScanApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  CommentComplianceScanApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

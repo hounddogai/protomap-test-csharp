@@ -1,0 +1,240 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.licensing.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/licensing/v1/licensing.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Licensing.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/licensing/v1;licensingv1";
+option java_multiple_files = true;
+option java_outer_classname = "SoftwareLicenseApprovalServiceProto";
+option java_package = "com.acme.licensing.v1";
+
+// Routes software licenses through approval, with escalation and delegation.
+service SoftwareLicenseApprovalService {
+  // Submits a software license.
+  rpc SubmitSoftwareLicense(SubmitSoftwareLicenseRequest) returns (SubmitSoftwareLicenseResponse);
+
+  // Approves a software license.
+  rpc ApproveSoftwareLicense(ApproveSoftwareLicenseRequest) returns (ApproveSoftwareLicenseResponse);
+
+  // Rejects a software license.
+  rpc RejectSoftwareLicense(RejectSoftwareLicenseRequest) returns (RejectSoftwareLicenseResponse);
+
+  // Escalates a software license.
+  rpc EscalateSoftwareLicense(EscalateSoftwareLicenseRequest) returns (EscalateSoftwareLicenseResponse);
+
+  // Lists software licenses a page at a time.
+  rpc ListPendingSoftwareLicenses(ListPendingSoftwareLicensesRequest) returns (ListPendingSoftwareLicensesResponse);
+
+  // Recalls a software license.
+  rpc RecallSoftwareLicense(RecallSoftwareLicenseRequest) returns (RecallSoftwareLicenseResponse);
+}
+
+// The request of `SubmitSoftwareLicense`.
+message SubmitSoftwareLicenseRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  SoftwareLicense software_license = 3;
+  SubmitSoftwareLicenseRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitSoftwareLicense`.
+message SubmitSoftwareLicenseResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SoftwareLicense software_license = 1;
+  SubmitSoftwareLicenseResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveSoftwareLicense`.
+message ApproveSoftwareLicenseRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  SoftwareLicense software_license = 3;
+  ApproveSoftwareLicenseRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveSoftwareLicense`.
+message ApproveSoftwareLicenseResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SoftwareLicense software_license = 1;
+  ApproveSoftwareLicenseResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectSoftwareLicense`.
+message RejectSoftwareLicenseRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  SoftwareLicense software_license = 3;
+  RejectSoftwareLicenseRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectSoftwareLicense`.
+message RejectSoftwareLicenseResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SoftwareLicense software_license = 1;
+  RejectSoftwareLicenseResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateSoftwareLicense`.
+message EscalateSoftwareLicenseRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  SoftwareLicense software_license = 3;
+  EscalateSoftwareLicenseRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateSoftwareLicense`.
+message EscalateSoftwareLicenseResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SoftwareLicense software_license = 1;
+  EscalateSoftwareLicenseResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingSoftwareLicenses`.
+message ListPendingSoftwareLicensesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SoftwareLicenseStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingSoftwareLicensesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingSoftwareLicenses`.
+message ListPendingSoftwareLicensesResponse {
+  repeated SoftwareLicense software_licenses = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallSoftwareLicense`.
+message RecallSoftwareLicenseRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  SoftwareLicense software_license = 3;
+  RecallSoftwareLicenseRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallSoftwareLicense`.
+message RecallSoftwareLicenseResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SoftwareLicense software_license = 1;
+  RecallSoftwareLicenseResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

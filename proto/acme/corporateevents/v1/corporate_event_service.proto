@@ -1,0 +1,213 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.corporateevents.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/corporateevents/v1/corporateevents.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Corporateevents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/corporateevents/v1;corporateeventsv1";
+option java_multiple_files = true;
+option java_outer_classname = "CorporateEventServiceProto";
+option java_package = "com.acme.corporateevents.v1";
+
+// Manages corporate events: creates, reads, changes, and lists them.
+service CorporateEventService {
+  // Creates a corporate event.
+  rpc CreateCorporateEvent(CreateCorporateEventRequest) returns (CreateCorporateEventResponse);
+
+  // Returns a corporate event.
+  rpc GetCorporateEvent(GetCorporateEventRequest) returns (GetCorporateEventResponse);
+
+  // Changes a corporate event.
+  rpc UpdateCorporateEvent(UpdateCorporateEventRequest) returns (UpdateCorporateEventResponse);
+
+  // Lists corporate events a page at a time.
+  rpc ListCorporateEvents(ListCorporateEventsRequest) returns (ListCorporateEventsResponse);
+
+  // Lists corporate events a page at a time.
+  rpc SearchCorporateEvents(SearchCorporateEventsRequest) returns (SearchCorporateEventsResponse);
+
+  // Streams the changes of corporate events as they happen.
+  rpc WatchCorporateEvents(WatchCorporateEventsRequest) returns (stream WatchCorporateEventsResponse);
+
+  // Takes a stream of corporate events and answers once at the end.
+  rpc BatchCreateCorporateEvents(stream BatchCreateCorporateEventsRequest) returns (BatchCreateCorporateEventsResponse);
+
+  // Creates a corporate event.
+  rpc CloneCorporateEvent(CloneCorporateEventRequest) returns (CloneCorporateEventResponse);
+}
+
+// The request of `CreateCorporateEvent`.
+message CreateCorporateEventRequest {
+  acme.common.v1.RequestContext context = 1;
+  CorporateEvent corporate_event = 2;
+  string request_id = 3;
+  bool validate_only = 4;
+}
+
+// The response of `CreateCorporateEvent`.
+message CreateCorporateEventResponse {
+  CorporateEvent corporate_event = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `GetCorporateEvent`.
+message GetCorporateEventRequest {
+  acme.common.v1.RequestContext context = 1;
+  string corporate_event_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetCorporateEvent`.
+message GetCorporateEventResponse {
+  CorporateEvent corporate_event = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `UpdateCorporateEvent`.
+message UpdateCorporateEventRequest {
+  acme.common.v1.RequestContext context = 1;
+  CorporateEvent corporate_event = 2;
+  google.protobuf.FieldMask update_mask = 3;
+  bool allow_missing = 4;
+}
+
+// The response of `UpdateCorporateEvent`.
+message UpdateCorporateEventResponse {
+  CorporateEvent corporate_event = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListCorporateEvents`.
+message ListCorporateEventsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated CorporateEventStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListCorporateEventsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListCorporateEvents`.
+message ListCorporateEventsResponse {
+  repeated CorporateEvent corporate_events = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SearchCorporateEvents`.
+message SearchCorporateEventsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated CorporateEventStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SearchCorporateEventsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SearchCorporateEvents`.
+message SearchCorporateEventsResponse {
+  repeated CorporateEvent corporate_events = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `WatchCorporateEvents`.
+message WatchCorporateEventsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated CorporateEventStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  WatchCorporateEventsRequest.Filter filter = 2;
+  google.protobuf.Timestamp since = 3;
+  int32 max_events = 4;
+  acme.common.v1.ContactInfo subscriber = 5;
+}
+
+// The response of `WatchCorporateEvents`.
+message WatchCorporateEventsResponse {
+  CorporateEvent corporate_event = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `BatchCreateCorporateEvents`.
+message BatchCreateCorporateEventsRequest {
+  // What a stream of records starts with.
+  message StreamHeader {
+    string source = 1;
+    string format = 2;
+    int64 total_records = 3;
+    acme.common.v1.ContactInfo submitted_by = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  oneof chunk {
+    BatchCreateCorporateEventsRequest.StreamHeader header = 2;
+    CorporateEvent record = 3;
+  }
+  int64 sequence = 4;
+}
+
+// The response of `BatchCreateCorporateEvents`.
+message BatchCreateCorporateEventsResponse {
+  // A record the import turned down.
+  message Rejection {
+    int64 sequence = 1;
+    string reason = 2;
+    string corporate_event_id = 3;
+  }
+
+  int64 accepted = 1;
+  int64 rejected = 2;
+  repeated BatchCreateCorporateEventsResponse.Rejection rejections = 3;
+  acme.common.v1.OperationResult result = 4;
+}
+
+// The request of `CloneCorporateEvent`.
+message CloneCorporateEventRequest {
+  acme.common.v1.RequestContext context = 1;
+  CorporateEvent corporate_event = 2;
+  string request_id = 3;
+  bool validate_only = 4;
+}
+
+// The response of `CloneCorporateEvent`.
+message CloneCorporateEventResponse {
+  CorporateEvent corporate_event = 1;
+  acme.common.v1.OperationResult result = 2;
+}

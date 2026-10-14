@@ -1,0 +1,214 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.employeeportal.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/employeeportal/v1/employeeportal.proto";
+import "google/protobuf/field_mask.proto";
+
+option csharp_namespace = "Acme.Employeeportal.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/employeeportal/v1;employeeportalv1";
+option java_multiple_files = true;
+option java_outer_classname = "PortalHomeGatewayServiceProto";
+option java_package = "com.acme.employeeportal.v1";
+
+// The edge API that apps call for portal homes.
+service PortalHomeGatewayService {
+  // Fetchs a portal home.
+  rpc FetchPortalHomeView(FetchPortalHomeViewRequest) returns (FetchPortalHomeViewResponse);
+
+  // Composes a portal home.
+  rpc ComposePortalHomePage(ComposePortalHomePageRequest) returns (ComposePortalHomePageResponse);
+
+  // Refreshs a portal home.
+  rpc RefreshPortalHome(RefreshPortalHomeRequest) returns (RefreshPortalHomeResponse);
+
+  // Submits a portal home.
+  rpc SubmitPortalHomeForm(SubmitPortalHomeFormRequest) returns (SubmitPortalHomeFormResponse);
+
+  // Tracks a portal home.
+  rpc TrackPortalHome(TrackPortalHomeRequest) returns (TrackPortalHomeResponse);
+
+  // Takes a stream of portal homes and answers once at the end.
+  rpc UploadPortalHomeAttachments(stream UploadPortalHomeAttachmentsRequest) returns (UploadPortalHomeAttachmentsResponse);
+
+  // Returns a portal home.
+  rpc GetPortalHomeSummary(GetPortalHomeSummaryRequest) returns (GetPortalHomeSummaryResponse);
+}
+
+// The request of `FetchPortalHomeView`.
+message FetchPortalHomeViewRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string device = 1;
+    string locale = 2;
+    acme.common.v1.GeoPoint location = 3;
+    map<string, string> client_hints = 4;
+    string session_id = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string portal_home_id = 2;
+  PortalHome portal_home = 3;
+  FetchPortalHomeViewRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `FetchPortalHomeView`.
+message FetchPortalHomeViewResponse {
+  PortalHome portal_home = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ComposePortalHomePage`.
+message ComposePortalHomePageRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string device = 1;
+    string locale = 2;
+    acme.common.v1.GeoPoint location = 3;
+    map<string, string> client_hints = 4;
+    string session_id = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string portal_home_id = 2;
+  PortalHome portal_home = 3;
+  ComposePortalHomePageRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ComposePortalHomePage`.
+message ComposePortalHomePageResponse {
+  PortalHome portal_home = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `RefreshPortalHome`.
+message RefreshPortalHomeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string device = 1;
+    string locale = 2;
+    acme.common.v1.GeoPoint location = 3;
+    map<string, string> client_hints = 4;
+    string session_id = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string portal_home_id = 2;
+  PortalHome portal_home = 3;
+  RefreshPortalHomeRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RefreshPortalHome`.
+message RefreshPortalHomeResponse {
+  PortalHome portal_home = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `SubmitPortalHomeForm`.
+message SubmitPortalHomeFormRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string device = 1;
+    string locale = 2;
+    acme.common.v1.GeoPoint location = 3;
+    map<string, string> client_hints = 4;
+    string session_id = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string portal_home_id = 2;
+  PortalHome portal_home = 3;
+  SubmitPortalHomeFormRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitPortalHomeForm`.
+message SubmitPortalHomeFormResponse {
+  PortalHome portal_home = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `TrackPortalHome`.
+message TrackPortalHomeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string device = 1;
+    string locale = 2;
+    acme.common.v1.GeoPoint location = 3;
+    map<string, string> client_hints = 4;
+    string session_id = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string portal_home_id = 2;
+  PortalHome portal_home = 3;
+  TrackPortalHomeRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `TrackPortalHome`.
+message TrackPortalHomeResponse {
+  PortalHome portal_home = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `UploadPortalHomeAttachments`.
+message UploadPortalHomeAttachmentsRequest {
+  // What a stream of records starts with.
+  message StreamHeader {
+    string source = 1;
+    string format = 2;
+    int64 total_records = 3;
+    acme.common.v1.ContactInfo submitted_by = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  oneof chunk {
+    UploadPortalHomeAttachmentsRequest.StreamHeader header = 2;
+    PortalHome record = 3;
+  }
+  int64 sequence = 4;
+}
+
+// The response of `UploadPortalHomeAttachments`.
+message UploadPortalHomeAttachmentsResponse {
+  // A record the import turned down.
+  message Rejection {
+    int64 sequence = 1;
+    string reason = 2;
+    string portal_home_id = 3;
+  }
+
+  int64 accepted = 1;
+  int64 rejected = 2;
+  repeated UploadPortalHomeAttachmentsResponse.Rejection rejections = 3;
+  acme.common.v1.OperationResult result = 4;
+}
+
+// The request of `GetPortalHomeSummary`.
+message GetPortalHomeSummaryRequest {
+  acme.common.v1.RequestContext context = 1;
+  string portal_home_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetPortalHomeSummary`.
+message GetPortalHomeSummaryResponse {
+  PortalHome portal_home = 1;
+  acme.common.v1.OperationResult result = 2;
+}

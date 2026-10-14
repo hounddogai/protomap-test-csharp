@@ -1,0 +1,294 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.workplaces.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/workplaces/v1/workplaces.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Workplaces.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/workplaces/v1;workplacesv1";
+option java_multiple_files = true;
+option java_outer_classname = "RoomBookingLifecycleServiceProto";
+option java_package = "com.acme.workplaces.v1";
+
+// Moves a room booking between the states of its lifecycle.
+service RoomBookingLifecycleService {
+  // Activates a room booking.
+  rpc ActivateRoomBooking(ActivateRoomBookingRequest) returns (ActivateRoomBookingResponse);
+
+  // Suspends a room booking.
+  rpc SuspendRoomBooking(SuspendRoomBookingRequest) returns (SuspendRoomBookingResponse);
+
+  // Reinstates a room booking.
+  rpc ReinstateRoomBooking(ReinstateRoomBookingRequest) returns (ReinstateRoomBookingResponse);
+
+  // Terminates a room booking.
+  rpc TerminateRoomBooking(TerminateRoomBookingRequest) returns (TerminateRoomBookingResponse);
+
+  // Renews a room booking.
+  rpc RenewRoomBooking(RenewRoomBookingRequest) returns (RenewRoomBookingResponse);
+
+  // Expires a room booking.
+  rpc ExpireRoomBooking(ExpireRoomBookingRequest) returns (ExpireRoomBookingResponse);
+
+  // Returns a room booking.
+  rpc GetRoomBookingLifecycle(GetRoomBookingLifecycleRequest) returns (GetRoomBookingLifecycleResponse);
+
+  // Schedules a room booking.
+  rpc ScheduleRoomBookingExpiry(ScheduleRoomBookingExpiryRequest) returns (ScheduleRoomBookingExpiryResponse);
+}
+
+// The request of `ActivateRoomBooking`.
+message ActivateRoomBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  ActivateRoomBookingRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateRoomBooking`.
+message ActivateRoomBookingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  ActivateRoomBookingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendRoomBooking`.
+message SuspendRoomBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  SuspendRoomBookingRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendRoomBooking`.
+message SuspendRoomBookingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  SuspendRoomBookingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateRoomBooking`.
+message ReinstateRoomBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  ReinstateRoomBookingRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateRoomBooking`.
+message ReinstateRoomBookingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  ReinstateRoomBookingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateRoomBooking`.
+message TerminateRoomBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  TerminateRoomBookingRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateRoomBooking`.
+message TerminateRoomBookingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  TerminateRoomBookingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewRoomBooking`.
+message RenewRoomBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  RenewRoomBookingRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewRoomBooking`.
+message RenewRoomBookingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  RenewRoomBookingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireRoomBooking`.
+message ExpireRoomBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  ExpireRoomBookingRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireRoomBooking`.
+message ExpireRoomBookingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  ExpireRoomBookingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetRoomBookingLifecycle`.
+message GetRoomBookingLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetRoomBookingLifecycle`.
+message GetRoomBookingLifecycleResponse {
+  RoomBooking room_booking = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleRoomBookingExpiry`.
+message ScheduleRoomBookingExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  RoomBooking room_booking = 3;
+  ScheduleRoomBookingExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleRoomBookingExpiry`.
+message ScheduleRoomBookingExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  ScheduleRoomBookingExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

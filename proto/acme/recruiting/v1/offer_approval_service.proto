@@ -1,0 +1,295 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.recruiting.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/recruiting/v1/recruiting.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Recruiting.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/recruiting/v1;recruitingv1";
+option java_multiple_files = true;
+option java_outer_classname = "OfferApprovalServiceProto";
+option java_package = "com.acme.recruiting.v1";
+
+// Routes offers through approval, with escalation and delegation.
+service OfferApprovalService {
+  // Submits an offer.
+  rpc SubmitOffer(SubmitOfferRequest) returns (SubmitOfferResponse);
+
+  // Approves an offer.
+  rpc ApproveOffer(ApproveOfferRequest) returns (ApproveOfferResponse);
+
+  // Rejects an offer.
+  rpc RejectOffer(RejectOfferRequest) returns (RejectOfferResponse);
+
+  // Escalates an offer.
+  rpc EscalateOffer(EscalateOfferRequest) returns (EscalateOfferResponse);
+
+  // Lists offers a page at a time.
+  rpc ListPendingOffers(ListPendingOffersRequest) returns (ListPendingOffersResponse);
+
+  // Delegates an offer.
+  rpc DelegateOfferApproval(DelegateOfferApprovalRequest) returns (DelegateOfferApprovalResponse);
+
+  // Recalls an offer.
+  rpc RecallOffer(RecallOfferRequest) returns (RecallOfferResponse);
+
+  // Returns an offer.
+  rpc GetOfferApprovalStatus(GetOfferApprovalStatusRequest) returns (GetOfferApprovalStatusResponse);
+}
+
+// The request of `SubmitOffer`.
+message SubmitOfferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  Offer offer = 3;
+  SubmitOfferRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitOffer`.
+message SubmitOfferResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Offer offer = 1;
+  SubmitOfferResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveOffer`.
+message ApproveOfferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  Offer offer = 3;
+  ApproveOfferRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveOffer`.
+message ApproveOfferResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Offer offer = 1;
+  ApproveOfferResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectOffer`.
+message RejectOfferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  Offer offer = 3;
+  RejectOfferRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectOffer`.
+message RejectOfferResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Offer offer = 1;
+  RejectOfferResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateOffer`.
+message EscalateOfferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  Offer offer = 3;
+  EscalateOfferRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateOffer`.
+message EscalateOfferResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Offer offer = 1;
+  EscalateOfferResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingOffers`.
+message ListPendingOffersRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated OfferStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingOffersRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingOffers`.
+message ListPendingOffersResponse {
+  repeated Offer offers = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateOfferApproval`.
+message DelegateOfferApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  Offer offer = 3;
+  DelegateOfferApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateOfferApproval`.
+message DelegateOfferApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Offer offer = 1;
+  DelegateOfferApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallOffer`.
+message RecallOfferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  Offer offer = 3;
+  RecallOfferRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallOffer`.
+message RecallOfferResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Offer offer = 1;
+  RecallOfferResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetOfferApprovalStatus`.
+message GetOfferApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetOfferApprovalStatus`.
+message GetOfferApprovalStatusResponse {
+  Offer offer = 1;
+  acme.common.v1.OperationResult result = 2;
+}

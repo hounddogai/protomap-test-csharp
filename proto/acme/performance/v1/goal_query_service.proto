@@ -1,0 +1,245 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.performance.v1;
+
+import "acme/common/v1/audit.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/performance/v1/performance.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Performance.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/performance/v1;performancev1";
+option java_multiple_files = true;
+option java_outer_classname = "GoalQueryServiceProto";
+option java_package = "com.acme.performance.v1";
+
+// Answers read-only questions about goals, for screens and reports.
+service GoalQueryService {
+  // Returns a goal.
+  rpc LookupGoal(LookupGoalRequest) returns (LookupGoalResponse);
+
+  // Lists goals a page at a time.
+  rpc BrowseGoals(BrowseGoalsRequest) returns (BrowseGoalsResponse);
+
+  // Lists goals a page at a time.
+  rpc FindGoals(FindGoalsRequest) returns (FindGoalsResponse);
+
+  // Counts goals by status.
+  rpc CountGoals(CountGoalsRequest) returns (CountGoalsResponse);
+
+  // Returns several goals at once.
+  rpc ResolveGoals(ResolveGoalsRequest) returns (ResolveGoalsResponse);
+
+  // Streams every matching goal.
+  rpc ExportGoals(ExportGoalsRequest) returns (stream ExportGoalsResponse);
+
+  // Summarizes a goal.
+  rpc SummarizeGoals(SummarizeGoalsRequest) returns (SummarizeGoalsResponse);
+
+  // Lists goals a page at a time.
+  rpc SuggestGoals(SuggestGoalsRequest) returns (SuggestGoalsResponse);
+
+  // Returns a goal.
+  rpc PeekGoal(PeekGoalRequest) returns (PeekGoalResponse);
+}
+
+// The request of `LookupGoal`.
+message LookupGoalRequest {
+  acme.common.v1.RequestContext context = 1;
+  string goal_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `LookupGoal`.
+message LookupGoalResponse {
+  Goal goal = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `BrowseGoals`.
+message BrowseGoalsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated GoalStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  BrowseGoalsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `BrowseGoals`.
+message BrowseGoalsResponse {
+  repeated Goal goals = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `FindGoals`.
+message FindGoalsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated GoalStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  FindGoalsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `FindGoals`.
+message FindGoalsResponse {
+  repeated Goal goals = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CountGoals`.
+message CountGoalsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated GoalStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  CountGoalsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `CountGoals`.
+message CountGoalsResponse {
+  int64 count = 1;
+  map<string, int64> by_status = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResolveGoals`.
+message ResolveGoalsRequest {
+  acme.common.v1.RequestContext context = 1;
+  repeated string goal_ids = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `ResolveGoals`.
+message ResolveGoalsResponse {
+  repeated Goal goals = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExportGoals`.
+message ExportGoalsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated GoalStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  ExportGoalsRequest.Filter filter = 2;
+  string format = 3;
+  google.protobuf.FieldMask fields = 4;
+  string destination_uri = 5;
+}
+
+// The response of `ExportGoals`.
+message ExportGoalsResponse {
+  Goal goal = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SummarizeGoals`.
+message SummarizeGoalsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string goal_id = 2;
+  SummarizeGoalsRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SummarizeGoals`.
+message SummarizeGoalsResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SuggestGoals`.
+message SuggestGoalsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated GoalStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SuggestGoalsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SuggestGoals`.
+message SuggestGoalsResponse {
+  repeated Goal goals = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PeekGoal`.
+message PeekGoalRequest {
+  acme.common.v1.RequestContext context = 1;
+  string goal_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `PeekGoal`.
+message PeekGoalResponse {
+  Goal goal = 1;
+  acme.common.v1.OperationResult result = 2;
+}

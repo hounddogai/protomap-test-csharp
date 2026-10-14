@@ -1,0 +1,247 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.documents.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/documents/v1/documents.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Documents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/documents/v1;documentsv1";
+option java_multiple_files = true;
+option java_outer_classname = "SignatureNotificationServiceProto";
+option java_package = "com.acme.documents.v1";
+
+// Tells the people who follow a signature what changed.
+service SignatureNotificationService {
+  // Subscribes a signature.
+  rpc SubscribeSignatureUpdates(SubscribeSignatureUpdatesRequest) returns (SubscribeSignatureUpdatesResponse);
+
+  // Unsubscribes a signature.
+  rpc UnsubscribeSignatureUpdates(UnsubscribeSignatureUpdatesRequest) returns (UnsubscribeSignatureUpdatesResponse);
+
+  // Notifys a signature.
+  rpc NotifySignatureWatchers(NotifySignatureWatchersRequest) returns (NotifySignatureWatchersResponse);
+
+  // Lists signatures a page at a time.
+  rpc ListSignatureSubscriptions(ListSignatureSubscriptionsRequest) returns (ListSignatureSubscriptionsResponse);
+
+  // Sends a signature.
+  rpc SendSignatureTestNotice(SendSignatureTestNoticeRequest) returns (SendSignatureTestNoticeResponse);
+
+  // Returns a signature.
+  rpc GetSignaturePreferences(GetSignaturePreferencesRequest) returns (GetSignaturePreferencesResponse);
+
+  // Streams the changes of signatures as they happen.
+  rpc StreamSignatureNotices(StreamSignatureNoticesRequest) returns (stream StreamSignatureNoticesResponse);
+}
+
+// The request of `SubscribeSignatureUpdates`.
+message SubscribeSignatureUpdatesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string signature_id = 2;
+  SubscribeSignatureUpdatesRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SubscribeSignatureUpdates`.
+message SubscribeSignatureUpdatesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Signature signature = 1;
+  SubscribeSignatureUpdatesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `UnsubscribeSignatureUpdates`.
+message UnsubscribeSignatureUpdatesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string signature_id = 2;
+  UnsubscribeSignatureUpdatesRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `UnsubscribeSignatureUpdates`.
+message UnsubscribeSignatureUpdatesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Signature signature = 1;
+  UnsubscribeSignatureUpdatesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NotifySignatureWatchers`.
+message NotifySignatureWatchersRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string signature_id = 2;
+  NotifySignatureWatchersRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `NotifySignatureWatchers`.
+message NotifySignatureWatchersResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Signature signature = 1;
+  NotifySignatureWatchersResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListSignatureSubscriptions`.
+message ListSignatureSubscriptionsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SignatureStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListSignatureSubscriptionsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListSignatureSubscriptions`.
+message ListSignatureSubscriptionsResponse {
+  repeated Signature signatures = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SendSignatureTestNotice`.
+message SendSignatureTestNoticeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string signature_id = 2;
+  SendSignatureTestNoticeRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SendSignatureTestNotice`.
+message SendSignatureTestNoticeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Signature signature = 1;
+  SendSignatureTestNoticeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetSignaturePreferences`.
+message GetSignaturePreferencesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string signature_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetSignaturePreferences`.
+message GetSignaturePreferencesResponse {
+  Signature signature = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `StreamSignatureNotices`.
+message StreamSignatureNoticesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SignatureStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  StreamSignatureNoticesRequest.Filter filter = 2;
+  google.protobuf.Timestamp since = 3;
+  int32 max_events = 4;
+  acme.common.v1.ContactInfo subscriber = 5;
+}
+
+// The response of `StreamSignatureNotices`.
+message StreamSignatureNoticesResponse {
+  Signature signature = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}

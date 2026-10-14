@@ -1,0 +1,294 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.itsm.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/itsm/v1/itsm.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Itsm.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/itsm/v1;itsmv1";
+option java_multiple_files = true;
+option java_outer_classname = "ServiceAssetLifecycleServiceProto";
+option java_package = "com.acme.itsm.v1";
+
+// Moves a service asset between the states of its lifecycle.
+service ServiceAssetLifecycleService {
+  // Activates a service asset.
+  rpc ActivateServiceAsset(ActivateServiceAssetRequest) returns (ActivateServiceAssetResponse);
+
+  // Suspends a service asset.
+  rpc SuspendServiceAsset(SuspendServiceAssetRequest) returns (SuspendServiceAssetResponse);
+
+  // Reinstates a service asset.
+  rpc ReinstateServiceAsset(ReinstateServiceAssetRequest) returns (ReinstateServiceAssetResponse);
+
+  // Terminates a service asset.
+  rpc TerminateServiceAsset(TerminateServiceAssetRequest) returns (TerminateServiceAssetResponse);
+
+  // Renews a service asset.
+  rpc RenewServiceAsset(RenewServiceAssetRequest) returns (RenewServiceAssetResponse);
+
+  // Expires a service asset.
+  rpc ExpireServiceAsset(ExpireServiceAssetRequest) returns (ExpireServiceAssetResponse);
+
+  // Returns a service asset.
+  rpc GetServiceAssetLifecycle(GetServiceAssetLifecycleRequest) returns (GetServiceAssetLifecycleResponse);
+
+  // Schedules a service asset.
+  rpc ScheduleServiceAssetExpiry(ScheduleServiceAssetExpiryRequest) returns (ScheduleServiceAssetExpiryResponse);
+}
+
+// The request of `ActivateServiceAsset`.
+message ActivateServiceAssetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  ActivateServiceAssetRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateServiceAsset`.
+message ActivateServiceAssetResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ServiceAsset service_asset = 1;
+  ActivateServiceAssetResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendServiceAsset`.
+message SuspendServiceAssetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  SuspendServiceAssetRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendServiceAsset`.
+message SuspendServiceAssetResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ServiceAsset service_asset = 1;
+  SuspendServiceAssetResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateServiceAsset`.
+message ReinstateServiceAssetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  ReinstateServiceAssetRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateServiceAsset`.
+message ReinstateServiceAssetResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ServiceAsset service_asset = 1;
+  ReinstateServiceAssetResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateServiceAsset`.
+message TerminateServiceAssetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  TerminateServiceAssetRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateServiceAsset`.
+message TerminateServiceAssetResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ServiceAsset service_asset = 1;
+  TerminateServiceAssetResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewServiceAsset`.
+message RenewServiceAssetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  RenewServiceAssetRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewServiceAsset`.
+message RenewServiceAssetResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ServiceAsset service_asset = 1;
+  RenewServiceAssetResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireServiceAsset`.
+message ExpireServiceAssetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  ExpireServiceAssetRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireServiceAsset`.
+message ExpireServiceAssetResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ServiceAsset service_asset = 1;
+  ExpireServiceAssetResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetServiceAssetLifecycle`.
+message GetServiceAssetLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetServiceAssetLifecycle`.
+message GetServiceAssetLifecycleResponse {
+  ServiceAsset service_asset = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleServiceAssetExpiry`.
+message ScheduleServiceAssetExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  ServiceAsset service_asset = 3;
+  ScheduleServiceAssetExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleServiceAssetExpiry`.
+message ScheduleServiceAssetExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ServiceAsset service_asset = 1;
+  ScheduleServiceAssetExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

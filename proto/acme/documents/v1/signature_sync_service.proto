@@ -1,0 +1,256 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.documents.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/documents/v1/documents.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Documents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/documents/v1;documentsv1";
+option java_multiple_files = true;
+option java_outer_classname = "SignatureSyncServiceProto";
+option java_package = "com.acme.documents.v1";
+
+// Keeps signatures in step with the systems of record in other regions.
+service SignatureSyncService {
+  // Syncs a signature.
+  rpc SyncSignatures(SyncSignaturesRequest) returns (SyncSignaturesResponse);
+
+  // Pushs a signature.
+  rpc PushSignature(PushSignatureRequest) returns (PushSignatureResponse);
+
+  // Pulls a signature.
+  rpc PullSignatures(PullSignaturesRequest) returns (PullSignaturesResponse);
+
+  // Reconciles a signature.
+  rpc ReconcileSignatures(ReconcileSignaturesRequest) returns (ReconcileSignaturesResponse);
+
+  // Resolves a signature.
+  rpc ResolveSignatureConflict(ResolveSignatureConflictRequest) returns (ResolveSignatureConflictResponse);
+
+  // Returns a signature.
+  rpc GetSignatureSyncState(GetSignatureSyncStateRequest) returns (GetSignatureSyncStateResponse);
+
+  // Lists signatures a page at a time.
+  rpc ListSignatureConflicts(ListSignatureConflictsRequest) returns (ListSignatureConflictsResponse);
+}
+
+// The request of `SyncSignatures`.
+message SyncSignaturesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string signature_id = 2;
+  Signature signature = 3;
+  SyncSignaturesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SyncSignatures`.
+message SyncSignaturesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Signature signature = 1;
+  SyncSignaturesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PushSignature`.
+message PushSignatureRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string signature_id = 2;
+  Signature signature = 3;
+  PushSignatureRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PushSignature`.
+message PushSignatureResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Signature signature = 1;
+  PushSignatureResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PullSignatures`.
+message PullSignaturesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string signature_id = 2;
+  Signature signature = 3;
+  PullSignaturesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PullSignatures`.
+message PullSignaturesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Signature signature = 1;
+  PullSignaturesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReconcileSignatures`.
+message ReconcileSignaturesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string signature_id = 2;
+  Signature signature = 3;
+  ReconcileSignaturesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ReconcileSignatures`.
+message ReconcileSignaturesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Signature signature = 1;
+  ReconcileSignaturesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResolveSignatureConflict`.
+message ResolveSignatureConflictRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string signature_id = 2;
+  Signature signature = 3;
+  ResolveSignatureConflictRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResolveSignatureConflict`.
+message ResolveSignatureConflictResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Signature signature = 1;
+  ResolveSignatureConflictResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetSignatureSyncState`.
+message GetSignatureSyncStateRequest {
+  acme.common.v1.RequestContext context = 1;
+  string signature_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetSignatureSyncState`.
+message GetSignatureSyncStateResponse {
+  Signature signature = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListSignatureConflicts`.
+message ListSignatureConflictsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SignatureStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListSignatureConflictsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListSignatureConflicts`.
+message ListSignatureConflictsResponse {
+  repeated Signature signatures = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}

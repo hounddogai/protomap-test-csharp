@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <ProjectReference Include="../Domains/Benefits/Acme.Workforce.Benefits.csproj" />
+    <ProjectReference Include="../Domains/Corporateevents/Acme.Workforce.Corporateevents.csproj" />
+    <ProjectReference Include="../Domains/Devices/Acme.Workforce.Devices.csproj" />
+    <ProjectReference Include="../Domains/Documents/Acme.Workforce.Documents.csproj" />
+    <ProjectReference Include="../Domains/Employeeportal/Acme.Workforce.Employeeportal.csproj" />
+    <ProjectReference Include="../Domains/Employees/Acme.Workforce.Employees.csproj" />
+    <ProjectReference Include="../Domains/Helpdesk/Acme.Workforce.Helpdesk.csproj" />
+    <ProjectReference Include="../Domains/Itsm/Acme.Workforce.Itsm.csproj" />
+    <ProjectReference Include="../Domains/Learning/Acme.Workforce.Learning.csproj" />
+    <ProjectReference Include="../Domains/Licensing/Acme.Workforce.Licensing.csproj" />
+    <ProjectReference Include="../Domains/Onboarding/Acme.Workforce.Onboarding.csproj" />
+    <ProjectReference Include="../Domains/Performance/Acme.Workforce.Performance.csproj" />
+    <ProjectReference Include="../Domains/Recruiting/Acme.Workforce.Recruiting.csproj" />
+    <ProjectReference Include="../Domains/Scheduling/Acme.Workforce.Scheduling.csproj" />
+    <ProjectReference Include="../Domains/Timekeeping/Acme.Workforce.Timekeeping.csproj" />
+    <ProjectReference Include="../Domains/Travel/Acme.Workforce.Travel.csproj" />
+    <ProjectReference Include="../Domains/Workplaces/Acme.Workforce.Workplaces.csproj" />
+  </ItemGroup>
+</Project>

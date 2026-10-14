@@ -1,0 +1,304 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.licensing.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/licensing/v1/licensing.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Licensing.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/licensing/v1;licensingv1";
+option java_multiple_files = true;
+option java_outer_classname = "EntitlementApprovalServiceProto";
+option java_package = "com.acme.licensing.v1";
+
+// Routes entitlements through approval, with escalation and delegation.
+service EntitlementApprovalService {
+  // Submits an entitlement.
+  rpc SubmitEntitlement(SubmitEntitlementRequest) returns (SubmitEntitlementResponse);
+
+  // Approves an entitlement.
+  rpc ApproveEntitlement(ApproveEntitlementRequest) returns (ApproveEntitlementResponse);
+
+  // Rejects an entitlement.
+  rpc RejectEntitlement(RejectEntitlementRequest) returns (RejectEntitlementResponse);
+
+  // Escalates an entitlement.
+  rpc EscalateEntitlement(EscalateEntitlementRequest) returns (EscalateEntitlementResponse);
+
+  // Delegates an entitlement.
+  rpc DelegateEntitlementApproval(DelegateEntitlementApprovalRequest) returns (DelegateEntitlementApprovalResponse);
+
+  // Recalls an entitlement.
+  rpc RecallEntitlement(RecallEntitlementRequest) returns (RecallEntitlementResponse);
+
+  // Returns an entitlement.
+  rpc GetEntitlementApprovalStatus(GetEntitlementApprovalStatusRequest) returns (GetEntitlementApprovalStatusResponse);
+
+  // Comments an entitlement.
+  rpc CommentEntitlementApproval(CommentEntitlementApprovalRequest) returns (CommentEntitlementApprovalResponse);
+}
+
+// The request of `SubmitEntitlement`.
+message SubmitEntitlementRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  SubmitEntitlementRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitEntitlement`.
+message SubmitEntitlementResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  SubmitEntitlementResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveEntitlement`.
+message ApproveEntitlementRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  ApproveEntitlementRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveEntitlement`.
+message ApproveEntitlementResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  ApproveEntitlementResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectEntitlement`.
+message RejectEntitlementRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  RejectEntitlementRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectEntitlement`.
+message RejectEntitlementResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  RejectEntitlementResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateEntitlement`.
+message EscalateEntitlementRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  EscalateEntitlementRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateEntitlement`.
+message EscalateEntitlementResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  EscalateEntitlementResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateEntitlementApproval`.
+message DelegateEntitlementApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  DelegateEntitlementApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateEntitlementApproval`.
+message DelegateEntitlementApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  DelegateEntitlementApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallEntitlement`.
+message RecallEntitlementRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  RecallEntitlementRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallEntitlement`.
+message RecallEntitlementResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  RecallEntitlementResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetEntitlementApprovalStatus`.
+message GetEntitlementApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetEntitlementApprovalStatus`.
+message GetEntitlementApprovalStatusResponse {
+  Entitlement entitlement = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentEntitlementApproval`.
+message CommentEntitlementApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  CommentEntitlementApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentEntitlementApproval`.
+message CommentEntitlementApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  CommentEntitlementApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

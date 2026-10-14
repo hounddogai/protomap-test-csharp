@@ -1,0 +1,267 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.documents.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/documents/v1/documents.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Documents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/documents/v1;documentsv1";
+option java_multiple_files = true;
+option java_outer_classname = "DocumentTemplateSyncServiceProto";
+option java_package = "com.acme.documents.v1";
+
+// Keeps document templates in step with the systems of record in other regions.
+service DocumentTemplateSyncService {
+  // Syncs a document template.
+  rpc SyncDocumentTemplates(SyncDocumentTemplatesRequest) returns (SyncDocumentTemplatesResponse);
+
+  // Pushs a document template.
+  rpc PushDocumentTemplate(PushDocumentTemplateRequest) returns (PushDocumentTemplateResponse);
+
+  // Pulls a document template.
+  rpc PullDocumentTemplates(PullDocumentTemplatesRequest) returns (PullDocumentTemplatesResponse);
+
+  // Reconciles a document template.
+  rpc ReconcileDocumentTemplates(ReconcileDocumentTemplatesRequest) returns (ReconcileDocumentTemplatesResponse);
+
+  // Exchanges changes of document templates with a peer.
+  rpc StreamDocumentTemplateChanges(stream StreamDocumentTemplateChangesRequest) returns (stream StreamDocumentTemplateChangesResponse);
+
+  // Resolves a document template.
+  rpc ResolveDocumentTemplateConflict(ResolveDocumentTemplateConflictRequest) returns (ResolveDocumentTemplateConflictResponse);
+
+  // Lists document templates a page at a time.
+  rpc ListDocumentTemplateConflicts(ListDocumentTemplateConflictsRequest) returns (ListDocumentTemplateConflictsResponse);
+}
+
+// The request of `SyncDocumentTemplates`.
+message SyncDocumentTemplatesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  DocumentTemplate document_template = 3;
+  SyncDocumentTemplatesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SyncDocumentTemplates`.
+message SyncDocumentTemplatesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  SyncDocumentTemplatesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PushDocumentTemplate`.
+message PushDocumentTemplateRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  DocumentTemplate document_template = 3;
+  PushDocumentTemplateRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PushDocumentTemplate`.
+message PushDocumentTemplateResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  PushDocumentTemplateResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PullDocumentTemplates`.
+message PullDocumentTemplatesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  DocumentTemplate document_template = 3;
+  PullDocumentTemplatesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PullDocumentTemplates`.
+message PullDocumentTemplatesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  PullDocumentTemplatesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReconcileDocumentTemplates`.
+message ReconcileDocumentTemplatesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  DocumentTemplate document_template = 3;
+  ReconcileDocumentTemplatesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ReconcileDocumentTemplates`.
+message ReconcileDocumentTemplatesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  ReconcileDocumentTemplatesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `StreamDocumentTemplateChanges`.
+message StreamDocumentTemplateChangesRequest {
+  // An acknowledgment of a change the peer sent.
+  message ChangeAck {
+    int64 sequence = 1;
+    string status = 2;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  oneof frame {
+    DocumentTemplate change = 2;
+    StreamDocumentTemplateChangesRequest.ChangeAck ack = 3;
+  }
+  string cursor = 4;
+}
+
+// The response of `StreamDocumentTemplateChanges`.
+message StreamDocumentTemplateChangesResponse {
+  DocumentTemplate document_template = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `ResolveDocumentTemplateConflict`.
+message ResolveDocumentTemplateConflictRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  DocumentTemplate document_template = 3;
+  ResolveDocumentTemplateConflictRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResolveDocumentTemplateConflict`.
+message ResolveDocumentTemplateConflictResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  ResolveDocumentTemplateConflictResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListDocumentTemplateConflicts`.
+message ListDocumentTemplateConflictsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DocumentTemplateStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListDocumentTemplateConflictsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListDocumentTemplateConflicts`.
+message ListDocumentTemplateConflictsResponse {
+  repeated DocumentTemplate document_templates = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}

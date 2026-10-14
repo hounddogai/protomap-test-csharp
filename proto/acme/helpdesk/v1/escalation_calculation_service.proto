@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.helpdesk.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/helpdesk/v1/helpdesk.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Helpdesk.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/helpdesk/v1;helpdeskv1";
+option java_multiple_files = true;
+option java_outer_classname = "EscalationCalculationServiceProto";
+option java_package = "com.acme.helpdesk.v1";
+
+// Computes the figures of an escalation, such as totals, taxes, and estimates.
+service EscalationCalculationService {
+  // Calculates an escalation.
+  rpc CalculateEscalation(CalculateEscalationRequest) returns (CalculateEscalationResponse);
+
+  // Estimates an escalation.
+  rpc EstimateEscalation(EstimateEscalationRequest) returns (EstimateEscalationResponse);
+
+  // Quotes an escalation.
+  rpc QuoteEscalation(QuoteEscalationRequest) returns (QuoteEscalationResponse);
+
+  // Compares an escalation.
+  rpc CompareEscalationOptions(CompareEscalationOptionsRequest) returns (CompareEscalationOptionsResponse);
+
+  // Recalculates an escalation.
+  rpc RecalculateEscalations(RecalculateEscalationsRequest) returns (RecalculateEscalationsResponse);
+
+  // Simulates an escalation.
+  rpc SimulateEscalation(SimulateEscalationRequest) returns (SimulateEscalationResponse);
+
+  // Explains an escalation.
+  rpc ExplainEscalationCalculation(ExplainEscalationCalculationRequest) returns (ExplainEscalationCalculationResponse);
+
+  // Returns an escalation.
+  rpc GetEscalationRates(GetEscalationRatesRequest) returns (GetEscalationRatesResponse);
+}
+
+// The request of `CalculateEscalation`.
+message CalculateEscalationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  CalculateEscalationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateEscalation`.
+message CalculateEscalationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateEscalationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Escalation escalation = 1;
+  CalculateEscalationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateEscalation`.
+message EstimateEscalationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  EstimateEscalationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateEscalation`.
+message EstimateEscalationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateEscalationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Escalation escalation = 1;
+  EstimateEscalationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteEscalation`.
+message QuoteEscalationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  QuoteEscalationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteEscalation`.
+message QuoteEscalationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteEscalationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Escalation escalation = 1;
+  QuoteEscalationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareEscalationOptions`.
+message CompareEscalationOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  CompareEscalationOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareEscalationOptions`.
+message CompareEscalationOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareEscalationOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Escalation escalation = 1;
+  CompareEscalationOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateEscalations`.
+message RecalculateEscalationsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  RecalculateEscalationsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateEscalations`.
+message RecalculateEscalationsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateEscalationsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Escalation escalation = 1;
+  RecalculateEscalationsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateEscalation`.
+message SimulateEscalationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  SimulateEscalationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateEscalation`.
+message SimulateEscalationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateEscalationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Escalation escalation = 1;
+  SimulateEscalationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainEscalationCalculation`.
+message ExplainEscalationCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  ExplainEscalationCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainEscalationCalculation`.
+message ExplainEscalationCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Escalation escalation = 1;
+  ExplainEscalationCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetEscalationRates`.
+message GetEscalationRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetEscalationRates`.
+message GetEscalationRatesResponse {
+  Escalation escalation = 1;
+  acme.common.v1.OperationResult result = 2;
+}

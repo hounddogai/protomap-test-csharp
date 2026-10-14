@@ -1,0 +1,294 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.licensing.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/licensing/v1/licensing.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Licensing.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/licensing/v1;licensingv1";
+option java_multiple_files = true;
+option java_outer_classname = "LicenseAssignmentLifecycleServiceProto";
+option java_package = "com.acme.licensing.v1";
+
+// Moves a license assignment between the states of its lifecycle.
+service LicenseAssignmentLifecycleService {
+  // Activates a license assignment.
+  rpc ActivateLicenseAssignment(ActivateLicenseAssignmentRequest) returns (ActivateLicenseAssignmentResponse);
+
+  // Suspends a license assignment.
+  rpc SuspendLicenseAssignment(SuspendLicenseAssignmentRequest) returns (SuspendLicenseAssignmentResponse);
+
+  // Reinstates a license assignment.
+  rpc ReinstateLicenseAssignment(ReinstateLicenseAssignmentRequest) returns (ReinstateLicenseAssignmentResponse);
+
+  // Terminates a license assignment.
+  rpc TerminateLicenseAssignment(TerminateLicenseAssignmentRequest) returns (TerminateLicenseAssignmentResponse);
+
+  // Renews a license assignment.
+  rpc RenewLicenseAssignment(RenewLicenseAssignmentRequest) returns (RenewLicenseAssignmentResponse);
+
+  // Expires a license assignment.
+  rpc ExpireLicenseAssignment(ExpireLicenseAssignmentRequest) returns (ExpireLicenseAssignmentResponse);
+
+  // Returns a license assignment.
+  rpc GetLicenseAssignmentLifecycle(GetLicenseAssignmentLifecycleRequest) returns (GetLicenseAssignmentLifecycleResponse);
+
+  // Schedules a license assignment.
+  rpc ScheduleLicenseAssignmentExpiry(ScheduleLicenseAssignmentExpiryRequest) returns (ScheduleLicenseAssignmentExpiryResponse);
+}
+
+// The request of `ActivateLicenseAssignment`.
+message ActivateLicenseAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  ActivateLicenseAssignmentRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateLicenseAssignment`.
+message ActivateLicenseAssignmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  ActivateLicenseAssignmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendLicenseAssignment`.
+message SuspendLicenseAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  SuspendLicenseAssignmentRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendLicenseAssignment`.
+message SuspendLicenseAssignmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  SuspendLicenseAssignmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateLicenseAssignment`.
+message ReinstateLicenseAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  ReinstateLicenseAssignmentRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateLicenseAssignment`.
+message ReinstateLicenseAssignmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  ReinstateLicenseAssignmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateLicenseAssignment`.
+message TerminateLicenseAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  TerminateLicenseAssignmentRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateLicenseAssignment`.
+message TerminateLicenseAssignmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  TerminateLicenseAssignmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewLicenseAssignment`.
+message RenewLicenseAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  RenewLicenseAssignmentRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewLicenseAssignment`.
+message RenewLicenseAssignmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  RenewLicenseAssignmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireLicenseAssignment`.
+message ExpireLicenseAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  ExpireLicenseAssignmentRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireLicenseAssignment`.
+message ExpireLicenseAssignmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  ExpireLicenseAssignmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetLicenseAssignmentLifecycle`.
+message GetLicenseAssignmentLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetLicenseAssignmentLifecycle`.
+message GetLicenseAssignmentLifecycleResponse {
+  LicenseAssignment license_assignment = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleLicenseAssignmentExpiry`.
+message ScheduleLicenseAssignmentExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  ScheduleLicenseAssignmentExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleLicenseAssignmentExpiry`.
+message ScheduleLicenseAssignmentExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  ScheduleLicenseAssignmentExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

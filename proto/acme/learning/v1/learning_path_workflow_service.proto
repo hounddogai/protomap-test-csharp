@@ -1,0 +1,296 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.learning.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/learning/v1/learning.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Learning.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/learning/v1;learningv1";
+option java_multiple_files = true;
+option java_outer_classname = "LearningPathWorkflowServiceProto";
+option java_package = "com.acme.learning.v1";
+
+// Runs the long-lived workflow that takes a learning path from start to finish.
+service LearningPathWorkflowService {
+  // Starts a learning path.
+  rpc StartLearningPathWorkflow(StartLearningPathWorkflowRequest) returns (StartLearningPathWorkflowResponse);
+
+  // Advances a learning path.
+  rpc AdvanceLearningPathWorkflow(AdvanceLearningPathWorkflowRequest) returns (AdvanceLearningPathWorkflowResponse);
+
+  // Cancels a learning path.
+  rpc CancelLearningPathWorkflow(CancelLearningPathWorkflowRequest) returns (CancelLearningPathWorkflowResponse);
+
+  // Retrys a learning path.
+  rpc RetryLearningPathWorkflow(RetryLearningPathWorkflowRequest) returns (RetryLearningPathWorkflowResponse);
+
+  // Pauses a learning path.
+  rpc PauseLearningPathWorkflow(PauseLearningPathWorkflowRequest) returns (PauseLearningPathWorkflowResponse);
+
+  // Resumes a learning path.
+  rpc ResumeLearningPathWorkflow(ResumeLearningPathWorkflowRequest) returns (ResumeLearningPathWorkflowResponse);
+
+  // Returns a learning path.
+  rpc InspectLearningPathWorkflow(InspectLearningPathWorkflowRequest) returns (InspectLearningPathWorkflowResponse);
+
+  // Lists learning paths a page at a time.
+  rpc ListLearningPathWorkflows(ListLearningPathWorkflowsRequest) returns (ListLearningPathWorkflowsResponse);
+}
+
+// The request of `StartLearningPathWorkflow`.
+message StartLearningPathWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  LearningPath learning_path = 3;
+  StartLearningPathWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartLearningPathWorkflow`.
+message StartLearningPathWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LearningPath learning_path = 1;
+  StartLearningPathWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceLearningPathWorkflow`.
+message AdvanceLearningPathWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  LearningPath learning_path = 3;
+  AdvanceLearningPathWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceLearningPathWorkflow`.
+message AdvanceLearningPathWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LearningPath learning_path = 1;
+  AdvanceLearningPathWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelLearningPathWorkflow`.
+message CancelLearningPathWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  LearningPath learning_path = 3;
+  CancelLearningPathWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelLearningPathWorkflow`.
+message CancelLearningPathWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LearningPath learning_path = 1;
+  CancelLearningPathWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryLearningPathWorkflow`.
+message RetryLearningPathWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  LearningPath learning_path = 3;
+  RetryLearningPathWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryLearningPathWorkflow`.
+message RetryLearningPathWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LearningPath learning_path = 1;
+  RetryLearningPathWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseLearningPathWorkflow`.
+message PauseLearningPathWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  LearningPath learning_path = 3;
+  PauseLearningPathWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseLearningPathWorkflow`.
+message PauseLearningPathWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LearningPath learning_path = 1;
+  PauseLearningPathWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeLearningPathWorkflow`.
+message ResumeLearningPathWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  LearningPath learning_path = 3;
+  ResumeLearningPathWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeLearningPathWorkflow`.
+message ResumeLearningPathWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LearningPath learning_path = 1;
+  ResumeLearningPathWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectLearningPathWorkflow`.
+message InspectLearningPathWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectLearningPathWorkflow`.
+message InspectLearningPathWorkflowResponse {
+  LearningPath learning_path = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListLearningPathWorkflows`.
+message ListLearningPathWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated LearningPathStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListLearningPathWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListLearningPathWorkflows`.
+message ListLearningPathWorkflowsResponse {
+  repeated LearningPath learning_paths = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}

@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.onboarding.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/onboarding/v1/onboarding.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Onboarding.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/onboarding/v1;onboardingv1";
+option java_multiple_files = true;
+option java_outer_classname = "OnboardingPlanApprovalServiceProto";
+option java_package = "com.acme.onboarding.v1";
+
+// Routes onboarding plans through approval, with escalation and delegation.
+service OnboardingPlanApprovalService {
+  // Submits an onboarding plan.
+  rpc SubmitOnboardingPlan(SubmitOnboardingPlanRequest) returns (SubmitOnboardingPlanResponse);
+
+  // Approves an onboarding plan.
+  rpc ApproveOnboardingPlan(ApproveOnboardingPlanRequest) returns (ApproveOnboardingPlanResponse);
+
+  // Rejects an onboarding plan.
+  rpc RejectOnboardingPlan(RejectOnboardingPlanRequest) returns (RejectOnboardingPlanResponse);
+
+  // Escalates an onboarding plan.
+  rpc EscalateOnboardingPlan(EscalateOnboardingPlanRequest) returns (EscalateOnboardingPlanResponse);
+
+  // Lists onboarding plans a page at a time.
+  rpc ListPendingOnboardingPlans(ListPendingOnboardingPlansRequest) returns (ListPendingOnboardingPlansResponse);
+
+  // Delegates an onboarding plan.
+  rpc DelegateOnboardingPlanApproval(DelegateOnboardingPlanApprovalRequest) returns (DelegateOnboardingPlanApprovalResponse);
+
+  // Recalls an onboarding plan.
+  rpc RecallOnboardingPlan(RecallOnboardingPlanRequest) returns (RecallOnboardingPlanResponse);
+
+  // Returns an onboarding plan.
+  rpc GetOnboardingPlanApprovalStatus(GetOnboardingPlanApprovalStatusRequest) returns (GetOnboardingPlanApprovalStatusResponse);
+
+  // Comments an onboarding plan.
+  rpc CommentOnboardingPlanApproval(CommentOnboardingPlanApprovalRequest) returns (CommentOnboardingPlanApprovalResponse);
+}
+
+// The request of `SubmitOnboardingPlan`.
+message SubmitOnboardingPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  OnboardingPlan onboarding_plan = 3;
+  SubmitOnboardingPlanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitOnboardingPlan`.
+message SubmitOnboardingPlanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  SubmitOnboardingPlanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveOnboardingPlan`.
+message ApproveOnboardingPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  OnboardingPlan onboarding_plan = 3;
+  ApproveOnboardingPlanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveOnboardingPlan`.
+message ApproveOnboardingPlanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  ApproveOnboardingPlanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectOnboardingPlan`.
+message RejectOnboardingPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  OnboardingPlan onboarding_plan = 3;
+  RejectOnboardingPlanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectOnboardingPlan`.
+message RejectOnboardingPlanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  RejectOnboardingPlanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateOnboardingPlan`.
+message EscalateOnboardingPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  OnboardingPlan onboarding_plan = 3;
+  EscalateOnboardingPlanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateOnboardingPlan`.
+message EscalateOnboardingPlanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  EscalateOnboardingPlanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingOnboardingPlans`.
+message ListPendingOnboardingPlansRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated OnboardingPlanStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingOnboardingPlansRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingOnboardingPlans`.
+message ListPendingOnboardingPlansResponse {
+  repeated OnboardingPlan onboarding_plans = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateOnboardingPlanApproval`.
+message DelegateOnboardingPlanApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  OnboardingPlan onboarding_plan = 3;
+  DelegateOnboardingPlanApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateOnboardingPlanApproval`.
+message DelegateOnboardingPlanApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  DelegateOnboardingPlanApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallOnboardingPlan`.
+message RecallOnboardingPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  OnboardingPlan onboarding_plan = 3;
+  RecallOnboardingPlanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallOnboardingPlan`.
+message RecallOnboardingPlanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  RecallOnboardingPlanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetOnboardingPlanApprovalStatus`.
+message GetOnboardingPlanApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetOnboardingPlanApprovalStatus`.
+message GetOnboardingPlanApprovalStatusResponse {
+  OnboardingPlan onboarding_plan = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentOnboardingPlanApproval`.
+message CommentOnboardingPlanApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  OnboardingPlan onboarding_plan = 3;
+  CommentOnboardingPlanApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentOnboardingPlanApproval`.
+message CommentOnboardingPlanApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  CommentOnboardingPlanApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

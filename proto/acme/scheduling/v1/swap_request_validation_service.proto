@@ -1,0 +1,268 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.scheduling.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/scheduling/v1/scheduling.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Scheduling.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/scheduling/v1;schedulingv1";
+option java_multiple_files = true;
+option java_outer_classname = "SwapRequestValidationServiceProto";
+option java_package = "com.acme.scheduling.v1";
+
+// Checks swap requests against the rules before anything acts on them.
+service SwapRequestValidationService {
+  // Validates a swap request.
+  rpc ValidateSwapRequest(ValidateSwapRequestRequest) returns (ValidateSwapRequestResponse);
+
+  // Previews a swap request.
+  rpc PreviewSwapRequest(PreviewSwapRequestRequest) returns (PreviewSwapRequestResponse);
+
+  // Checks a swap request.
+  rpc CheckSwapRequestEligibility(CheckSwapRequestEligibilityRequest) returns (CheckSwapRequestEligibilityResponse);
+
+  // Normalizes a swap request.
+  rpc NormalizeSwapRequest(NormalizeSwapRequestRequest) returns (NormalizeSwapRequestResponse);
+
+  // Explains a swap request.
+  rpc ExplainSwapRequestDecision(ExplainSwapRequestDecisionRequest) returns (ExplainSwapRequestDecisionResponse);
+
+  // Scores a swap request.
+  rpc ScoreSwapRequest(ScoreSwapRequestRequest) returns (ScoreSwapRequestResponse);
+
+  // Returns a swap request.
+  rpc GetSwapRequestRules(GetSwapRequestRulesRequest) returns (GetSwapRequestRulesResponse);
+}
+
+// The request of `ValidateSwapRequest`.
+message ValidateSwapRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  ValidateSwapRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateSwapRequest`.
+message ValidateSwapRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SwapRequest swap_request = 1;
+  ValidateSwapRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewSwapRequest`.
+message PreviewSwapRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  PreviewSwapRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewSwapRequest`.
+message PreviewSwapRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SwapRequest swap_request = 1;
+  PreviewSwapRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckSwapRequestEligibility`.
+message CheckSwapRequestEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  CheckSwapRequestEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckSwapRequestEligibility`.
+message CheckSwapRequestEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SwapRequest swap_request = 1;
+  CheckSwapRequestEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeSwapRequest`.
+message NormalizeSwapRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  NormalizeSwapRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeSwapRequest`.
+message NormalizeSwapRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SwapRequest swap_request = 1;
+  NormalizeSwapRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainSwapRequestDecision`.
+message ExplainSwapRequestDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  ExplainSwapRequestDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainSwapRequestDecision`.
+message ExplainSwapRequestDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SwapRequest swap_request = 1;
+  ExplainSwapRequestDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreSwapRequest`.
+message ScoreSwapRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  ScoreSwapRequestRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreSwapRequest`.
+message ScoreSwapRequestResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreSwapRequestResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  SwapRequest swap_request = 1;
+  ScoreSwapRequestResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetSwapRequestRules`.
+message GetSwapRequestRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetSwapRequestRules`.
+message GetSwapRequestRulesResponse {
+  SwapRequest swap_request = 1;
+  acme.common.v1.OperationResult result = 2;
+}

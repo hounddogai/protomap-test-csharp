@@ -1,0 +1,60 @@
+using Acme.Workforce.Platform;
+using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using ApiCommon = Acme.Common.V1;
+using ApiCorporateevents = Acme.Corporateevents.V1;
+using ApiDocuments = Acme.Documents.V1;
+using ApiHelpdesk = Acme.Helpdesk.V1;
+using ApiIdentity = Acme.Identity.V1;
+using ApiItsm = Acme.Itsm.V1;
+using ApiLedger = Acme.Ledger.V1;
+using ApiMetrics = Acme.Metrics.V1;
+using ApiPerformance = Acme.Performance.V1;
+using ApiPersonalization = Acme.Personalization.V1;
+using ApiRecruiting = Acme.Recruiting.V1;
+using ApiTravel = Acme.Travel.V1;
+
+namespace Acme.Workforce.Performance;
+
+/// <summary>
+/// The application port for CloneReview.
+/// </summary>
+public interface IGoalApprovalEndpointSendGetGoalApprovalStatus0Port
+{
+    Task<ApiPerformance.CloneReviewResponse> SendAsync(ApiPerformance.CloneReviewRequest request, CancellationToken token);
+}
+
+public sealed class GoalApprovalEndpointSendGetGoalApprovalStatus0PortAdapter(ApiPerformance.ReviewService.ReviewServiceClient client) : IGoalApprovalEndpointSendGetGoalApprovalStatus0Port
+{
+    public async Task<ApiPerformance.CloneReviewResponse> SendAsync(ApiPerformance.CloneReviewRequest request, CancellationToken token)
+    {
+        using var rpc = client.CloneReviewAsync(request, cancellationToken: token);
+        return await rpc.ResponseAsync;
+    }
+}
+
+public static class GoalApprovalEndpointRequests
+{
+    /// <summary>
+    /// Builds the ListUsers request from the current workflow state.
+    /// </summary>
+    public static ApiIdentity.ListUsersRequest EscalateGoalToListUsers2(this ApiPerformance.EscalateGoalRequest request, ApiPerformance.CommentReviewApprovalResponse reply1)
+    {
+        return new ApiIdentity.ListUsersRequest
+        {
+            Context = (request.Context ?? new ApiCommon.RequestContext()),
+            Filter = new ApiIdentity.ListUsersRequest.Types.Filter
+            {
+                Region = (reply1.Review?.BillingAddress?.Region ?? ""),
+            },
+        };
+    }
+}

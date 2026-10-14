@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.corporateevents.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/corporateevents/v1/corporateevents.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Corporateevents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/corporateevents/v1;corporateeventsv1";
+option java_multiple_files = true;
+option java_outer_classname = "RegistrationWorkflowServiceProto";
+option java_package = "com.acme.corporateevents.v1";
+
+// Runs the long-lived workflow that takes a registration from start to finish.
+service RegistrationWorkflowService {
+  // Starts a registration.
+  rpc StartRegistrationWorkflow(StartRegistrationWorkflowRequest) returns (StartRegistrationWorkflowResponse);
+
+  // Advances a registration.
+  rpc AdvanceRegistrationWorkflow(AdvanceRegistrationWorkflowRequest) returns (AdvanceRegistrationWorkflowResponse);
+
+  // Cancels a registration.
+  rpc CancelRegistrationWorkflow(CancelRegistrationWorkflowRequest) returns (CancelRegistrationWorkflowResponse);
+
+  // Retrys a registration.
+  rpc RetryRegistrationWorkflow(RetryRegistrationWorkflowRequest) returns (RetryRegistrationWorkflowResponse);
+
+  // Pauses a registration.
+  rpc PauseRegistrationWorkflow(PauseRegistrationWorkflowRequest) returns (PauseRegistrationWorkflowResponse);
+
+  // Resumes a registration.
+  rpc ResumeRegistrationWorkflow(ResumeRegistrationWorkflowRequest) returns (ResumeRegistrationWorkflowResponse);
+
+  // Returns a registration.
+  rpc InspectRegistrationWorkflow(InspectRegistrationWorkflowRequest) returns (InspectRegistrationWorkflowResponse);
+
+  // Lists registrations a page at a time.
+  rpc ListRegistrationWorkflows(ListRegistrationWorkflowsRequest) returns (ListRegistrationWorkflowsResponse);
+
+  // Signals a registration.
+  rpc SignalRegistrationWorkflow(SignalRegistrationWorkflowRequest) returns (SignalRegistrationWorkflowResponse);
+}
+
+// The request of `StartRegistrationWorkflow`.
+message StartRegistrationWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  StartRegistrationWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartRegistrationWorkflow`.
+message StartRegistrationWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  StartRegistrationWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceRegistrationWorkflow`.
+message AdvanceRegistrationWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  AdvanceRegistrationWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceRegistrationWorkflow`.
+message AdvanceRegistrationWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  AdvanceRegistrationWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelRegistrationWorkflow`.
+message CancelRegistrationWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  CancelRegistrationWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelRegistrationWorkflow`.
+message CancelRegistrationWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  CancelRegistrationWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryRegistrationWorkflow`.
+message RetryRegistrationWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  RetryRegistrationWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryRegistrationWorkflow`.
+message RetryRegistrationWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  RetryRegistrationWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseRegistrationWorkflow`.
+message PauseRegistrationWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  PauseRegistrationWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseRegistrationWorkflow`.
+message PauseRegistrationWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  PauseRegistrationWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeRegistrationWorkflow`.
+message ResumeRegistrationWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  ResumeRegistrationWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeRegistrationWorkflow`.
+message ResumeRegistrationWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  ResumeRegistrationWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectRegistrationWorkflow`.
+message InspectRegistrationWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectRegistrationWorkflow`.
+message InspectRegistrationWorkflowResponse {
+  Registration registration = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListRegistrationWorkflows`.
+message ListRegistrationWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated RegistrationStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListRegistrationWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListRegistrationWorkflows`.
+message ListRegistrationWorkflowsResponse {
+  repeated Registration registrations = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalRegistrationWorkflow`.
+message SignalRegistrationWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  SignalRegistrationWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalRegistrationWorkflow`.
+message SignalRegistrationWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  SignalRegistrationWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

@@ -1,0 +1,33 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.devices.v1;
+
+option csharp_namespace = "Acme.Devices.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/devices/v1;devicesv1";
+option java_multiple_files = true;
+option java_outer_classname = "RefsProto";
+option java_package = "com.acme.devices.v1";
+
+// A reference to a managed device of the devices domain.
+message ManagedDeviceRef {
+  string managed_device_id = 1;
+  string display_name = 2;
+  string code = 3;
+}
+
+// A reference to a device policy of the devices domain.
+message DevicePolicyRef {
+  string device_policy_id = 1;
+  string display_name = 2;
+  int64 version = 3;
+}
+
+// A reference to a compliance scan of the devices domain.
+message ComplianceScanRef {
+  string compliance_scan_id = 1;
+  string display_name = 2;
+  string kind = 3;
+}

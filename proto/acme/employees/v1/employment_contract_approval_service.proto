@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.employees.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/employees/v1/employees.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Employees.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/employees/v1;employeesv1";
+option java_multiple_files = true;
+option java_outer_classname = "EmploymentContractApprovalServiceProto";
+option java_package = "com.acme.employees.v1";
+
+// Routes employment contracts through approval, with escalation and delegation.
+service EmploymentContractApprovalService {
+  // Submits an employment contract.
+  rpc SubmitEmploymentContract(SubmitEmploymentContractRequest) returns (SubmitEmploymentContractResponse);
+
+  // Approves an employment contract.
+  rpc ApproveEmploymentContract(ApproveEmploymentContractRequest) returns (ApproveEmploymentContractResponse);
+
+  // Rejects an employment contract.
+  rpc RejectEmploymentContract(RejectEmploymentContractRequest) returns (RejectEmploymentContractResponse);
+
+  // Escalates an employment contract.
+  rpc EscalateEmploymentContract(EscalateEmploymentContractRequest) returns (EscalateEmploymentContractResponse);
+
+  // Lists employment contracts a page at a time.
+  rpc ListPendingEmploymentContracts(ListPendingEmploymentContractsRequest) returns (ListPendingEmploymentContractsResponse);
+
+  // Delegates an employment contract.
+  rpc DelegateEmploymentContractApproval(DelegateEmploymentContractApprovalRequest) returns (DelegateEmploymentContractApprovalResponse);
+
+  // Recalls an employment contract.
+  rpc RecallEmploymentContract(RecallEmploymentContractRequest) returns (RecallEmploymentContractResponse);
+
+  // Returns an employment contract.
+  rpc GetEmploymentContractApprovalStatus(GetEmploymentContractApprovalStatusRequest) returns (GetEmploymentContractApprovalStatusResponse);
+
+  // Comments an employment contract.
+  rpc CommentEmploymentContractApproval(CommentEmploymentContractApprovalRequest) returns (CommentEmploymentContractApprovalResponse);
+}
+
+// The request of `SubmitEmploymentContract`.
+message SubmitEmploymentContractRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  SubmitEmploymentContractRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitEmploymentContract`.
+message SubmitEmploymentContractResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  EmploymentContract employment_contract = 1;
+  SubmitEmploymentContractResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveEmploymentContract`.
+message ApproveEmploymentContractRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  ApproveEmploymentContractRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveEmploymentContract`.
+message ApproveEmploymentContractResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  EmploymentContract employment_contract = 1;
+  ApproveEmploymentContractResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectEmploymentContract`.
+message RejectEmploymentContractRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  RejectEmploymentContractRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectEmploymentContract`.
+message RejectEmploymentContractResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  EmploymentContract employment_contract = 1;
+  RejectEmploymentContractResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateEmploymentContract`.
+message EscalateEmploymentContractRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  EscalateEmploymentContractRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateEmploymentContract`.
+message EscalateEmploymentContractResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  EmploymentContract employment_contract = 1;
+  EscalateEmploymentContractResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingEmploymentContracts`.
+message ListPendingEmploymentContractsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EmploymentContractStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingEmploymentContractsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingEmploymentContracts`.
+message ListPendingEmploymentContractsResponse {
+  repeated EmploymentContract employment_contracts = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateEmploymentContractApproval`.
+message DelegateEmploymentContractApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  DelegateEmploymentContractApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateEmploymentContractApproval`.
+message DelegateEmploymentContractApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  EmploymentContract employment_contract = 1;
+  DelegateEmploymentContractApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallEmploymentContract`.
+message RecallEmploymentContractRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  RecallEmploymentContractRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallEmploymentContract`.
+message RecallEmploymentContractResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  EmploymentContract employment_contract = 1;
+  RecallEmploymentContractResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetEmploymentContractApprovalStatus`.
+message GetEmploymentContractApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetEmploymentContractApprovalStatus`.
+message GetEmploymentContractApprovalStatusResponse {
+  EmploymentContract employment_contract = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentEmploymentContractApproval`.
+message CommentEmploymentContractApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  CommentEmploymentContractApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentEmploymentContractApproval`.
+message CommentEmploymentContractApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  EmploymentContract employment_contract = 1;
+  CommentEmploymentContractApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

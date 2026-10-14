@@ -1,0 +1,258 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.travel.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/travel/v1/travel.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Travel.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/travel/v1;travelv1";
+option java_multiple_files = true;
+option java_outer_classname = "ItineraryLifecycleServiceProto";
+option java_package = "com.acme.travel.v1";
+
+// Moves an itinerary between the states of its lifecycle.
+service ItineraryLifecycleService {
+  // Activates an itinerary.
+  rpc ActivateItinerary(ActivateItineraryRequest) returns (ActivateItineraryResponse);
+
+  // Suspends an itinerary.
+  rpc SuspendItinerary(SuspendItineraryRequest) returns (SuspendItineraryResponse);
+
+  // Terminates an itinerary.
+  rpc TerminateItinerary(TerminateItineraryRequest) returns (TerminateItineraryResponse);
+
+  // Renews an itinerary.
+  rpc RenewItinerary(RenewItineraryRequest) returns (RenewItineraryResponse);
+
+  // Expires an itinerary.
+  rpc ExpireItinerary(ExpireItineraryRequest) returns (ExpireItineraryResponse);
+
+  // Returns an itinerary.
+  rpc GetItineraryLifecycle(GetItineraryLifecycleRequest) returns (GetItineraryLifecycleResponse);
+
+  // Schedules an itinerary.
+  rpc ScheduleItineraryExpiry(ScheduleItineraryExpiryRequest) returns (ScheduleItineraryExpiryResponse);
+}
+
+// The request of `ActivateItinerary`.
+message ActivateItineraryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  ActivateItineraryRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateItinerary`.
+message ActivateItineraryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  ActivateItineraryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendItinerary`.
+message SuspendItineraryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  SuspendItineraryRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendItinerary`.
+message SuspendItineraryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  SuspendItineraryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateItinerary`.
+message TerminateItineraryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  TerminateItineraryRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateItinerary`.
+message TerminateItineraryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  TerminateItineraryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewItinerary`.
+message RenewItineraryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  RenewItineraryRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewItinerary`.
+message RenewItineraryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  RenewItineraryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireItinerary`.
+message ExpireItineraryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  ExpireItineraryRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireItinerary`.
+message ExpireItineraryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  ExpireItineraryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetItineraryLifecycle`.
+message GetItineraryLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetItineraryLifecycle`.
+message GetItineraryLifecycleResponse {
+  Itinerary itinerary = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleItineraryExpiry`.
+message ScheduleItineraryExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  ScheduleItineraryExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleItineraryExpiry`.
+message ScheduleItineraryExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  ScheduleItineraryExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
