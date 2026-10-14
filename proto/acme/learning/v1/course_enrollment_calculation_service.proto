@@ -1,0 +1,292 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.learning.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/learning/v1/learning.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Learning.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/learning/v1;learningv1";
+option java_multiple_files = true;
+option java_outer_classname = "CourseEnrollmentCalculationServiceProto";
+option java_package = "com.acme.learning.v1";
+
+// Computes the figures of a course enrollment, such as totals, taxes, and estimates.
+service CourseEnrollmentCalculationService {
+  // Calculates a course enrollment.
+  rpc CalculateCourseEnrollment(CalculateCourseEnrollmentRequest) returns (CalculateCourseEnrollmentResponse);
+
+  // Estimates a course enrollment.
+  rpc EstimateCourseEnrollment(EstimateCourseEnrollmentRequest) returns (EstimateCourseEnrollmentResponse);
+
+  // Quotes a course enrollment.
+  rpc QuoteCourseEnrollment(QuoteCourseEnrollmentRequest) returns (QuoteCourseEnrollmentResponse);
+
+  // Compares a course enrollment.
+  rpc CompareCourseEnrollmentOptions(CompareCourseEnrollmentOptionsRequest) returns (CompareCourseEnrollmentOptionsResponse);
+
+  // Recalculates a course enrollment.
+  rpc RecalculateCourseEnrollments(RecalculateCourseEnrollmentsRequest) returns (RecalculateCourseEnrollmentsResponse);
+
+  // Explains a course enrollment.
+  rpc ExplainCourseEnrollmentCalculation(ExplainCourseEnrollmentCalculationRequest) returns (ExplainCourseEnrollmentCalculationResponse);
+
+  // Returns a course enrollment.
+  rpc GetCourseEnrollmentRates(GetCourseEnrollmentRatesRequest) returns (GetCourseEnrollmentRatesResponse);
+}
+
+// The request of `CalculateCourseEnrollment`.
+message CalculateCourseEnrollmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  CourseEnrollment course_enrollment = 3;
+  CalculateCourseEnrollmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateCourseEnrollment`.
+message CalculateCourseEnrollmentResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateCourseEnrollmentResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  CourseEnrollment course_enrollment = 1;
+  CalculateCourseEnrollmentResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateCourseEnrollment`.
+message EstimateCourseEnrollmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  CourseEnrollment course_enrollment = 3;
+  EstimateCourseEnrollmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateCourseEnrollment`.
+message EstimateCourseEnrollmentResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateCourseEnrollmentResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  CourseEnrollment course_enrollment = 1;
+  EstimateCourseEnrollmentResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteCourseEnrollment`.
+message QuoteCourseEnrollmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  CourseEnrollment course_enrollment = 3;
+  QuoteCourseEnrollmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteCourseEnrollment`.
+message QuoteCourseEnrollmentResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteCourseEnrollmentResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  CourseEnrollment course_enrollment = 1;
+  QuoteCourseEnrollmentResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareCourseEnrollmentOptions`.
+message CompareCourseEnrollmentOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  CourseEnrollment course_enrollment = 3;
+  CompareCourseEnrollmentOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareCourseEnrollmentOptions`.
+message CompareCourseEnrollmentOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareCourseEnrollmentOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  CourseEnrollment course_enrollment = 1;
+  CompareCourseEnrollmentOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateCourseEnrollments`.
+message RecalculateCourseEnrollmentsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  CourseEnrollment course_enrollment = 3;
+  RecalculateCourseEnrollmentsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateCourseEnrollments`.
+message RecalculateCourseEnrollmentsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateCourseEnrollmentsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  CourseEnrollment course_enrollment = 1;
+  RecalculateCourseEnrollmentsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainCourseEnrollmentCalculation`.
+message ExplainCourseEnrollmentCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  CourseEnrollment course_enrollment = 3;
+  ExplainCourseEnrollmentCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainCourseEnrollmentCalculation`.
+message ExplainCourseEnrollmentCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CourseEnrollment course_enrollment = 1;
+  ExplainCourseEnrollmentCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetCourseEnrollmentRates`.
+message GetCourseEnrollmentRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetCourseEnrollmentRates`.
+message GetCourseEnrollmentRatesResponse {
+  CourseEnrollment course_enrollment = 1;
+  acme.common.v1.OperationResult result = 2;
+}

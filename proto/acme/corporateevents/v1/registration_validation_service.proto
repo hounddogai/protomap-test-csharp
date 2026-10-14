@@ -1,0 +1,260 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.corporateevents.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/corporateevents/v1/corporateevents.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Corporateevents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/corporateevents/v1;corporateeventsv1";
+option java_multiple_files = true;
+option java_outer_classname = "RegistrationValidationServiceProto";
+option java_package = "com.acme.corporateevents.v1";
+
+// Checks registrations against the rules before anything acts on them.
+service RegistrationValidationService {
+  // Validates a registration.
+  rpc ValidateRegistration(ValidateRegistrationRequest) returns (ValidateRegistrationResponse);
+
+  // Previews a registration.
+  rpc PreviewRegistration(PreviewRegistrationRequest) returns (PreviewRegistrationResponse);
+
+  // Checks a registration.
+  rpc CheckRegistrationEligibility(CheckRegistrationEligibilityRequest) returns (CheckRegistrationEligibilityResponse);
+
+  // Normalizes a registration.
+  rpc NormalizeRegistration(NormalizeRegistrationRequest) returns (NormalizeRegistrationResponse);
+
+  // Explains a registration.
+  rpc ExplainRegistrationDecision(ExplainRegistrationDecisionRequest) returns (ExplainRegistrationDecisionResponse);
+
+  // Lints a registration.
+  rpc LintRegistrations(LintRegistrationsRequest) returns (LintRegistrationsResponse);
+
+  // Returns a registration.
+  rpc GetRegistrationRules(GetRegistrationRulesRequest) returns (GetRegistrationRulesResponse);
+}
+
+// The request of `ValidateRegistration`.
+message ValidateRegistrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  ValidateRegistrationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateRegistration`.
+message ValidateRegistrationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  ValidateRegistrationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewRegistration`.
+message PreviewRegistrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  PreviewRegistrationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewRegistration`.
+message PreviewRegistrationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  PreviewRegistrationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckRegistrationEligibility`.
+message CheckRegistrationEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  CheckRegistrationEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckRegistrationEligibility`.
+message CheckRegistrationEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  CheckRegistrationEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeRegistration`.
+message NormalizeRegistrationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  NormalizeRegistrationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeRegistration`.
+message NormalizeRegistrationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  NormalizeRegistrationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainRegistrationDecision`.
+message ExplainRegistrationDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  ExplainRegistrationDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainRegistrationDecision`.
+message ExplainRegistrationDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  ExplainRegistrationDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintRegistrations`.
+message LintRegistrationsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  Registration registration = 3;
+  LintRegistrationsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintRegistrations`.
+message LintRegistrationsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Registration registration = 1;
+  LintRegistrationsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetRegistrationRules`.
+message GetRegistrationRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string registration_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetRegistrationRules`.
+message GetRegistrationRulesResponse {
+  Registration registration = 1;
+  acme.common.v1.OperationResult result = 2;
+}

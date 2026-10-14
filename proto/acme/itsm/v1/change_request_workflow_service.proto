@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.itsm.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/itsm/v1/itsm.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Itsm.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/itsm/v1;itsmv1";
+option java_multiple_files = true;
+option java_outer_classname = "ChangeRequestWorkflowServiceProto";
+option java_package = "com.acme.itsm.v1";
+
+// Runs the long-lived workflow that takes a change request from start to finish.
+service ChangeRequestWorkflowService {
+  // Starts a change request.
+  rpc StartChangeRequestWorkflow(StartChangeRequestWorkflowRequest) returns (StartChangeRequestWorkflowResponse);
+
+  // Advances a change request.
+  rpc AdvanceChangeRequestWorkflow(AdvanceChangeRequestWorkflowRequest) returns (AdvanceChangeRequestWorkflowResponse);
+
+  // Cancels a change request.
+  rpc CancelChangeRequestWorkflow(CancelChangeRequestWorkflowRequest) returns (CancelChangeRequestWorkflowResponse);
+
+  // Retrys a change request.
+  rpc RetryChangeRequestWorkflow(RetryChangeRequestWorkflowRequest) returns (RetryChangeRequestWorkflowResponse);
+
+  // Pauses a change request.
+  rpc PauseChangeRequestWorkflow(PauseChangeRequestWorkflowRequest) returns (PauseChangeRequestWorkflowResponse);
+
+  // Resumes a change request.
+  rpc ResumeChangeRequestWorkflow(ResumeChangeRequestWorkflowRequest) returns (ResumeChangeRequestWorkflowResponse);
+
+  // Returns a change request.
+  rpc InspectChangeRequestWorkflow(InspectChangeRequestWorkflowRequest) returns (InspectChangeRequestWorkflowResponse);
+
+  // Lists change requests a page at a time.
+  rpc ListChangeRequestWorkflows(ListChangeRequestWorkflowsRequest) returns (ListChangeRequestWorkflowsResponse);
+
+  // Signals a change request.
+  rpc SignalChangeRequestWorkflow(SignalChangeRequestWorkflowRequest) returns (SignalChangeRequestWorkflowResponse);
+}
+
+// The request of `StartChangeRequestWorkflow`.
+message StartChangeRequestWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  StartChangeRequestWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartChangeRequestWorkflow`.
+message StartChangeRequestWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  StartChangeRequestWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceChangeRequestWorkflow`.
+message AdvanceChangeRequestWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  AdvanceChangeRequestWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceChangeRequestWorkflow`.
+message AdvanceChangeRequestWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  AdvanceChangeRequestWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelChangeRequestWorkflow`.
+message CancelChangeRequestWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  CancelChangeRequestWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelChangeRequestWorkflow`.
+message CancelChangeRequestWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  CancelChangeRequestWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryChangeRequestWorkflow`.
+message RetryChangeRequestWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  RetryChangeRequestWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryChangeRequestWorkflow`.
+message RetryChangeRequestWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  RetryChangeRequestWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseChangeRequestWorkflow`.
+message PauseChangeRequestWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  PauseChangeRequestWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseChangeRequestWorkflow`.
+message PauseChangeRequestWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  PauseChangeRequestWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeChangeRequestWorkflow`.
+message ResumeChangeRequestWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  ResumeChangeRequestWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeChangeRequestWorkflow`.
+message ResumeChangeRequestWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  ResumeChangeRequestWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectChangeRequestWorkflow`.
+message InspectChangeRequestWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectChangeRequestWorkflow`.
+message InspectChangeRequestWorkflowResponse {
+  ChangeRequest change_request = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListChangeRequestWorkflows`.
+message ListChangeRequestWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated ChangeRequestStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListChangeRequestWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListChangeRequestWorkflows`.
+message ListChangeRequestWorkflowsResponse {
+  repeated ChangeRequest change_requests = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalChangeRequestWorkflow`.
+message SignalChangeRequestWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string change_request_id = 2;
+  ChangeRequest change_request = 3;
+  SignalChangeRequestWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalChangeRequestWorkflow`.
+message SignalChangeRequestWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ChangeRequest change_request = 1;
+  SignalChangeRequestWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

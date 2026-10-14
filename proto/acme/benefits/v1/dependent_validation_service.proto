@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.benefits.v1;
+
+import "acme/benefits/v1/benefits.proto";
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Benefits.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/benefits/v1;benefitsv1";
+option java_multiple_files = true;
+option java_outer_classname = "DependentValidationServiceProto";
+option java_package = "com.acme.benefits.v1";
+
+// Checks dependents against the rules before anything acts on them.
+service DependentValidationService {
+  // Validates a dependent.
+  rpc ValidateDependent(ValidateDependentRequest) returns (ValidateDependentResponse);
+
+  // Previews a dependent.
+  rpc PreviewDependent(PreviewDependentRequest) returns (PreviewDependentResponse);
+
+  // Checks a dependent.
+  rpc CheckDependentEligibility(CheckDependentEligibilityRequest) returns (CheckDependentEligibilityResponse);
+
+  // Normalizes a dependent.
+  rpc NormalizeDependent(NormalizeDependentRequest) returns (NormalizeDependentResponse);
+
+  // Explains a dependent.
+  rpc ExplainDependentDecision(ExplainDependentDecisionRequest) returns (ExplainDependentDecisionResponse);
+
+  // Scores a dependent.
+  rpc ScoreDependent(ScoreDependentRequest) returns (ScoreDependentResponse);
+
+  // Lints a dependent.
+  rpc LintDependents(LintDependentsRequest) returns (LintDependentsResponse);
+
+  // Returns a dependent.
+  rpc GetDependentRules(GetDependentRulesRequest) returns (GetDependentRulesResponse);
+}
+
+// The request of `ValidateDependent`.
+message ValidateDependentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  ValidateDependentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateDependent`.
+message ValidateDependentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Dependent dependent = 1;
+  ValidateDependentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewDependent`.
+message PreviewDependentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  PreviewDependentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewDependent`.
+message PreviewDependentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Dependent dependent = 1;
+  PreviewDependentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckDependentEligibility`.
+message CheckDependentEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  CheckDependentEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckDependentEligibility`.
+message CheckDependentEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Dependent dependent = 1;
+  CheckDependentEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeDependent`.
+message NormalizeDependentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  NormalizeDependentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeDependent`.
+message NormalizeDependentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Dependent dependent = 1;
+  NormalizeDependentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainDependentDecision`.
+message ExplainDependentDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  ExplainDependentDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainDependentDecision`.
+message ExplainDependentDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Dependent dependent = 1;
+  ExplainDependentDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreDependent`.
+message ScoreDependentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  ScoreDependentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreDependent`.
+message ScoreDependentResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreDependentResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Dependent dependent = 1;
+  ScoreDependentResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintDependents`.
+message LintDependentsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  LintDependentsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintDependents`.
+message LintDependentsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Dependent dependent = 1;
+  LintDependentsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetDependentRules`.
+message GetDependentRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetDependentRules`.
+message GetDependentRulesResponse {
+  Dependent dependent = 1;
+  acme.common.v1.OperationResult result = 2;
+}

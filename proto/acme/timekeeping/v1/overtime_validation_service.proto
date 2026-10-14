@@ -1,0 +1,268 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.timekeeping.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/timekeeping/v1/timekeeping.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Timekeeping.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/timekeeping/v1;timekeepingv1";
+option java_multiple_files = true;
+option java_outer_classname = "OvertimeValidationServiceProto";
+option java_package = "com.acme.timekeeping.v1";
+
+// Checks overtimes against the rules before anything acts on them.
+service OvertimeValidationService {
+  // Validates an overtime.
+  rpc ValidateOvertime(ValidateOvertimeRequest) returns (ValidateOvertimeResponse);
+
+  // Previews an overtime.
+  rpc PreviewOvertime(PreviewOvertimeRequest) returns (PreviewOvertimeResponse);
+
+  // Checks an overtime.
+  rpc CheckOvertimeEligibility(CheckOvertimeEligibilityRequest) returns (CheckOvertimeEligibilityResponse);
+
+  // Explains an overtime.
+  rpc ExplainOvertimeDecision(ExplainOvertimeDecisionRequest) returns (ExplainOvertimeDecisionResponse);
+
+  // Scores an overtime.
+  rpc ScoreOvertime(ScoreOvertimeRequest) returns (ScoreOvertimeResponse);
+
+  // Lints an overtime.
+  rpc LintOvertimes(LintOvertimesRequest) returns (LintOvertimesResponse);
+
+  // Returns an overtime.
+  rpc GetOvertimeRules(GetOvertimeRulesRequest) returns (GetOvertimeRulesResponse);
+}
+
+// The request of `ValidateOvertime`.
+message ValidateOvertimeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  ValidateOvertimeRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateOvertime`.
+message ValidateOvertimeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  ValidateOvertimeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewOvertime`.
+message PreviewOvertimeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  PreviewOvertimeRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewOvertime`.
+message PreviewOvertimeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  PreviewOvertimeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckOvertimeEligibility`.
+message CheckOvertimeEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  CheckOvertimeEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckOvertimeEligibility`.
+message CheckOvertimeEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  CheckOvertimeEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainOvertimeDecision`.
+message ExplainOvertimeDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  ExplainOvertimeDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainOvertimeDecision`.
+message ExplainOvertimeDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  ExplainOvertimeDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreOvertime`.
+message ScoreOvertimeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  ScoreOvertimeRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreOvertime`.
+message ScoreOvertimeResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreOvertimeResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Overtime overtime = 1;
+  ScoreOvertimeResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintOvertimes`.
+message LintOvertimesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  LintOvertimesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintOvertimes`.
+message LintOvertimesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  LintOvertimesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetOvertimeRules`.
+message GetOvertimeRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetOvertimeRules`.
+message GetOvertimeRulesResponse {
+  Overtime overtime = 1;
+  acme.common.v1.OperationResult result = 2;
+}

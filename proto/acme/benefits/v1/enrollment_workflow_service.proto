@@ -1,0 +1,296 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.benefits.v1;
+
+import "acme/benefits/v1/benefits.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Benefits.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/benefits/v1;benefitsv1";
+option java_multiple_files = true;
+option java_outer_classname = "EnrollmentWorkflowServiceProto";
+option java_package = "com.acme.benefits.v1";
+
+// Runs the long-lived workflow that takes an enrollment from start to finish.
+service EnrollmentWorkflowService {
+  // Starts an enrollment.
+  rpc StartEnrollmentWorkflow(StartEnrollmentWorkflowRequest) returns (StartEnrollmentWorkflowResponse);
+
+  // Advances an enrollment.
+  rpc AdvanceEnrollmentWorkflow(AdvanceEnrollmentWorkflowRequest) returns (AdvanceEnrollmentWorkflowResponse);
+
+  // Retrys an enrollment.
+  rpc RetryEnrollmentWorkflow(RetryEnrollmentWorkflowRequest) returns (RetryEnrollmentWorkflowResponse);
+
+  // Pauses an enrollment.
+  rpc PauseEnrollmentWorkflow(PauseEnrollmentWorkflowRequest) returns (PauseEnrollmentWorkflowResponse);
+
+  // Resumes an enrollment.
+  rpc ResumeEnrollmentWorkflow(ResumeEnrollmentWorkflowRequest) returns (ResumeEnrollmentWorkflowResponse);
+
+  // Returns an enrollment.
+  rpc InspectEnrollmentWorkflow(InspectEnrollmentWorkflowRequest) returns (InspectEnrollmentWorkflowResponse);
+
+  // Lists enrollments a page at a time.
+  rpc ListEnrollmentWorkflows(ListEnrollmentWorkflowsRequest) returns (ListEnrollmentWorkflowsResponse);
+
+  // Signals an enrollment.
+  rpc SignalEnrollmentWorkflow(SignalEnrollmentWorkflowRequest) returns (SignalEnrollmentWorkflowResponse);
+}
+
+// The request of `StartEnrollmentWorkflow`.
+message StartEnrollmentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string enrollment_id = 2;
+  Enrollment enrollment = 3;
+  StartEnrollmentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartEnrollmentWorkflow`.
+message StartEnrollmentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Enrollment enrollment = 1;
+  StartEnrollmentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceEnrollmentWorkflow`.
+message AdvanceEnrollmentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string enrollment_id = 2;
+  Enrollment enrollment = 3;
+  AdvanceEnrollmentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceEnrollmentWorkflow`.
+message AdvanceEnrollmentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Enrollment enrollment = 1;
+  AdvanceEnrollmentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryEnrollmentWorkflow`.
+message RetryEnrollmentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string enrollment_id = 2;
+  Enrollment enrollment = 3;
+  RetryEnrollmentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryEnrollmentWorkflow`.
+message RetryEnrollmentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Enrollment enrollment = 1;
+  RetryEnrollmentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseEnrollmentWorkflow`.
+message PauseEnrollmentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string enrollment_id = 2;
+  Enrollment enrollment = 3;
+  PauseEnrollmentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseEnrollmentWorkflow`.
+message PauseEnrollmentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Enrollment enrollment = 1;
+  PauseEnrollmentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeEnrollmentWorkflow`.
+message ResumeEnrollmentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string enrollment_id = 2;
+  Enrollment enrollment = 3;
+  ResumeEnrollmentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeEnrollmentWorkflow`.
+message ResumeEnrollmentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Enrollment enrollment = 1;
+  ResumeEnrollmentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectEnrollmentWorkflow`.
+message InspectEnrollmentWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string enrollment_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectEnrollmentWorkflow`.
+message InspectEnrollmentWorkflowResponse {
+  Enrollment enrollment = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListEnrollmentWorkflows`.
+message ListEnrollmentWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EnrollmentStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListEnrollmentWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListEnrollmentWorkflows`.
+message ListEnrollmentWorkflowsResponse {
+  repeated Enrollment enrollments = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalEnrollmentWorkflow`.
+message SignalEnrollmentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string enrollment_id = 2;
+  Enrollment enrollment = 3;
+  SignalEnrollmentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalEnrollmentWorkflow`.
+message SignalEnrollmentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Enrollment enrollment = 1;
+  SignalEnrollmentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

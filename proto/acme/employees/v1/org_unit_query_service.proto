@@ -1,0 +1,217 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.employees.v1;
+
+import "acme/common/v1/audit.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/employees/v1/employees.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Employees.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/employees/v1;employeesv1";
+option java_multiple_files = true;
+option java_outer_classname = "OrgUnitQueryServiceProto";
+option java_package = "com.acme.employees.v1";
+
+// Answers read-only questions about org units, for screens and reports.
+service OrgUnitQueryService {
+  // Returns an org unit.
+  rpc LookupOrgUnit(LookupOrgUnitRequest) returns (LookupOrgUnitResponse);
+
+  // Lists org units a page at a time.
+  rpc BrowseOrgUnits(BrowseOrgUnitsRequest) returns (BrowseOrgUnitsResponse);
+
+  // Lists org units a page at a time.
+  rpc FindOrgUnits(FindOrgUnitsRequest) returns (FindOrgUnitsResponse);
+
+  // Returns several org units at once.
+  rpc ResolveOrgUnits(ResolveOrgUnitsRequest) returns (ResolveOrgUnitsResponse);
+
+  // Streams every matching org unit.
+  rpc ExportOrgUnits(ExportOrgUnitsRequest) returns (stream ExportOrgUnitsResponse);
+
+  // Summarizes an org unit.
+  rpc SummarizeOrgUnits(SummarizeOrgUnitsRequest) returns (SummarizeOrgUnitsResponse);
+
+  // Lists org units a page at a time.
+  rpc SuggestOrgUnits(SuggestOrgUnitsRequest) returns (SuggestOrgUnitsResponse);
+
+  // Returns an org unit.
+  rpc PeekOrgUnit(PeekOrgUnitRequest) returns (PeekOrgUnitResponse);
+}
+
+// The request of `LookupOrgUnit`.
+message LookupOrgUnitRequest {
+  acme.common.v1.RequestContext context = 1;
+  string org_unit_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `LookupOrgUnit`.
+message LookupOrgUnitResponse {
+  OrgUnit org_unit = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `BrowseOrgUnits`.
+message BrowseOrgUnitsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated OrgUnitStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  BrowseOrgUnitsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `BrowseOrgUnits`.
+message BrowseOrgUnitsResponse {
+  repeated OrgUnit org_units = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `FindOrgUnits`.
+message FindOrgUnitsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated OrgUnitStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  FindOrgUnitsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `FindOrgUnits`.
+message FindOrgUnitsResponse {
+  repeated OrgUnit org_units = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResolveOrgUnits`.
+message ResolveOrgUnitsRequest {
+  acme.common.v1.RequestContext context = 1;
+  repeated string org_unit_ids = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `ResolveOrgUnits`.
+message ResolveOrgUnitsResponse {
+  repeated OrgUnit org_units = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExportOrgUnits`.
+message ExportOrgUnitsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated OrgUnitStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  ExportOrgUnitsRequest.Filter filter = 2;
+  string format = 3;
+  google.protobuf.FieldMask fields = 4;
+  string destination_uri = 5;
+}
+
+// The response of `ExportOrgUnits`.
+message ExportOrgUnitsResponse {
+  OrgUnit org_unit = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SummarizeOrgUnits`.
+message SummarizeOrgUnitsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string org_unit_id = 2;
+  SummarizeOrgUnitsRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SummarizeOrgUnits`.
+message SummarizeOrgUnitsResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SuggestOrgUnits`.
+message SuggestOrgUnitsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated OrgUnitStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SuggestOrgUnitsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SuggestOrgUnits`.
+message SuggestOrgUnitsResponse {
+  repeated OrgUnit org_units = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PeekOrgUnit`.
+message PeekOrgUnitRequest {
+  acme.common.v1.RequestContext context = 1;
+  string org_unit_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `PeekOrgUnit`.
+message PeekOrgUnitResponse {
+  OrgUnit org_unit = 1;
+  acme.common.v1.OperationResult result = 2;
+}

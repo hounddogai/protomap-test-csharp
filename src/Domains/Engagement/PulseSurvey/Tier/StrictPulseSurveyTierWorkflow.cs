@@ -1,0 +1,73 @@
+namespace Acme.Workforce.Engagement.PulseSurvey.Tier;
+
+using Acme.Workforce.Kit.Clock;
+
+/// <summary>Moves strict pulse survey tiers through their life cycle and keeps a journal of what it did.</summary>
+public sealed record StrictPulseSurveyTierService(IStrictPulseSurveyTierStore Store, StrictPulseSurveyTierValidator Validator, IClock Clock, List<string> Journal)
+{
+    private void Note(string message)
+    {
+        Journal.Add($"{Clock.Now()} {message}");
+    }
+
+    public void Start(string code)
+    {
+        if (Store.Find(code) is not { } item)
+        {
+            throw new InvalidOperationException($"strict pulse survey tier {code} not found");
+        }
+        Validator.RequireValid(item);
+        item.MoveTo(StrictPulseSurveyTierStatus.Pending);
+        Store.Save(item);
+        Note($"{code} is pending");
+    }
+
+    public void Retire(string code, string reason)
+    {
+        if (Store.Find(code) is not { } item)
+        {
+            throw new InvalidOperationException($"strict pulse survey tier {code} not found");
+        }
+        if (item.IsTerminal())
+        {
+            Note($"{code} already closed");
+            return;
+        }
+        item.MoveTo(StrictPulseSurveyTierStatus.Closed);
+        Store.Save(item);
+        Note($"{code} is closed: {reason}");
+    }
+
+    public int Audit(int cutoff)
+    {
+        var changed = 0;
+        foreach (var item in Store.List())
+        {
+            if (item.IsTerminal())
+            {
+                continue;
+            }
+            var problems = Validator.Validate(item);
+            if (problems.Count == 0)
+            {
+                continue;
+            }
+            Note($"{item.Code} needs attention: {string.Join(", ", problems)}");
+            changed += 1;
+        }
+        return changed;
+    }
+}
+
+/// <summary>Functions of strict pulse survey tier workflow.</summary>
+public static class StrictPulseSurveyTierWorkflow
+{
+    public static StrictPulseSurveyTierService NewStrictPulseSurveyTierService(IStrictPulseSurveyTierStore store, IClock clock)
+    {
+        return new StrictPulseSurveyTierService(
+            store,
+            StrictPulseSurveyTierRules.DefaultStrictPulseSurveyTierValidator(),
+            clock,
+            new List<string>());
+    }
+}

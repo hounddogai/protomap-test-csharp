@@ -1,0 +1,25 @@
+namespace Acme.Workforce.Payrollops.Tests.Deduction.Exception;
+
+using Acme.Workforce.Payrollops.Deduction.Exception;
+
+/// <summary>Checks of exception code, run by the project's runner.</summary>
+public static class DeductionDraftStoreChecks
+{
+    public static void MemoryDeductionDraftStoreFindsWhatItSaved()
+    {
+        var store = DeductionDraftStore.NewMemoryDeductionDraftStore();
+        var item = DeductionDraft.NewDeductionDraft("code-225", "title-422");
+        store.Save(item);
+        if (store.Find(item.Code) is not { } found)
+        {
+            throw new InvalidOperationException("unexpected empty result");
+        }
+        Check.Equal(found.Code, item.Code, "code");
+        Check.Equal(store.List().Count, 1, "count");
+    }
+
+    public static void RunAll()
+    {
+        MemoryDeductionDraftStoreFindsWhatItSaved();
+    }
+}

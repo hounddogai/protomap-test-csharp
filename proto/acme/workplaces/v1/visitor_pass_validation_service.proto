@@ -1,0 +1,268 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.workplaces.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/workplaces/v1/workplaces.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Workplaces.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/workplaces/v1;workplacesv1";
+option java_multiple_files = true;
+option java_outer_classname = "VisitorPassValidationServiceProto";
+option java_package = "com.acme.workplaces.v1";
+
+// Checks visitor passes against the rules before anything acts on them.
+service VisitorPassValidationService {
+  // Validates a visitor pass.
+  rpc ValidateVisitorPass(ValidateVisitorPassRequest) returns (ValidateVisitorPassResponse);
+
+  // Previews a visitor pass.
+  rpc PreviewVisitorPass(PreviewVisitorPassRequest) returns (PreviewVisitorPassResponse);
+
+  // Checks a visitor pass.
+  rpc CheckVisitorPassEligibility(CheckVisitorPassEligibilityRequest) returns (CheckVisitorPassEligibilityResponse);
+
+  // Normalizes a visitor pass.
+  rpc NormalizeVisitorPass(NormalizeVisitorPassRequest) returns (NormalizeVisitorPassResponse);
+
+  // Explains a visitor pass.
+  rpc ExplainVisitorPassDecision(ExplainVisitorPassDecisionRequest) returns (ExplainVisitorPassDecisionResponse);
+
+  // Scores a visitor pass.
+  rpc ScoreVisitorPass(ScoreVisitorPassRequest) returns (ScoreVisitorPassResponse);
+
+  // Returns a visitor pass.
+  rpc GetVisitorPassRules(GetVisitorPassRulesRequest) returns (GetVisitorPassRulesResponse);
+}
+
+// The request of `ValidateVisitorPass`.
+message ValidateVisitorPassRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string visitor_pass_id = 2;
+  VisitorPass visitor_pass = 3;
+  ValidateVisitorPassRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateVisitorPass`.
+message ValidateVisitorPassResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VisitorPass visitor_pass = 1;
+  ValidateVisitorPassResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewVisitorPass`.
+message PreviewVisitorPassRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string visitor_pass_id = 2;
+  VisitorPass visitor_pass = 3;
+  PreviewVisitorPassRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewVisitorPass`.
+message PreviewVisitorPassResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VisitorPass visitor_pass = 1;
+  PreviewVisitorPassResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckVisitorPassEligibility`.
+message CheckVisitorPassEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string visitor_pass_id = 2;
+  VisitorPass visitor_pass = 3;
+  CheckVisitorPassEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckVisitorPassEligibility`.
+message CheckVisitorPassEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VisitorPass visitor_pass = 1;
+  CheckVisitorPassEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeVisitorPass`.
+message NormalizeVisitorPassRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string visitor_pass_id = 2;
+  VisitorPass visitor_pass = 3;
+  NormalizeVisitorPassRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeVisitorPass`.
+message NormalizeVisitorPassResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VisitorPass visitor_pass = 1;
+  NormalizeVisitorPassResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainVisitorPassDecision`.
+message ExplainVisitorPassDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string visitor_pass_id = 2;
+  VisitorPass visitor_pass = 3;
+  ExplainVisitorPassDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainVisitorPassDecision`.
+message ExplainVisitorPassDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VisitorPass visitor_pass = 1;
+  ExplainVisitorPassDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreVisitorPass`.
+message ScoreVisitorPassRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string visitor_pass_id = 2;
+  VisitorPass visitor_pass = 3;
+  ScoreVisitorPassRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreVisitorPass`.
+message ScoreVisitorPassResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreVisitorPassResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  VisitorPass visitor_pass = 1;
+  ScoreVisitorPassResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetVisitorPassRules`.
+message GetVisitorPassRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string visitor_pass_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetVisitorPassRules`.
+message GetVisitorPassRulesResponse {
+  VisitorPass visitor_pass = 1;
+  acme.common.v1.OperationResult result = 2;
+}

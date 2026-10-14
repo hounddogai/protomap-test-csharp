@@ -1,0 +1,295 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.benefits.v1;
+
+import "acme/benefits/v1/benefits.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Benefits.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/benefits/v1;benefitsv1";
+option java_multiple_files = true;
+option java_outer_classname = "BenefitPlanApprovalServiceProto";
+option java_package = "com.acme.benefits.v1";
+
+// Routes benefit plans through approval, with escalation and delegation.
+service BenefitPlanApprovalService {
+  // Submits a benefit plan.
+  rpc SubmitBenefitPlan(SubmitBenefitPlanRequest) returns (SubmitBenefitPlanResponse);
+
+  // Approves a benefit plan.
+  rpc ApproveBenefitPlan(ApproveBenefitPlanRequest) returns (ApproveBenefitPlanResponse);
+
+  // Rejects a benefit plan.
+  rpc RejectBenefitPlan(RejectBenefitPlanRequest) returns (RejectBenefitPlanResponse);
+
+  // Escalates a benefit plan.
+  rpc EscalateBenefitPlan(EscalateBenefitPlanRequest) returns (EscalateBenefitPlanResponse);
+
+  // Lists benefit plans a page at a time.
+  rpc ListPendingBenefitPlans(ListPendingBenefitPlansRequest) returns (ListPendingBenefitPlansResponse);
+
+  // Delegates a benefit plan.
+  rpc DelegateBenefitPlanApproval(DelegateBenefitPlanApprovalRequest) returns (DelegateBenefitPlanApprovalResponse);
+
+  // Recalls a benefit plan.
+  rpc RecallBenefitPlan(RecallBenefitPlanRequest) returns (RecallBenefitPlanResponse);
+
+  // Returns a benefit plan.
+  rpc GetBenefitPlanApprovalStatus(GetBenefitPlanApprovalStatusRequest) returns (GetBenefitPlanApprovalStatusResponse);
+}
+
+// The request of `SubmitBenefitPlan`.
+message SubmitBenefitPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string benefit_plan_id = 2;
+  BenefitPlan benefit_plan = 3;
+  SubmitBenefitPlanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitBenefitPlan`.
+message SubmitBenefitPlanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BenefitPlan benefit_plan = 1;
+  SubmitBenefitPlanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveBenefitPlan`.
+message ApproveBenefitPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string benefit_plan_id = 2;
+  BenefitPlan benefit_plan = 3;
+  ApproveBenefitPlanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveBenefitPlan`.
+message ApproveBenefitPlanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BenefitPlan benefit_plan = 1;
+  ApproveBenefitPlanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectBenefitPlan`.
+message RejectBenefitPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string benefit_plan_id = 2;
+  BenefitPlan benefit_plan = 3;
+  RejectBenefitPlanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectBenefitPlan`.
+message RejectBenefitPlanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BenefitPlan benefit_plan = 1;
+  RejectBenefitPlanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateBenefitPlan`.
+message EscalateBenefitPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string benefit_plan_id = 2;
+  BenefitPlan benefit_plan = 3;
+  EscalateBenefitPlanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateBenefitPlan`.
+message EscalateBenefitPlanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BenefitPlan benefit_plan = 1;
+  EscalateBenefitPlanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingBenefitPlans`.
+message ListPendingBenefitPlansRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated BenefitPlanStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingBenefitPlansRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingBenefitPlans`.
+message ListPendingBenefitPlansResponse {
+  repeated BenefitPlan benefit_plans = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateBenefitPlanApproval`.
+message DelegateBenefitPlanApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string benefit_plan_id = 2;
+  BenefitPlan benefit_plan = 3;
+  DelegateBenefitPlanApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateBenefitPlanApproval`.
+message DelegateBenefitPlanApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BenefitPlan benefit_plan = 1;
+  DelegateBenefitPlanApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallBenefitPlan`.
+message RecallBenefitPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string benefit_plan_id = 2;
+  BenefitPlan benefit_plan = 3;
+  RecallBenefitPlanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallBenefitPlan`.
+message RecallBenefitPlanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BenefitPlan benefit_plan = 1;
+  RecallBenefitPlanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetBenefitPlanApprovalStatus`.
+message GetBenefitPlanApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string benefit_plan_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetBenefitPlanApprovalStatus`.
+message GetBenefitPlanApprovalStatusResponse {
+  BenefitPlan benefit_plan = 1;
+  acme.common.v1.OperationResult result = 2;
+}

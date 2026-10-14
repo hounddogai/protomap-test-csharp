@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.benefits.v1;
+
+import "acme/benefits/v1/benefits.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Benefits.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/benefits/v1;benefitsv1";
+option java_multiple_files = true;
+option java_outer_classname = "EnrollmentApprovalServiceProto";
+option java_package = "com.acme.benefits.v1";
+
+// Routes enrollments through approval, with escalation and delegation.
+service EnrollmentApprovalService {
+  // Submits an enrollment.
+  rpc SubmitEnrollment(SubmitEnrollmentRequest) returns (SubmitEnrollmentResponse);
+
+  // Approves an enrollment.
+  rpc ApproveEnrollment(ApproveEnrollmentRequest) returns (ApproveEnrollmentResponse);
+
+  // Rejects an enrollment.
+  rpc RejectEnrollment(RejectEnrollmentRequest) returns (RejectEnrollmentResponse);
+
+  // Escalates an enrollment.
+  rpc EscalateEnrollment(EscalateEnrollmentRequest) returns (EscalateEnrollmentResponse);
+
+  // Lists enrollments a page at a time.
+  rpc ListPendingEnrollments(ListPendingEnrollmentsRequest) returns (ListPendingEnrollmentsResponse);
+
+  // Delegates an enrollment.
+  rpc DelegateEnrollmentApproval(DelegateEnrollmentApprovalRequest) returns (DelegateEnrollmentApprovalResponse);
+
+  // Recalls an enrollment.
+  rpc RecallEnrollment(RecallEnrollmentRequest) returns (RecallEnrollmentResponse);
+
+  // Returns an enrollment.
+  rpc GetEnrollmentApprovalStatus(GetEnrollmentApprovalStatusRequest) returns (GetEnrollmentApprovalStatusResponse);
+
+  // Comments an enrollment.
+  rpc CommentEnrollmentApproval(CommentEnrollmentApprovalRequest) returns (CommentEnrollmentApprovalResponse);
+}
+
+// The request of `SubmitEnrollment`.
+message SubmitEnrollmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string enrollment_id = 2;
+  Enrollment enrollment = 3;
+  SubmitEnrollmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitEnrollment`.
+message SubmitEnrollmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Enrollment enrollment = 1;
+  SubmitEnrollmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveEnrollment`.
+message ApproveEnrollmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string enrollment_id = 2;
+  Enrollment enrollment = 3;
+  ApproveEnrollmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveEnrollment`.
+message ApproveEnrollmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Enrollment enrollment = 1;
+  ApproveEnrollmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectEnrollment`.
+message RejectEnrollmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string enrollment_id = 2;
+  Enrollment enrollment = 3;
+  RejectEnrollmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectEnrollment`.
+message RejectEnrollmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Enrollment enrollment = 1;
+  RejectEnrollmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateEnrollment`.
+message EscalateEnrollmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string enrollment_id = 2;
+  Enrollment enrollment = 3;
+  EscalateEnrollmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateEnrollment`.
+message EscalateEnrollmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Enrollment enrollment = 1;
+  EscalateEnrollmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingEnrollments`.
+message ListPendingEnrollmentsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EnrollmentStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingEnrollmentsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingEnrollments`.
+message ListPendingEnrollmentsResponse {
+  repeated Enrollment enrollments = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateEnrollmentApproval`.
+message DelegateEnrollmentApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string enrollment_id = 2;
+  Enrollment enrollment = 3;
+  DelegateEnrollmentApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateEnrollmentApproval`.
+message DelegateEnrollmentApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Enrollment enrollment = 1;
+  DelegateEnrollmentApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallEnrollment`.
+message RecallEnrollmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string enrollment_id = 2;
+  Enrollment enrollment = 3;
+  RecallEnrollmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallEnrollment`.
+message RecallEnrollmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Enrollment enrollment = 1;
+  RecallEnrollmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetEnrollmentApprovalStatus`.
+message GetEnrollmentApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string enrollment_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetEnrollmentApprovalStatus`.
+message GetEnrollmentApprovalStatusResponse {
+  Enrollment enrollment = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentEnrollmentApproval`.
+message CommentEnrollmentApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string enrollment_id = 2;
+  Enrollment enrollment = 3;
+  CommentEnrollmentApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentEnrollmentApproval`.
+message CommentEnrollmentApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Enrollment enrollment = 1;
+  CommentEnrollmentApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

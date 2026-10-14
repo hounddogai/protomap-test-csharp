@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../Kit/Acme.Workforce.Kit.csproj" />
+    <ProjectReference Include="../../../Domains/Talent/Acme.Workforce.Talent.csproj" />
+  </ItemGroup>
+</Project>

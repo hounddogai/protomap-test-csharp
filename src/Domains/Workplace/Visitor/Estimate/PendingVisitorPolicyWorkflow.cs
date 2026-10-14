@@ -1,0 +1,81 @@
+namespace Acme.Workforce.Workplace.Visitor.Estimate;
+
+using Acme.Workforce.Kit.Clock;
+
+/// <summary>Moves pending visitor policies through their life cycle and keeps a journal of what it did.</summary>
+public sealed record PendingVisitorPolicyWorkflow(IPendingVisitorPolicyStore Store, PendingVisitorPolicyValidator Validator, IClock Clock, List<string> Journal, PendingVisitorPolicyEngine Engine)
+{
+    public static PendingVisitorPolicyWorkflow NewPendingVisitorPolicyWorkflow(IPendingVisitorPolicyStore store, IClock clock)
+    {
+        return new PendingVisitorPolicyWorkflow(
+            store,
+            PendingVisitorPolicyRules.DefaultPendingVisitorPolicyValidator(),
+            clock,
+            new List<string>(),
+            PendingVisitorPolicyEngine.DefaultPendingVisitorPolicyEngine());
+    }
+
+    private void Note(string message)
+    {
+        Journal.Add($"{Clock.Now()} {message}");
+    }
+
+    public void Advance(string code)
+    {
+        if (Store.Find(code) is not { } item)
+        {
+            throw new InvalidOperationException($"pending visitor policy {code} not found");
+        }
+        Validator.RequireValid(item);
+        item.MoveTo(PendingVisitorPolicyStatus.Warming);
+        Store.Save(item);
+        Note($"{code} is warming");
+    }
+
+    public void Complete(string code, string reason)
+    {
+        if (Store.Find(code) is not { } item)
+        {
+            throw new InvalidOperationException($"pending visitor policy {code} not found");
+        }
+        if (item.IsTerminal())
+        {
+            Note($"{code} already closed");
+            return;
+        }
+        item.MoveTo(PendingVisitorPolicyStatus.Stopped);
+        Store.Save(item);
+        Note($"{code} is stopped: {reason}");
+    }
+
+    public double Quote(string code)
+    {
+        if (Store.Find(code) is not { } item)
+        {
+            throw new InvalidOperationException($"pending visitor policy {code} not found");
+        }
+        var result = Engine.Evaluate(item);
+        Note($"{code} evaluated at {result}");
+        return result;
+    }
+
+    public int ReviewStale(int cutoff)
+    {
+        var changed = 0;
+        foreach (var item in Store.List())
+        {
+            if (item.IsTerminal())
+            {
+                continue;
+            }
+            var problems = Validator.Validate(item);
+            if (problems.Count == 0)
+            {
+                continue;
+            }
+            Note($"{item.Code} needs attention: {string.Join(", ", problems)}");
+            changed += 1;
+        }
+        return changed;
+    }
+}

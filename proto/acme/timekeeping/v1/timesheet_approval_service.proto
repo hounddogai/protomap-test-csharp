@@ -1,0 +1,295 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.timekeeping.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/timekeeping/v1/timekeeping.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Timekeeping.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/timekeeping/v1;timekeepingv1";
+option java_multiple_files = true;
+option java_outer_classname = "TimesheetApprovalServiceProto";
+option java_package = "com.acme.timekeeping.v1";
+
+// Routes timesheets through approval, with escalation and delegation.
+service TimesheetApprovalService {
+  // Submits a timesheet.
+  rpc SubmitTimesheet(SubmitTimesheetRequest) returns (SubmitTimesheetResponse);
+
+  // Approves a timesheet.
+  rpc ApproveTimesheet(ApproveTimesheetRequest) returns (ApproveTimesheetResponse);
+
+  // Rejects a timesheet.
+  rpc RejectTimesheet(RejectTimesheetRequest) returns (RejectTimesheetResponse);
+
+  // Escalates a timesheet.
+  rpc EscalateTimesheet(EscalateTimesheetRequest) returns (EscalateTimesheetResponse);
+
+  // Lists timesheets a page at a time.
+  rpc ListPendingTimesheets(ListPendingTimesheetsRequest) returns (ListPendingTimesheetsResponse);
+
+  // Recalls a timesheet.
+  rpc RecallTimesheet(RecallTimesheetRequest) returns (RecallTimesheetResponse);
+
+  // Returns a timesheet.
+  rpc GetTimesheetApprovalStatus(GetTimesheetApprovalStatusRequest) returns (GetTimesheetApprovalStatusResponse);
+
+  // Comments a timesheet.
+  rpc CommentTimesheetApproval(CommentTimesheetApprovalRequest) returns (CommentTimesheetApprovalResponse);
+}
+
+// The request of `SubmitTimesheet`.
+message SubmitTimesheetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string timesheet_id = 2;
+  Timesheet timesheet = 3;
+  SubmitTimesheetRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitTimesheet`.
+message SubmitTimesheetResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Timesheet timesheet = 1;
+  SubmitTimesheetResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveTimesheet`.
+message ApproveTimesheetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string timesheet_id = 2;
+  Timesheet timesheet = 3;
+  ApproveTimesheetRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveTimesheet`.
+message ApproveTimesheetResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Timesheet timesheet = 1;
+  ApproveTimesheetResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectTimesheet`.
+message RejectTimesheetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string timesheet_id = 2;
+  Timesheet timesheet = 3;
+  RejectTimesheetRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectTimesheet`.
+message RejectTimesheetResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Timesheet timesheet = 1;
+  RejectTimesheetResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateTimesheet`.
+message EscalateTimesheetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string timesheet_id = 2;
+  Timesheet timesheet = 3;
+  EscalateTimesheetRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateTimesheet`.
+message EscalateTimesheetResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Timesheet timesheet = 1;
+  EscalateTimesheetResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingTimesheets`.
+message ListPendingTimesheetsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated TimesheetStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingTimesheetsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingTimesheets`.
+message ListPendingTimesheetsResponse {
+  repeated Timesheet timesheets = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallTimesheet`.
+message RecallTimesheetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string timesheet_id = 2;
+  Timesheet timesheet = 3;
+  RecallTimesheetRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallTimesheet`.
+message RecallTimesheetResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Timesheet timesheet = 1;
+  RecallTimesheetResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetTimesheetApprovalStatus`.
+message GetTimesheetApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string timesheet_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetTimesheetApprovalStatus`.
+message GetTimesheetApprovalStatusResponse {
+  Timesheet timesheet = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentTimesheetApproval`.
+message CommentTimesheetApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string timesheet_id = 2;
+  Timesheet timesheet = 3;
+  CommentTimesheetApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentTimesheetApproval`.
+message CommentTimesheetApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Timesheet timesheet = 1;
+  CommentTimesheetApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

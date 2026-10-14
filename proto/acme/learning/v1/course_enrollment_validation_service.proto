@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.learning.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/learning/v1/learning.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Learning.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/learning/v1;learningv1";
+option java_multiple_files = true;
+option java_outer_classname = "CourseEnrollmentValidationServiceProto";
+option java_package = "com.acme.learning.v1";
+
+// Checks course enrollments against the rules before anything acts on them.
+service CourseEnrollmentValidationService {
+  // Validates a course enrollment.
+  rpc ValidateCourseEnrollment(ValidateCourseEnrollmentRequest) returns (ValidateCourseEnrollmentResponse);
+
+  // Previews a course enrollment.
+  rpc PreviewCourseEnrollment(PreviewCourseEnrollmentRequest) returns (PreviewCourseEnrollmentResponse);
+
+  // Checks a course enrollment.
+  rpc CheckCourseEnrollmentEligibility(CheckCourseEnrollmentEligibilityRequest) returns (CheckCourseEnrollmentEligibilityResponse);
+
+  // Normalizes a course enrollment.
+  rpc NormalizeCourseEnrollment(NormalizeCourseEnrollmentRequest) returns (NormalizeCourseEnrollmentResponse);
+
+  // Explains a course enrollment.
+  rpc ExplainCourseEnrollmentDecision(ExplainCourseEnrollmentDecisionRequest) returns (ExplainCourseEnrollmentDecisionResponse);
+
+  // Scores a course enrollment.
+  rpc ScoreCourseEnrollment(ScoreCourseEnrollmentRequest) returns (ScoreCourseEnrollmentResponse);
+
+  // Lints a course enrollment.
+  rpc LintCourseEnrollments(LintCourseEnrollmentsRequest) returns (LintCourseEnrollmentsResponse);
+
+  // Returns a course enrollment.
+  rpc GetCourseEnrollmentRules(GetCourseEnrollmentRulesRequest) returns (GetCourseEnrollmentRulesResponse);
+}
+
+// The request of `ValidateCourseEnrollment`.
+message ValidateCourseEnrollmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  CourseEnrollment course_enrollment = 3;
+  ValidateCourseEnrollmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateCourseEnrollment`.
+message ValidateCourseEnrollmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CourseEnrollment course_enrollment = 1;
+  ValidateCourseEnrollmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewCourseEnrollment`.
+message PreviewCourseEnrollmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  CourseEnrollment course_enrollment = 3;
+  PreviewCourseEnrollmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewCourseEnrollment`.
+message PreviewCourseEnrollmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CourseEnrollment course_enrollment = 1;
+  PreviewCourseEnrollmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckCourseEnrollmentEligibility`.
+message CheckCourseEnrollmentEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  CourseEnrollment course_enrollment = 3;
+  CheckCourseEnrollmentEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckCourseEnrollmentEligibility`.
+message CheckCourseEnrollmentEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CourseEnrollment course_enrollment = 1;
+  CheckCourseEnrollmentEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeCourseEnrollment`.
+message NormalizeCourseEnrollmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  CourseEnrollment course_enrollment = 3;
+  NormalizeCourseEnrollmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeCourseEnrollment`.
+message NormalizeCourseEnrollmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CourseEnrollment course_enrollment = 1;
+  NormalizeCourseEnrollmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainCourseEnrollmentDecision`.
+message ExplainCourseEnrollmentDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  CourseEnrollment course_enrollment = 3;
+  ExplainCourseEnrollmentDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainCourseEnrollmentDecision`.
+message ExplainCourseEnrollmentDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CourseEnrollment course_enrollment = 1;
+  ExplainCourseEnrollmentDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreCourseEnrollment`.
+message ScoreCourseEnrollmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  CourseEnrollment course_enrollment = 3;
+  ScoreCourseEnrollmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreCourseEnrollment`.
+message ScoreCourseEnrollmentResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreCourseEnrollmentResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  CourseEnrollment course_enrollment = 1;
+  ScoreCourseEnrollmentResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintCourseEnrollments`.
+message LintCourseEnrollmentsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  CourseEnrollment course_enrollment = 3;
+  LintCourseEnrollmentsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintCourseEnrollments`.
+message LintCourseEnrollmentsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CourseEnrollment course_enrollment = 1;
+  LintCourseEnrollmentsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetCourseEnrollmentRules`.
+message GetCourseEnrollmentRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string course_enrollment_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetCourseEnrollmentRules`.
+message GetCourseEnrollmentRulesResponse {
+  CourseEnrollment course_enrollment = 1;
+  acme.common.v1.OperationResult result = 2;
+}

@@ -1,0 +1,170 @@
+namespace Acme.Workforce.Absence.LeaveRequest.Review;
+
+using Acme.Workforce.Kit.Clock;
+using Acme.Workforce.Kit.Collections;
+using Acme.Workforce.Kit.Text;
+
+/// <summary>Keeps strict leave request reviews by code.</summary>
+public interface IStrictLeaveRequestReviewStore
+{
+    StrictLeaveRequestReview? Find(string code);
+    void Save(StrictLeaveRequestReview item);
+    bool Remove(string code);
+    List<StrictLeaveRequestReview> List();
+}
+
+/// <summary>Keeps records in memory, in the order they were first saved.</summary>
+public sealed class MemoryStrictLeaveRequestReviewStore(Dictionary<string, StrictLeaveRequestReview> items, List<string> order) : IStrictLeaveRequestReviewStore
+{
+    public Dictionary<string, StrictLeaveRequestReview> Items { get; set; } = items;
+    public List<string> Order { get; set; } = order;
+
+    public StrictLeaveRequestReview? Find(string code)
+    {
+        if (!Items.TryGetValue(code, out var found))
+        {
+            return null;
+        }
+        return found;
+    }
+
+    public void Save(StrictLeaveRequestReview item)
+    {
+        if (!Items.ContainsKey(item.Code))
+        {
+            Order.Add(item.Code);
+        }
+        Items[item.Code] = item;
+    }
+
+    public bool Remove(string code)
+    {
+        if (!Items.ContainsKey(code))
+        {
+            return false;
+        }
+        Items.Remove(code);
+        var kept = new List<string>();
+        foreach (var existing in Order)
+        {
+            if (existing != code)
+            {
+                kept.Add(existing);
+            }
+        }
+        Order = kept;
+        return true;
+    }
+
+    public List<StrictLeaveRequestReview> List()
+    {
+        var outValue = new List<StrictLeaveRequestReview>();
+        foreach (var key in Order)
+        {
+            if (!Items.TryGetValue(key, out var found))
+            {
+                continue;
+            }
+            outValue.Add(found);
+        }
+        return outValue;
+    }
+}
+
+/// <summary>Serves reads from a short-lived cache in front of another store.</summary>
+public sealed class CachedStrictLeaveRequestReviewStore(MemoryStrictLeaveRequestReviewStore inner, StrictLeaveRequestReviewCache cache, int hits, int misses) : IStrictLeaveRequestReviewStore
+{
+    public MemoryStrictLeaveRequestReviewStore Inner { get; set; } = inner;
+    public StrictLeaveRequestReviewCache Cache { get; set; } = cache;
+    public int Hits { get; set; } = hits;
+    public int Misses { get; set; } = misses;
+
+    public StrictLeaveRequestReview? Find(string code)
+    {
+        if (Cache.Get(code) is not { } hit)
+        {
+            Misses += 1;
+            if (Inner.Find(code) is not { } found)
+            {
+                return null;
+            }
+            Cache.Put(code, found);
+            return found;
+        }
+        Hits += 1;
+        return hit;
+    }
+
+    public void Save(StrictLeaveRequestReview item)
+    {
+        Inner.Save(item);
+        Cache.Put(item.Code, item);
+    }
+
+    public bool Remove(string code)
+    {
+        // A cached copy expires on its own; reads after a removal may still see it until then.
+        return Inner.Remove(code);
+    }
+
+    public List<StrictLeaveRequestReview> List()
+    {
+        return Inner.List();
+    }
+}
+
+/// <summary>Selects strict leave request reviews. Empty fields match all.</summary>
+public sealed record StrictLeaveRequestReviewQuery(string Category, double MinAmount, List<string> Statuses, int Limit)
+{
+    public bool Matches(StrictLeaveRequestReview item)
+    {
+        if (Category != "" && Text.Normalize(item.Category) != Text.Normalize(Category))
+        {
+            return false;
+        }
+        if (item.Amount < MinAmount)
+        {
+            return false;
+        }
+        if (Statuses.Count > 0 && !Statuses.Contains($"{item.Status}"))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public List<StrictLeaveRequestReview> Apply(List<StrictLeaveRequestReview> items)
+    {
+        var matched = Collections.Filter(items, (StrictLeaveRequestReview candidate) => Matches(candidate));
+        if (Limit > 0 && matched.Count > Limit)
+        {
+            return Collections.Take(matched, Limit);
+        }
+        return matched;
+    }
+}
+
+/// <summary>Functions of strict leave request review store.</summary>
+public static class StrictLeaveRequestReviewStore
+{
+    public static IStrictLeaveRequestReviewStore NewMemoryStrictLeaveRequestReviewStore()
+    {
+        return new MemoryStrictLeaveRequestReviewStore(
+            new Dictionary<string, StrictLeaveRequestReview>(),
+            new List<string>());
+    }
+
+    public static IStrictLeaveRequestReviewStore NewCachedStrictLeaveRequestReviewStore(MemoryStrictLeaveRequestReviewStore inner, int ttl, IClock clock)
+    {
+        return new CachedStrictLeaveRequestReviewStore(
+            inner,
+            StrictLeaveRequestReviewCache.Create(1024, ttl, clock),
+            0,
+            0);
+    }
+
+    public static List<StrictLeaveRequestReview> FindStrictLeaveRequestReviews(IStrictLeaveRequestReviewStore store, StrictLeaveRequestReviewQuery query)
+    {
+        return query.Apply(store.List());
+    }
+}

@@ -1,0 +1,275 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.recruiting.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/recruiting/v1/recruiting.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Recruiting.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/recruiting/v1;recruitingv1";
+option java_multiple_files = true;
+option java_outer_classname = "OfferCalculationServiceProto";
+option java_package = "com.acme.recruiting.v1";
+
+// Computes the figures of an offer, such as totals, taxes, and estimates.
+service OfferCalculationService {
+  // Calculates an offer.
+  rpc CalculateOffer(CalculateOfferRequest) returns (CalculateOfferResponse);
+
+  // Estimates an offer.
+  rpc EstimateOffer(EstimateOfferRequest) returns (EstimateOfferResponse);
+
+  // Quotes an offer.
+  rpc QuoteOffer(QuoteOfferRequest) returns (QuoteOfferResponse);
+
+  // Recalculates an offer.
+  rpc RecalculateOffers(RecalculateOffersRequest) returns (RecalculateOffersResponse);
+
+  // Simulates an offer.
+  rpc SimulateOffer(SimulateOfferRequest) returns (SimulateOfferResponse);
+
+  // Explains an offer.
+  rpc ExplainOfferCalculation(ExplainOfferCalculationRequest) returns (ExplainOfferCalculationResponse);
+}
+
+// The request of `CalculateOffer`.
+message CalculateOfferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  Offer offer = 3;
+  CalculateOfferRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateOffer`.
+message CalculateOfferResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateOfferResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Offer offer = 1;
+  CalculateOfferResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateOffer`.
+message EstimateOfferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  Offer offer = 3;
+  EstimateOfferRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateOffer`.
+message EstimateOfferResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateOfferResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Offer offer = 1;
+  EstimateOfferResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteOffer`.
+message QuoteOfferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  Offer offer = 3;
+  QuoteOfferRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteOffer`.
+message QuoteOfferResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteOfferResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Offer offer = 1;
+  QuoteOfferResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateOffers`.
+message RecalculateOffersRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  Offer offer = 3;
+  RecalculateOffersRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateOffers`.
+message RecalculateOffersResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateOffersResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Offer offer = 1;
+  RecalculateOffersResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateOffer`.
+message SimulateOfferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  Offer offer = 3;
+  SimulateOfferRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateOffer`.
+message SimulateOfferResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateOfferResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Offer offer = 1;
+  SimulateOfferResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainOfferCalculation`.
+message ExplainOfferCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  Offer offer = 3;
+  ExplainOfferCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainOfferCalculation`.
+message ExplainOfferCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Offer offer = 1;
+  ExplainOfferCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

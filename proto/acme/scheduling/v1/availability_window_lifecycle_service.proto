@@ -1,0 +1,241 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.scheduling.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/scheduling/v1/scheduling.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Scheduling.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/scheduling/v1;schedulingv1";
+option java_multiple_files = true;
+option java_outer_classname = "AvailabilityWindowLifecycleServiceProto";
+option java_package = "com.acme.scheduling.v1";
+
+// Moves an availability window between the states of its lifecycle.
+service AvailabilityWindowLifecycleService {
+  // Activates an availability window.
+  rpc ActivateAvailabilityWindow(ActivateAvailabilityWindowRequest) returns (ActivateAvailabilityWindowResponse);
+
+  // Suspends an availability window.
+  rpc SuspendAvailabilityWindow(SuspendAvailabilityWindowRequest) returns (SuspendAvailabilityWindowResponse);
+
+  // Reinstates an availability window.
+  rpc ReinstateAvailabilityWindow(ReinstateAvailabilityWindowRequest) returns (ReinstateAvailabilityWindowResponse);
+
+  // Terminates an availability window.
+  rpc TerminateAvailabilityWindow(TerminateAvailabilityWindowRequest) returns (TerminateAvailabilityWindowResponse);
+
+  // Renews an availability window.
+  rpc RenewAvailabilityWindow(RenewAvailabilityWindowRequest) returns (RenewAvailabilityWindowResponse);
+
+  // Schedules an availability window.
+  rpc ScheduleAvailabilityWindowExpiry(ScheduleAvailabilityWindowExpiryRequest) returns (ScheduleAvailabilityWindowExpiryResponse);
+}
+
+// The request of `ActivateAvailabilityWindow`.
+message ActivateAvailabilityWindowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string availability_window_id = 2;
+  ActivateAvailabilityWindowRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateAvailabilityWindow`.
+message ActivateAvailabilityWindowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  AvailabilityWindow availability_window = 1;
+  ActivateAvailabilityWindowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendAvailabilityWindow`.
+message SuspendAvailabilityWindowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string availability_window_id = 2;
+  SuspendAvailabilityWindowRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendAvailabilityWindow`.
+message SuspendAvailabilityWindowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  AvailabilityWindow availability_window = 1;
+  SuspendAvailabilityWindowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateAvailabilityWindow`.
+message ReinstateAvailabilityWindowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string availability_window_id = 2;
+  ReinstateAvailabilityWindowRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateAvailabilityWindow`.
+message ReinstateAvailabilityWindowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  AvailabilityWindow availability_window = 1;
+  ReinstateAvailabilityWindowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateAvailabilityWindow`.
+message TerminateAvailabilityWindowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string availability_window_id = 2;
+  TerminateAvailabilityWindowRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateAvailabilityWindow`.
+message TerminateAvailabilityWindowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  AvailabilityWindow availability_window = 1;
+  TerminateAvailabilityWindowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewAvailabilityWindow`.
+message RenewAvailabilityWindowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string availability_window_id = 2;
+  RenewAvailabilityWindowRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewAvailabilityWindow`.
+message RenewAvailabilityWindowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  AvailabilityWindow availability_window = 1;
+  RenewAvailabilityWindowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScheduleAvailabilityWindowExpiry`.
+message ScheduleAvailabilityWindowExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string availability_window_id = 2;
+  AvailabilityWindow availability_window = 3;
+  ScheduleAvailabilityWindowExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleAvailabilityWindowExpiry`.
+message ScheduleAvailabilityWindowExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  AvailabilityWindow availability_window = 1;
+  ScheduleAvailabilityWindowExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

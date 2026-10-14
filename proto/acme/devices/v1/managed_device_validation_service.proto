@@ -1,0 +1,251 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.devices.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/devices/v1/devices.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Devices.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/devices/v1;devicesv1";
+option java_multiple_files = true;
+option java_outer_classname = "ManagedDeviceValidationServiceProto";
+option java_package = "com.acme.devices.v1";
+
+// Checks managed devices against the rules before anything acts on them.
+service ManagedDeviceValidationService {
+  // Validates a managed device.
+  rpc ValidateManagedDevice(ValidateManagedDeviceRequest) returns (ValidateManagedDeviceResponse);
+
+  // Previews a managed device.
+  rpc PreviewManagedDevice(PreviewManagedDeviceRequest) returns (PreviewManagedDeviceResponse);
+
+  // Checks a managed device.
+  rpc CheckManagedDeviceEligibility(CheckManagedDeviceEligibilityRequest) returns (CheckManagedDeviceEligibilityResponse);
+
+  // Normalizes a managed device.
+  rpc NormalizeManagedDevice(NormalizeManagedDeviceRequest) returns (NormalizeManagedDeviceResponse);
+
+  // Explains a managed device.
+  rpc ExplainManagedDeviceDecision(ExplainManagedDeviceDecisionRequest) returns (ExplainManagedDeviceDecisionResponse);
+
+  // Scores a managed device.
+  rpc ScoreManagedDevice(ScoreManagedDeviceRequest) returns (ScoreManagedDeviceResponse);
+}
+
+// The request of `ValidateManagedDevice`.
+message ValidateManagedDeviceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  ManagedDevice managed_device = 3;
+  ValidateManagedDeviceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateManagedDevice`.
+message ValidateManagedDeviceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ManagedDevice managed_device = 1;
+  ValidateManagedDeviceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewManagedDevice`.
+message PreviewManagedDeviceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  ManagedDevice managed_device = 3;
+  PreviewManagedDeviceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewManagedDevice`.
+message PreviewManagedDeviceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ManagedDevice managed_device = 1;
+  PreviewManagedDeviceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckManagedDeviceEligibility`.
+message CheckManagedDeviceEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  ManagedDevice managed_device = 3;
+  CheckManagedDeviceEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckManagedDeviceEligibility`.
+message CheckManagedDeviceEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ManagedDevice managed_device = 1;
+  CheckManagedDeviceEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeManagedDevice`.
+message NormalizeManagedDeviceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  ManagedDevice managed_device = 3;
+  NormalizeManagedDeviceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeManagedDevice`.
+message NormalizeManagedDeviceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ManagedDevice managed_device = 1;
+  NormalizeManagedDeviceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainManagedDeviceDecision`.
+message ExplainManagedDeviceDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  ManagedDevice managed_device = 3;
+  ExplainManagedDeviceDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainManagedDeviceDecision`.
+message ExplainManagedDeviceDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ManagedDevice managed_device = 1;
+  ExplainManagedDeviceDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreManagedDevice`.
+message ScoreManagedDeviceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  ManagedDevice managed_device = 3;
+  ScoreManagedDeviceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreManagedDevice`.
+message ScoreManagedDeviceResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreManagedDeviceResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ManagedDevice managed_device = 1;
+  ScoreManagedDeviceResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}

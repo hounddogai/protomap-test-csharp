@@ -1,0 +1,217 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.treasury.v1;
+
+import "acme/common/v1/audit.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/treasury/v1/treasury.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Treasury.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/treasury/v1;treasuryv1";
+option java_multiple_files = true;
+option java_outer_classname = "CashPositionQueryServiceProto";
+option java_package = "com.acme.treasury.v1";
+
+// Answers read-only questions about cash positions, for screens and reports.
+service CashPositionQueryService {
+  // Returns a cash position.
+  rpc LookupCashPosition(LookupCashPositionRequest) returns (LookupCashPositionResponse);
+
+  // Lists cash positions a page at a time.
+  rpc BrowseCashPositions(BrowseCashPositionsRequest) returns (BrowseCashPositionsResponse);
+
+  // Counts cash positions by status.
+  rpc CountCashPositions(CountCashPositionsRequest) returns (CountCashPositionsResponse);
+
+  // Returns several cash positions at once.
+  rpc ResolveCashPositions(ResolveCashPositionsRequest) returns (ResolveCashPositionsResponse);
+
+  // Streams every matching cash position.
+  rpc ExportCashPositions(ExportCashPositionsRequest) returns (stream ExportCashPositionsResponse);
+
+  // Summarizes a cash position.
+  rpc SummarizeCashPositions(SummarizeCashPositionsRequest) returns (SummarizeCashPositionsResponse);
+
+  // Lists cash positions a page at a time.
+  rpc SuggestCashPositions(SuggestCashPositionsRequest) returns (SuggestCashPositionsResponse);
+
+  // Returns a cash position.
+  rpc PeekCashPosition(PeekCashPositionRequest) returns (PeekCashPositionResponse);
+}
+
+// The request of `LookupCashPosition`.
+message LookupCashPositionRequest {
+  acme.common.v1.RequestContext context = 1;
+  string cash_position_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `LookupCashPosition`.
+message LookupCashPositionResponse {
+  CashPosition cash_position = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `BrowseCashPositions`.
+message BrowseCashPositionsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated CashPositionStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  BrowseCashPositionsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `BrowseCashPositions`.
+message BrowseCashPositionsResponse {
+  repeated CashPosition cash_positions = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CountCashPositions`.
+message CountCashPositionsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated CashPositionStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  CountCashPositionsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `CountCashPositions`.
+message CountCashPositionsResponse {
+  int64 count = 1;
+  map<string, int64> by_status = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResolveCashPositions`.
+message ResolveCashPositionsRequest {
+  acme.common.v1.RequestContext context = 1;
+  repeated string cash_position_ids = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `ResolveCashPositions`.
+message ResolveCashPositionsResponse {
+  repeated CashPosition cash_positions = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExportCashPositions`.
+message ExportCashPositionsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated CashPositionStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  ExportCashPositionsRequest.Filter filter = 2;
+  string format = 3;
+  google.protobuf.FieldMask fields = 4;
+  string destination_uri = 5;
+}
+
+// The response of `ExportCashPositions`.
+message ExportCashPositionsResponse {
+  CashPosition cash_position = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SummarizeCashPositions`.
+message SummarizeCashPositionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_position_id = 2;
+  SummarizeCashPositionsRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SummarizeCashPositions`.
+message SummarizeCashPositionsResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SuggestCashPositions`.
+message SuggestCashPositionsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated CashPositionStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SuggestCashPositionsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SuggestCashPositions`.
+message SuggestCashPositionsResponse {
+  repeated CashPosition cash_positions = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PeekCashPosition`.
+message PeekCashPositionRequest {
+  acme.common.v1.RequestContext context = 1;
+  string cash_position_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `PeekCashPosition`.
+message PeekCashPositionResponse {
+  CashPosition cash_position = 1;
+  acme.common.v1.OperationResult result = 2;
+}

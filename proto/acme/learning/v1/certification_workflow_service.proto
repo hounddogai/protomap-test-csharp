@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.learning.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/learning/v1/learning.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Learning.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/learning/v1;learningv1";
+option java_multiple_files = true;
+option java_outer_classname = "CertificationWorkflowServiceProto";
+option java_package = "com.acme.learning.v1";
+
+// Runs the long-lived workflow that takes a certification from start to finish.
+service CertificationWorkflowService {
+  // Starts a certification.
+  rpc StartCertificationWorkflow(StartCertificationWorkflowRequest) returns (StartCertificationWorkflowResponse);
+
+  // Advances a certification.
+  rpc AdvanceCertificationWorkflow(AdvanceCertificationWorkflowRequest) returns (AdvanceCertificationWorkflowResponse);
+
+  // Cancels a certification.
+  rpc CancelCertificationWorkflow(CancelCertificationWorkflowRequest) returns (CancelCertificationWorkflowResponse);
+
+  // Retrys a certification.
+  rpc RetryCertificationWorkflow(RetryCertificationWorkflowRequest) returns (RetryCertificationWorkflowResponse);
+
+  // Pauses a certification.
+  rpc PauseCertificationWorkflow(PauseCertificationWorkflowRequest) returns (PauseCertificationWorkflowResponse);
+
+  // Resumes a certification.
+  rpc ResumeCertificationWorkflow(ResumeCertificationWorkflowRequest) returns (ResumeCertificationWorkflowResponse);
+
+  // Returns a certification.
+  rpc InspectCertificationWorkflow(InspectCertificationWorkflowRequest) returns (InspectCertificationWorkflowResponse);
+
+  // Lists certifications a page at a time.
+  rpc ListCertificationWorkflows(ListCertificationWorkflowsRequest) returns (ListCertificationWorkflowsResponse);
+
+  // Signals a certification.
+  rpc SignalCertificationWorkflow(SignalCertificationWorkflowRequest) returns (SignalCertificationWorkflowResponse);
+}
+
+// The request of `StartCertificationWorkflow`.
+message StartCertificationWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  StartCertificationWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartCertificationWorkflow`.
+message StartCertificationWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  StartCertificationWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceCertificationWorkflow`.
+message AdvanceCertificationWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  AdvanceCertificationWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceCertificationWorkflow`.
+message AdvanceCertificationWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  AdvanceCertificationWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelCertificationWorkflow`.
+message CancelCertificationWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  CancelCertificationWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelCertificationWorkflow`.
+message CancelCertificationWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  CancelCertificationWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryCertificationWorkflow`.
+message RetryCertificationWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  RetryCertificationWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryCertificationWorkflow`.
+message RetryCertificationWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  RetryCertificationWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseCertificationWorkflow`.
+message PauseCertificationWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  PauseCertificationWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseCertificationWorkflow`.
+message PauseCertificationWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  PauseCertificationWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeCertificationWorkflow`.
+message ResumeCertificationWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  ResumeCertificationWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeCertificationWorkflow`.
+message ResumeCertificationWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  ResumeCertificationWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectCertificationWorkflow`.
+message InspectCertificationWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectCertificationWorkflow`.
+message InspectCertificationWorkflowResponse {
+  Certification certification = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListCertificationWorkflows`.
+message ListCertificationWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated CertificationStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListCertificationWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListCertificationWorkflows`.
+message ListCertificationWorkflowsResponse {
+  repeated Certification certifications = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalCertificationWorkflow`.
+message SignalCertificationWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  SignalCertificationWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalCertificationWorkflow`.
+message SignalCertificationWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Certification certification = 1;
+  SignalCertificationWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

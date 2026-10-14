@@ -1,0 +1,241 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.scheduling.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/scheduling/v1/scheduling.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Scheduling.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/scheduling/v1;schedulingv1";
+option java_multiple_files = true;
+option java_outer_classname = "ShiftWorkflowServiceProto";
+option java_package = "com.acme.scheduling.v1";
+
+// Runs the long-lived workflow that takes a shift from start to finish.
+service ShiftWorkflowService {
+  // Starts a shift.
+  rpc StartShiftWorkflow(StartShiftWorkflowRequest) returns (StartShiftWorkflowResponse);
+
+  // Advances a shift.
+  rpc AdvanceShiftWorkflow(AdvanceShiftWorkflowRequest) returns (AdvanceShiftWorkflowResponse);
+
+  // Cancels a shift.
+  rpc CancelShiftWorkflow(CancelShiftWorkflowRequest) returns (CancelShiftWorkflowResponse);
+
+  // Retrys a shift.
+  rpc RetryShiftWorkflow(RetryShiftWorkflowRequest) returns (RetryShiftWorkflowResponse);
+
+  // Lists shifts a page at a time.
+  rpc ListShiftWorkflows(ListShiftWorkflowsRequest) returns (ListShiftWorkflowsResponse);
+
+  // Signals a shift.
+  rpc SignalShiftWorkflow(SignalShiftWorkflowRequest) returns (SignalShiftWorkflowResponse);
+}
+
+// The request of `StartShiftWorkflow`.
+message StartShiftWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  Shift shift = 3;
+  StartShiftWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartShiftWorkflow`.
+message StartShiftWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Shift shift = 1;
+  StartShiftWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceShiftWorkflow`.
+message AdvanceShiftWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  Shift shift = 3;
+  AdvanceShiftWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceShiftWorkflow`.
+message AdvanceShiftWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Shift shift = 1;
+  AdvanceShiftWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelShiftWorkflow`.
+message CancelShiftWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  Shift shift = 3;
+  CancelShiftWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelShiftWorkflow`.
+message CancelShiftWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Shift shift = 1;
+  CancelShiftWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryShiftWorkflow`.
+message RetryShiftWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  Shift shift = 3;
+  RetryShiftWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryShiftWorkflow`.
+message RetryShiftWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Shift shift = 1;
+  RetryShiftWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListShiftWorkflows`.
+message ListShiftWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated ShiftStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListShiftWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListShiftWorkflows`.
+message ListShiftWorkflowsResponse {
+  repeated Shift shifts = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalShiftWorkflow`.
+message SignalShiftWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  Shift shift = 3;
+  SignalShiftWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalShiftWorkflow`.
+message SignalShiftWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Shift shift = 1;
+  SignalShiftWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

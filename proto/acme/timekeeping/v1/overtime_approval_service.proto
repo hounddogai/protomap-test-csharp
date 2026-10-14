@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.timekeeping.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/timekeeping/v1/timekeeping.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Timekeeping.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/timekeeping/v1;timekeepingv1";
+option java_multiple_files = true;
+option java_outer_classname = "OvertimeApprovalServiceProto";
+option java_package = "com.acme.timekeeping.v1";
+
+// Routes overtimes through approval, with escalation and delegation.
+service OvertimeApprovalService {
+  // Submits an overtime.
+  rpc SubmitOvertime(SubmitOvertimeRequest) returns (SubmitOvertimeResponse);
+
+  // Approves an overtime.
+  rpc ApproveOvertime(ApproveOvertimeRequest) returns (ApproveOvertimeResponse);
+
+  // Rejects an overtime.
+  rpc RejectOvertime(RejectOvertimeRequest) returns (RejectOvertimeResponse);
+
+  // Escalates an overtime.
+  rpc EscalateOvertime(EscalateOvertimeRequest) returns (EscalateOvertimeResponse);
+
+  // Lists overtimes a page at a time.
+  rpc ListPendingOvertimes(ListPendingOvertimesRequest) returns (ListPendingOvertimesResponse);
+
+  // Delegates an overtime.
+  rpc DelegateOvertimeApproval(DelegateOvertimeApprovalRequest) returns (DelegateOvertimeApprovalResponse);
+
+  // Recalls an overtime.
+  rpc RecallOvertime(RecallOvertimeRequest) returns (RecallOvertimeResponse);
+
+  // Returns an overtime.
+  rpc GetOvertimeApprovalStatus(GetOvertimeApprovalStatusRequest) returns (GetOvertimeApprovalStatusResponse);
+
+  // Comments an overtime.
+  rpc CommentOvertimeApproval(CommentOvertimeApprovalRequest) returns (CommentOvertimeApprovalResponse);
+}
+
+// The request of `SubmitOvertime`.
+message SubmitOvertimeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  SubmitOvertimeRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitOvertime`.
+message SubmitOvertimeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  SubmitOvertimeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveOvertime`.
+message ApproveOvertimeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  ApproveOvertimeRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveOvertime`.
+message ApproveOvertimeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  ApproveOvertimeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectOvertime`.
+message RejectOvertimeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  RejectOvertimeRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectOvertime`.
+message RejectOvertimeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  RejectOvertimeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateOvertime`.
+message EscalateOvertimeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  EscalateOvertimeRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateOvertime`.
+message EscalateOvertimeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  EscalateOvertimeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingOvertimes`.
+message ListPendingOvertimesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated OvertimeStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingOvertimesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingOvertimes`.
+message ListPendingOvertimesResponse {
+  repeated Overtime overtimes = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateOvertimeApproval`.
+message DelegateOvertimeApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  DelegateOvertimeApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateOvertimeApproval`.
+message DelegateOvertimeApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  DelegateOvertimeApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallOvertime`.
+message RecallOvertimeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  RecallOvertimeRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallOvertime`.
+message RecallOvertimeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  RecallOvertimeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetOvertimeApprovalStatus`.
+message GetOvertimeApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetOvertimeApprovalStatus`.
+message GetOvertimeApprovalStatusResponse {
+  Overtime overtime = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentOvertimeApproval`.
+message CommentOvertimeApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  CommentOvertimeApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentOvertimeApproval`.
+message CommentOvertimeApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  CommentOvertimeApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

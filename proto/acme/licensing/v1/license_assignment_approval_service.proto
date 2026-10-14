@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.licensing.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/licensing/v1/licensing.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Licensing.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/licensing/v1;licensingv1";
+option java_multiple_files = true;
+option java_outer_classname = "LicenseAssignmentApprovalServiceProto";
+option java_package = "com.acme.licensing.v1";
+
+// Routes license assignments through approval, with escalation and delegation.
+service LicenseAssignmentApprovalService {
+  // Submits a license assignment.
+  rpc SubmitLicenseAssignment(SubmitLicenseAssignmentRequest) returns (SubmitLicenseAssignmentResponse);
+
+  // Approves a license assignment.
+  rpc ApproveLicenseAssignment(ApproveLicenseAssignmentRequest) returns (ApproveLicenseAssignmentResponse);
+
+  // Rejects a license assignment.
+  rpc RejectLicenseAssignment(RejectLicenseAssignmentRequest) returns (RejectLicenseAssignmentResponse);
+
+  // Escalates a license assignment.
+  rpc EscalateLicenseAssignment(EscalateLicenseAssignmentRequest) returns (EscalateLicenseAssignmentResponse);
+
+  // Lists license assignments a page at a time.
+  rpc ListPendingLicenseAssignments(ListPendingLicenseAssignmentsRequest) returns (ListPendingLicenseAssignmentsResponse);
+
+  // Delegates a license assignment.
+  rpc DelegateLicenseAssignmentApproval(DelegateLicenseAssignmentApprovalRequest) returns (DelegateLicenseAssignmentApprovalResponse);
+
+  // Recalls a license assignment.
+  rpc RecallLicenseAssignment(RecallLicenseAssignmentRequest) returns (RecallLicenseAssignmentResponse);
+
+  // Returns a license assignment.
+  rpc GetLicenseAssignmentApprovalStatus(GetLicenseAssignmentApprovalStatusRequest) returns (GetLicenseAssignmentApprovalStatusResponse);
+
+  // Comments a license assignment.
+  rpc CommentLicenseAssignmentApproval(CommentLicenseAssignmentApprovalRequest) returns (CommentLicenseAssignmentApprovalResponse);
+}
+
+// The request of `SubmitLicenseAssignment`.
+message SubmitLicenseAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  SubmitLicenseAssignmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitLicenseAssignment`.
+message SubmitLicenseAssignmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  SubmitLicenseAssignmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveLicenseAssignment`.
+message ApproveLicenseAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  ApproveLicenseAssignmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveLicenseAssignment`.
+message ApproveLicenseAssignmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  ApproveLicenseAssignmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectLicenseAssignment`.
+message RejectLicenseAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  RejectLicenseAssignmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectLicenseAssignment`.
+message RejectLicenseAssignmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  RejectLicenseAssignmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateLicenseAssignment`.
+message EscalateLicenseAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  EscalateLicenseAssignmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateLicenseAssignment`.
+message EscalateLicenseAssignmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  EscalateLicenseAssignmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingLicenseAssignments`.
+message ListPendingLicenseAssignmentsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated LicenseAssignmentStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingLicenseAssignmentsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingLicenseAssignments`.
+message ListPendingLicenseAssignmentsResponse {
+  repeated LicenseAssignment license_assignments = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateLicenseAssignmentApproval`.
+message DelegateLicenseAssignmentApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  DelegateLicenseAssignmentApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateLicenseAssignmentApproval`.
+message DelegateLicenseAssignmentApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  DelegateLicenseAssignmentApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallLicenseAssignment`.
+message RecallLicenseAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  RecallLicenseAssignmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallLicenseAssignment`.
+message RecallLicenseAssignmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  RecallLicenseAssignmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetLicenseAssignmentApprovalStatus`.
+message GetLicenseAssignmentApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetLicenseAssignmentApprovalStatus`.
+message GetLicenseAssignmentApprovalStatusResponse {
+  LicenseAssignment license_assignment = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentLicenseAssignmentApproval`.
+message CommentLicenseAssignmentApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string license_assignment_id = 2;
+  LicenseAssignment license_assignment = 3;
+  CommentLicenseAssignmentApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentLicenseAssignmentApproval`.
+message CommentLicenseAssignmentApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LicenseAssignment license_assignment = 1;
+  CommentLicenseAssignmentApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

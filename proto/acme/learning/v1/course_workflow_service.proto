@@ -1,0 +1,296 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.learning.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/learning/v1/learning.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Learning.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/learning/v1;learningv1";
+option java_multiple_files = true;
+option java_outer_classname = "CourseWorkflowServiceProto";
+option java_package = "com.acme.learning.v1";
+
+// Runs the long-lived workflow that takes a course from start to finish.
+service CourseWorkflowService {
+  // Starts a course.
+  rpc StartCourseWorkflow(StartCourseWorkflowRequest) returns (StartCourseWorkflowResponse);
+
+  // Advances a course.
+  rpc AdvanceCourseWorkflow(AdvanceCourseWorkflowRequest) returns (AdvanceCourseWorkflowResponse);
+
+  // Cancels a course.
+  rpc CancelCourseWorkflow(CancelCourseWorkflowRequest) returns (CancelCourseWorkflowResponse);
+
+  // Retrys a course.
+  rpc RetryCourseWorkflow(RetryCourseWorkflowRequest) returns (RetryCourseWorkflowResponse);
+
+  // Pauses a course.
+  rpc PauseCourseWorkflow(PauseCourseWorkflowRequest) returns (PauseCourseWorkflowResponse);
+
+  // Resumes a course.
+  rpc ResumeCourseWorkflow(ResumeCourseWorkflowRequest) returns (ResumeCourseWorkflowResponse);
+
+  // Returns a course.
+  rpc InspectCourseWorkflow(InspectCourseWorkflowRequest) returns (InspectCourseWorkflowResponse);
+
+  // Lists courses a page at a time.
+  rpc ListCourseWorkflows(ListCourseWorkflowsRequest) returns (ListCourseWorkflowsResponse);
+}
+
+// The request of `StartCourseWorkflow`.
+message StartCourseWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_id = 2;
+  Course course = 3;
+  StartCourseWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartCourseWorkflow`.
+message StartCourseWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Course course = 1;
+  StartCourseWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceCourseWorkflow`.
+message AdvanceCourseWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_id = 2;
+  Course course = 3;
+  AdvanceCourseWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceCourseWorkflow`.
+message AdvanceCourseWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Course course = 1;
+  AdvanceCourseWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelCourseWorkflow`.
+message CancelCourseWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_id = 2;
+  Course course = 3;
+  CancelCourseWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelCourseWorkflow`.
+message CancelCourseWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Course course = 1;
+  CancelCourseWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryCourseWorkflow`.
+message RetryCourseWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_id = 2;
+  Course course = 3;
+  RetryCourseWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryCourseWorkflow`.
+message RetryCourseWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Course course = 1;
+  RetryCourseWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseCourseWorkflow`.
+message PauseCourseWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_id = 2;
+  Course course = 3;
+  PauseCourseWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseCourseWorkflow`.
+message PauseCourseWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Course course = 1;
+  PauseCourseWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeCourseWorkflow`.
+message ResumeCourseWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_id = 2;
+  Course course = 3;
+  ResumeCourseWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeCourseWorkflow`.
+message ResumeCourseWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Course course = 1;
+  ResumeCourseWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectCourseWorkflow`.
+message InspectCourseWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string course_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectCourseWorkflow`.
+message InspectCourseWorkflowResponse {
+  Course course = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListCourseWorkflows`.
+message ListCourseWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated CourseStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListCourseWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListCourseWorkflows`.
+message ListCourseWorkflowsResponse {
+  repeated Course courses = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}

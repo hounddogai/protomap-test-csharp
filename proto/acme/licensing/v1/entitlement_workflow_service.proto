@@ -1,0 +1,267 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.licensing.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/licensing/v1/licensing.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Licensing.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/licensing/v1;licensingv1";
+option java_multiple_files = true;
+option java_outer_classname = "EntitlementWorkflowServiceProto";
+option java_package = "com.acme.licensing.v1";
+
+// Runs the long-lived workflow that takes an entitlement from start to finish.
+service EntitlementWorkflowService {
+  // Starts an entitlement.
+  rpc StartEntitlementWorkflow(StartEntitlementWorkflowRequest) returns (StartEntitlementWorkflowResponse);
+
+  // Advances an entitlement.
+  rpc AdvanceEntitlementWorkflow(AdvanceEntitlementWorkflowRequest) returns (AdvanceEntitlementWorkflowResponse);
+
+  // Cancels an entitlement.
+  rpc CancelEntitlementWorkflow(CancelEntitlementWorkflowRequest) returns (CancelEntitlementWorkflowResponse);
+
+  // Retrys an entitlement.
+  rpc RetryEntitlementWorkflow(RetryEntitlementWorkflowRequest) returns (RetryEntitlementWorkflowResponse);
+
+  // Resumes an entitlement.
+  rpc ResumeEntitlementWorkflow(ResumeEntitlementWorkflowRequest) returns (ResumeEntitlementWorkflowResponse);
+
+  // Returns an entitlement.
+  rpc InspectEntitlementWorkflow(InspectEntitlementWorkflowRequest) returns (InspectEntitlementWorkflowResponse);
+
+  // Signals an entitlement.
+  rpc SignalEntitlementWorkflow(SignalEntitlementWorkflowRequest) returns (SignalEntitlementWorkflowResponse);
+}
+
+// The request of `StartEntitlementWorkflow`.
+message StartEntitlementWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  StartEntitlementWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartEntitlementWorkflow`.
+message StartEntitlementWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  StartEntitlementWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceEntitlementWorkflow`.
+message AdvanceEntitlementWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  AdvanceEntitlementWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceEntitlementWorkflow`.
+message AdvanceEntitlementWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  AdvanceEntitlementWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelEntitlementWorkflow`.
+message CancelEntitlementWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  CancelEntitlementWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelEntitlementWorkflow`.
+message CancelEntitlementWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  CancelEntitlementWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryEntitlementWorkflow`.
+message RetryEntitlementWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  RetryEntitlementWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryEntitlementWorkflow`.
+message RetryEntitlementWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  RetryEntitlementWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeEntitlementWorkflow`.
+message ResumeEntitlementWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  ResumeEntitlementWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeEntitlementWorkflow`.
+message ResumeEntitlementWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  ResumeEntitlementWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectEntitlementWorkflow`.
+message InspectEntitlementWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectEntitlementWorkflow`.
+message InspectEntitlementWorkflowResponse {
+  Entitlement entitlement = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `SignalEntitlementWorkflow`.
+message SignalEntitlementWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  SignalEntitlementWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalEntitlementWorkflow`.
+message SignalEntitlementWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  SignalEntitlementWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

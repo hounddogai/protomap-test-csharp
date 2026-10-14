@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../Common/Acme.Contracts.Common.csproj" />
+    <ProjectReference Include="../Identity/Acme.Contracts.Identity.csproj" />
+    <ProjectReference Include="../Recruiting/Acme.Contracts.Recruiting.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" />
+    <PackageReference Include="Grpc.Core.Api" />
+    <PackageReference Include="Grpc.Tools" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="../../../proto/acme/performance/v1/calibration_approval_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/performance/v1/calibration_calculation_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/performance/v1/calibration_lifecycle_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/performance/v1/calibration_validation_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/performance/v1/feedback_approval_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/performance/v1/feedback_calculation_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/performance/v1/feedback_validation_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/performance/v1/feedback_workflow_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/performance/v1/goal_approval_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/performance/v1/goal_query_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/performance/v1/goal_validation_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/performance/v1/goal_workflow_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/performance/v1/performance.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/performance/v1/refs.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/performance/v1/review_approval_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/performance/v1/review_query_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/performance/v1/review_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/performance/v1/review_workflow_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+  </ItemGroup>
+</Project>

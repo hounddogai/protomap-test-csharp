@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../Common/Acme.Contracts.Common.csproj" />
+    <ProjectReference Include="../Identity/Acme.Contracts.Identity.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" />
+    <PackageReference Include="Grpc.Core.Api" />
+    <PackageReference Include="Grpc.Tools" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="../../../proto/acme/documents/v1/document_admin_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_export_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_folder_admin_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_folder_export_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_folder_history_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_folder_notification_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_folder_query_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_folder_sync_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_folder_validation_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_history_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_notification_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_query_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_sync_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_template_admin_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_template_calculation_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_template_export_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_template_history_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_template_notification_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_template_sync_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_template_workflow_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/document_validation_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/documents.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/refs.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/signature_admin_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/signature_calculation_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/signature_export_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/signature_history_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/signature_notification_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/signature_sync_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/documents/v1/signature_validation_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+  </ItemGroup>
+</Project>

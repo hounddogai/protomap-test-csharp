@@ -1,0 +1,247 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.documents.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/documents/v1/documents.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Documents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/documents/v1;documentsv1";
+option java_multiple_files = true;
+option java_outer_classname = "DocumentNotificationServiceProto";
+option java_package = "com.acme.documents.v1";
+
+// Tells the people who follow a document what changed.
+service DocumentNotificationService {
+  // Subscribes a document.
+  rpc SubscribeDocumentUpdates(SubscribeDocumentUpdatesRequest) returns (SubscribeDocumentUpdatesResponse);
+
+  // Unsubscribes a document.
+  rpc UnsubscribeDocumentUpdates(UnsubscribeDocumentUpdatesRequest) returns (UnsubscribeDocumentUpdatesResponse);
+
+  // Notifys a document.
+  rpc NotifyDocumentWatchers(NotifyDocumentWatchersRequest) returns (NotifyDocumentWatchersResponse);
+
+  // Lists documents a page at a time.
+  rpc ListDocumentSubscriptions(ListDocumentSubscriptionsRequest) returns (ListDocumentSubscriptionsResponse);
+
+  // Sends a document.
+  rpc SendDocumentTestNotice(SendDocumentTestNoticeRequest) returns (SendDocumentTestNoticeResponse);
+
+  // Returns a document.
+  rpc GetDocumentPreferences(GetDocumentPreferencesRequest) returns (GetDocumentPreferencesResponse);
+
+  // Streams the changes of documents as they happen.
+  rpc StreamDocumentNotices(StreamDocumentNoticesRequest) returns (stream StreamDocumentNoticesResponse);
+}
+
+// The request of `SubscribeDocumentUpdates`.
+message SubscribeDocumentUpdatesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_id = 2;
+  SubscribeDocumentUpdatesRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SubscribeDocumentUpdates`.
+message SubscribeDocumentUpdatesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Document document = 1;
+  SubscribeDocumentUpdatesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `UnsubscribeDocumentUpdates`.
+message UnsubscribeDocumentUpdatesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_id = 2;
+  UnsubscribeDocumentUpdatesRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `UnsubscribeDocumentUpdates`.
+message UnsubscribeDocumentUpdatesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Document document = 1;
+  UnsubscribeDocumentUpdatesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NotifyDocumentWatchers`.
+message NotifyDocumentWatchersRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_id = 2;
+  NotifyDocumentWatchersRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `NotifyDocumentWatchers`.
+message NotifyDocumentWatchersResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Document document = 1;
+  NotifyDocumentWatchersResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListDocumentSubscriptions`.
+message ListDocumentSubscriptionsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DocumentStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListDocumentSubscriptionsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListDocumentSubscriptions`.
+message ListDocumentSubscriptionsResponse {
+  repeated Document documents = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SendDocumentTestNotice`.
+message SendDocumentTestNoticeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_id = 2;
+  SendDocumentTestNoticeRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SendDocumentTestNotice`.
+message SendDocumentTestNoticeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Document document = 1;
+  SendDocumentTestNoticeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetDocumentPreferences`.
+message GetDocumentPreferencesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string document_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetDocumentPreferences`.
+message GetDocumentPreferencesResponse {
+  Document document = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `StreamDocumentNotices`.
+message StreamDocumentNoticesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DocumentStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  StreamDocumentNoticesRequest.Filter filter = 2;
+  google.protobuf.Timestamp since = 3;
+  int32 max_events = 4;
+  acme.common.v1.ContactInfo subscriber = 5;
+}
+
+// The response of `StreamDocumentNotices`.
+message StreamDocumentNoticesResponse {
+  Document document = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}

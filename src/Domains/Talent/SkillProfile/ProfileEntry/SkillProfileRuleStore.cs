@@ -1,0 +1,164 @@
+namespace Acme.Workforce.Talent.SkillProfile.ProfileEntry;
+
+using Acme.Workforce.Kit.Clock;
+using Acme.Workforce.Kit.Collections;
+using Acme.Workforce.Kit.Text;
+
+/// <summary>Keeps skill profile rules by code.</summary>
+public interface ISkillProfileRuleStore
+{
+    SkillProfileRule? Find(string code);
+    void Save(SkillProfileRule item);
+    bool Remove(string code);
+    List<SkillProfileRule> List();
+}
+
+/// <summary>Keeps records in memory, in the order they were first saved.</summary>
+public sealed class MemorySkillProfileRuleStore(Dictionary<string, SkillProfileRule> items, List<string> order) : ISkillProfileRuleStore
+{
+    public Dictionary<string, SkillProfileRule> Items { get; set; } = items;
+    public List<string> Order { get; set; } = order;
+
+    public SkillProfileRule? Find(string code)
+    {
+        if (!Items.TryGetValue(code, out var found))
+        {
+            return null;
+        }
+        return found;
+    }
+
+    public void Save(SkillProfileRule item)
+    {
+        if (!Items.ContainsKey(item.Code))
+        {
+            Order.Add(item.Code);
+        }
+        Items[item.Code] = item;
+    }
+
+    public bool Remove(string code)
+    {
+        if (!Items.ContainsKey(code))
+        {
+            return false;
+        }
+        Items.Remove(code);
+        var kept = new List<string>();
+        foreach (var existing in Order)
+        {
+            if (existing != code)
+            {
+                kept.Add(existing);
+            }
+        }
+        Order = kept;
+        return true;
+    }
+
+    public List<SkillProfileRule> List()
+    {
+        var outValue = new List<SkillProfileRule>();
+        foreach (var key in Order)
+        {
+            if (!Items.TryGetValue(key, out var found))
+            {
+                continue;
+            }
+            outValue.Add(found);
+        }
+        return outValue;
+    }
+}
+
+/// <summary>Serves reads from a short-lived cache in front of another store.</summary>
+public sealed class CachedSkillProfileRuleStore(MemorySkillProfileRuleStore inner, SkillProfileRuleCache cache, int hits, int misses) : ISkillProfileRuleStore
+{
+    public MemorySkillProfileRuleStore Inner { get; set; } = inner;
+    public SkillProfileRuleCache Cache { get; set; } = cache;
+    public int Hits { get; set; } = hits;
+    public int Misses { get; set; } = misses;
+
+    public SkillProfileRule? Find(string code)
+    {
+        if (Cache.Get(code) is not { } hit)
+        {
+            Misses += 1;
+            if (Inner.Find(code) is not { } found)
+            {
+                return null;
+            }
+            Cache.Put(code, found);
+            return found;
+        }
+        Hits += 1;
+        return hit;
+    }
+
+    public void Save(SkillProfileRule item)
+    {
+        Inner.Save(item);
+        Cache.Put(item.Code, item);
+    }
+
+    public bool Remove(string code)
+    {
+        // A cached copy expires on its own; reads after a removal may still see it until then.
+        return Inner.Remove(code);
+    }
+
+    public List<SkillProfileRule> List()
+    {
+        return Inner.List();
+    }
+}
+
+/// <summary>Selects skill profile rules. Empty fields match all.</summary>
+public sealed record SkillProfileRuleQuery(string Name, int MinUpdatedAt, List<string> Statuses, int Limit)
+{
+    public bool Matches(SkillProfileRule item)
+    {
+        if (Name != "" && Text.Normalize(item.Name) != Text.Normalize(Name))
+        {
+            return false;
+        }
+        if (item.UpdatedAt < MinUpdatedAt)
+        {
+            return false;
+        }
+        if (Statuses.Count > 0 && !Statuses.Contains($"{item.Status}"))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public List<SkillProfileRule> Apply(List<SkillProfileRule> items)
+    {
+        var matched = Collections.Filter(items, (SkillProfileRule candidate) => Matches(candidate));
+        if (Limit > 0 && matched.Count > Limit)
+        {
+            return Collections.Take(matched, Limit);
+        }
+        return matched;
+    }
+}
+
+/// <summary>Functions of skill profile rule store.</summary>
+public static class SkillProfileRuleStore
+{
+    public static ISkillProfileRuleStore NewMemorySkillProfileRuleStore()
+    {
+        return new MemorySkillProfileRuleStore(new Dictionary<string, SkillProfileRule>(), new List<string>());
+    }
+
+    public static ISkillProfileRuleStore NewCachedSkillProfileRuleStore(MemorySkillProfileRuleStore inner, int ttl, IClock clock)
+    {
+        return new CachedSkillProfileRuleStore(inner, SkillProfileRuleCache.Create(1024, ttl, clock), 0, 0);
+    }
+
+    public static List<SkillProfileRule> FindSkillProfileRules(ISkillProfileRuleStore store, SkillProfileRuleQuery query)
+    {
+        return query.Apply(store.List());
+    }
+}

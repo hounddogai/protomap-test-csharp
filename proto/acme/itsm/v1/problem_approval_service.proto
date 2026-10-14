@@ -1,0 +1,295 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.itsm.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/itsm/v1/itsm.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Itsm.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/itsm/v1;itsmv1";
+option java_multiple_files = true;
+option java_outer_classname = "ProblemApprovalServiceProto";
+option java_package = "com.acme.itsm.v1";
+
+// Routes problems through approval, with escalation and delegation.
+service ProblemApprovalService {
+  // Submits a problem.
+  rpc SubmitProblem(SubmitProblemRequest) returns (SubmitProblemResponse);
+
+  // Approves a problem.
+  rpc ApproveProblem(ApproveProblemRequest) returns (ApproveProblemResponse);
+
+  // Rejects a problem.
+  rpc RejectProblem(RejectProblemRequest) returns (RejectProblemResponse);
+
+  // Lists problems a page at a time.
+  rpc ListPendingProblems(ListPendingProblemsRequest) returns (ListPendingProblemsResponse);
+
+  // Delegates a problem.
+  rpc DelegateProblemApproval(DelegateProblemApprovalRequest) returns (DelegateProblemApprovalResponse);
+
+  // Recalls a problem.
+  rpc RecallProblem(RecallProblemRequest) returns (RecallProblemResponse);
+
+  // Returns a problem.
+  rpc GetProblemApprovalStatus(GetProblemApprovalStatusRequest) returns (GetProblemApprovalStatusResponse);
+
+  // Comments a problem.
+  rpc CommentProblemApproval(CommentProblemApprovalRequest) returns (CommentProblemApprovalResponse);
+}
+
+// The request of `SubmitProblem`.
+message SubmitProblemRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  Problem problem = 3;
+  SubmitProblemRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitProblem`.
+message SubmitProblemResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Problem problem = 1;
+  SubmitProblemResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveProblem`.
+message ApproveProblemRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  Problem problem = 3;
+  ApproveProblemRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveProblem`.
+message ApproveProblemResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Problem problem = 1;
+  ApproveProblemResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectProblem`.
+message RejectProblemRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  Problem problem = 3;
+  RejectProblemRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectProblem`.
+message RejectProblemResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Problem problem = 1;
+  RejectProblemResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingProblems`.
+message ListPendingProblemsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated ProblemStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingProblemsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingProblems`.
+message ListPendingProblemsResponse {
+  repeated Problem problems = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateProblemApproval`.
+message DelegateProblemApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  Problem problem = 3;
+  DelegateProblemApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateProblemApproval`.
+message DelegateProblemApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Problem problem = 1;
+  DelegateProblemApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallProblem`.
+message RecallProblemRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  Problem problem = 3;
+  RecallProblemRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallProblem`.
+message RecallProblemResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Problem problem = 1;
+  RecallProblemResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetProblemApprovalStatus`.
+message GetProblemApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetProblemApprovalStatus`.
+message GetProblemApprovalStatusResponse {
+  Problem problem = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentProblemApproval`.
+message CommentProblemApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  Problem problem = 3;
+  CommentProblemApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentProblemApproval`.
+message CommentProblemApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Problem problem = 1;
+  CommentProblemApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

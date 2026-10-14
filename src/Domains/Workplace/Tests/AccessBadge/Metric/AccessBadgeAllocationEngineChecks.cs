@@ -1,0 +1,22 @@
+namespace Acme.Workforce.Workplace.Tests.AccessBadge.Metric;
+
+using Acme.Workforce.Kit.Flags;
+using Acme.Workforce.Workplace.AccessBadge.Metric;
+
+/// <summary>Checks of metric code, run by the project's runner.</summary>
+public static class AccessBadgeAllocationEngineChecks
+{
+    public static void AccessBadgeAllocationEngineKeepsResultsWithinBounds()
+    {
+        var engine = AccessBadgeAllocationEngine.DefaultAccessBadgeAllocationEngine(Flags.NewRegistry());
+        var item = AccessBadgeAllocation.NewAccessBadgeAllocation("code-762", "label-772");
+        var result = engine.Run(item);
+        Check.True(result >= engine.Floor && result <= engine.Ceiling, "result out of bounds");
+        Check.True(engine.Trace.Count >= 0, "trace");
+    }
+
+    public static void RunAll()
+    {
+        AccessBadgeAllocationEngineKeepsResultsWithinBounds();
+    }
+}

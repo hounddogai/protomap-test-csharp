@@ -1,0 +1,229 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.scheduling.v1;
+
+import "acme/common/v1/audit.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/scheduling/v1/scheduling.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Scheduling.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/scheduling/v1;schedulingv1";
+option java_multiple_files = true;
+option java_outer_classname = "RosterQueryServiceProto";
+option java_package = "com.acme.scheduling.v1";
+
+// Answers read-only questions about rosters, for screens and reports.
+service RosterQueryService {
+  // Returns a roster.
+  rpc LookupRoster(LookupRosterRequest) returns (LookupRosterResponse);
+
+  // Lists rosters a page at a time.
+  rpc BrowseRosters(BrowseRostersRequest) returns (BrowseRostersResponse);
+
+  // Lists rosters a page at a time.
+  rpc FindRosters(FindRostersRequest) returns (FindRostersResponse);
+
+  // Counts rosters by status.
+  rpc CountRosters(CountRostersRequest) returns (CountRostersResponse);
+
+  // Returns several rosters at once.
+  rpc ResolveRosters(ResolveRostersRequest) returns (ResolveRostersResponse);
+
+  // Streams every matching roster.
+  rpc ExportRosters(ExportRostersRequest) returns (stream ExportRostersResponse);
+
+  // Summarizes a roster.
+  rpc SummarizeRosters(SummarizeRostersRequest) returns (SummarizeRostersResponse);
+
+  // Lists rosters a page at a time.
+  rpc SuggestRosters(SuggestRostersRequest) returns (SuggestRostersResponse);
+}
+
+// The request of `LookupRoster`.
+message LookupRosterRequest {
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `LookupRoster`.
+message LookupRosterResponse {
+  Roster roster = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `BrowseRosters`.
+message BrowseRostersRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated RosterStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  BrowseRostersRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `BrowseRosters`.
+message BrowseRostersResponse {
+  repeated Roster rosters = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `FindRosters`.
+message FindRostersRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated RosterStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  FindRostersRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `FindRosters`.
+message FindRostersResponse {
+  repeated Roster rosters = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CountRosters`.
+message CountRostersRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated RosterStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  CountRostersRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `CountRosters`.
+message CountRostersResponse {
+  int64 count = 1;
+  map<string, int64> by_status = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResolveRosters`.
+message ResolveRostersRequest {
+  acme.common.v1.RequestContext context = 1;
+  repeated string roster_ids = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `ResolveRosters`.
+message ResolveRostersResponse {
+  repeated Roster rosters = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExportRosters`.
+message ExportRostersRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated RosterStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  ExportRostersRequest.Filter filter = 2;
+  string format = 3;
+  google.protobuf.FieldMask fields = 4;
+  string destination_uri = 5;
+}
+
+// The response of `ExportRosters`.
+message ExportRostersResponse {
+  Roster roster = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SummarizeRosters`.
+message SummarizeRostersRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  SummarizeRostersRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SummarizeRosters`.
+message SummarizeRostersResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SuggestRosters`.
+message SuggestRostersRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated RosterStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SuggestRostersRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SuggestRosters`.
+message SuggestRostersResponse {
+  repeated Roster rosters = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}

@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.itsm.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/itsm/v1/itsm.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Itsm.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/itsm/v1;itsmv1";
+option java_multiple_files = true;
+option java_outer_classname = "ServiceAssetWorkflowServiceProto";
+option java_package = "com.acme.itsm.v1";
+
+// Runs the long-lived workflow that takes a service asset from start to finish.
+service ServiceAssetWorkflowService {
+  // Starts a service asset.
+  rpc StartServiceAssetWorkflow(StartServiceAssetWorkflowRequest) returns (StartServiceAssetWorkflowResponse);
+
+  // Advances a service asset.
+  rpc AdvanceServiceAssetWorkflow(AdvanceServiceAssetWorkflowRequest) returns (AdvanceServiceAssetWorkflowResponse);
+
+  // Cancels a service asset.
+  rpc CancelServiceAssetWorkflow(CancelServiceAssetWorkflowRequest) returns (CancelServiceAssetWorkflowResponse);
+
+  // Retrys a service asset.
+  rpc RetryServiceAssetWorkflow(RetryServiceAssetWorkflowRequest) returns (RetryServiceAssetWorkflowResponse);
+
+  // Pauses a service asset.
+  rpc PauseServiceAssetWorkflow(PauseServiceAssetWorkflowRequest) returns (PauseServiceAssetWorkflowResponse);
+
+  // Resumes a service asset.
+  rpc ResumeServiceAssetWorkflow(ResumeServiceAssetWorkflowRequest) returns (ResumeServiceAssetWorkflowResponse);
+
+  // Returns a service asset.
+  rpc InspectServiceAssetWorkflow(InspectServiceAssetWorkflowRequest) returns (InspectServiceAssetWorkflowResponse);
+
+  // Lists service assets a page at a time.
+  rpc ListServiceAssetWorkflows(ListServiceAssetWorkflowsRequest) returns (ListServiceAssetWorkflowsResponse);
+
+  // Signals a service asset.
+  rpc SignalServiceAssetWorkflow(SignalServiceAssetWorkflowRequest) returns (SignalServiceAssetWorkflowResponse);
+}
+
+// The request of `StartServiceAssetWorkflow`.
+message StartServiceAssetWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  ServiceAsset service_asset = 3;
+  StartServiceAssetWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartServiceAssetWorkflow`.
+message StartServiceAssetWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ServiceAsset service_asset = 1;
+  StartServiceAssetWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceServiceAssetWorkflow`.
+message AdvanceServiceAssetWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  ServiceAsset service_asset = 3;
+  AdvanceServiceAssetWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceServiceAssetWorkflow`.
+message AdvanceServiceAssetWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ServiceAsset service_asset = 1;
+  AdvanceServiceAssetWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelServiceAssetWorkflow`.
+message CancelServiceAssetWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  ServiceAsset service_asset = 3;
+  CancelServiceAssetWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelServiceAssetWorkflow`.
+message CancelServiceAssetWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ServiceAsset service_asset = 1;
+  CancelServiceAssetWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryServiceAssetWorkflow`.
+message RetryServiceAssetWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  ServiceAsset service_asset = 3;
+  RetryServiceAssetWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryServiceAssetWorkflow`.
+message RetryServiceAssetWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ServiceAsset service_asset = 1;
+  RetryServiceAssetWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseServiceAssetWorkflow`.
+message PauseServiceAssetWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  ServiceAsset service_asset = 3;
+  PauseServiceAssetWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseServiceAssetWorkflow`.
+message PauseServiceAssetWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ServiceAsset service_asset = 1;
+  PauseServiceAssetWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeServiceAssetWorkflow`.
+message ResumeServiceAssetWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  ServiceAsset service_asset = 3;
+  ResumeServiceAssetWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeServiceAssetWorkflow`.
+message ResumeServiceAssetWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ServiceAsset service_asset = 1;
+  ResumeServiceAssetWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectServiceAssetWorkflow`.
+message InspectServiceAssetWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectServiceAssetWorkflow`.
+message InspectServiceAssetWorkflowResponse {
+  ServiceAsset service_asset = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListServiceAssetWorkflows`.
+message ListServiceAssetWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated ServiceAssetStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListServiceAssetWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListServiceAssetWorkflows`.
+message ListServiceAssetWorkflowsResponse {
+  repeated ServiceAsset service_assets = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalServiceAssetWorkflow`.
+message SignalServiceAssetWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string service_asset_id = 2;
+  ServiceAsset service_asset = 3;
+  SignalServiceAssetWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalServiceAssetWorkflow`.
+message SignalServiceAssetWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ServiceAsset service_asset = 1;
+  SignalServiceAssetWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

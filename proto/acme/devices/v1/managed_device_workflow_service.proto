@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.devices.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/devices/v1/devices.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Devices.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/devices/v1;devicesv1";
+option java_multiple_files = true;
+option java_outer_classname = "ManagedDeviceWorkflowServiceProto";
+option java_package = "com.acme.devices.v1";
+
+// Runs the long-lived workflow that takes a managed device from start to finish.
+service ManagedDeviceWorkflowService {
+  // Starts a managed device.
+  rpc StartManagedDeviceWorkflow(StartManagedDeviceWorkflowRequest) returns (StartManagedDeviceWorkflowResponse);
+
+  // Advances a managed device.
+  rpc AdvanceManagedDeviceWorkflow(AdvanceManagedDeviceWorkflowRequest) returns (AdvanceManagedDeviceWorkflowResponse);
+
+  // Cancels a managed device.
+  rpc CancelManagedDeviceWorkflow(CancelManagedDeviceWorkflowRequest) returns (CancelManagedDeviceWorkflowResponse);
+
+  // Retrys a managed device.
+  rpc RetryManagedDeviceWorkflow(RetryManagedDeviceWorkflowRequest) returns (RetryManagedDeviceWorkflowResponse);
+
+  // Pauses a managed device.
+  rpc PauseManagedDeviceWorkflow(PauseManagedDeviceWorkflowRequest) returns (PauseManagedDeviceWorkflowResponse);
+
+  // Resumes a managed device.
+  rpc ResumeManagedDeviceWorkflow(ResumeManagedDeviceWorkflowRequest) returns (ResumeManagedDeviceWorkflowResponse);
+
+  // Returns a managed device.
+  rpc InspectManagedDeviceWorkflow(InspectManagedDeviceWorkflowRequest) returns (InspectManagedDeviceWorkflowResponse);
+
+  // Lists managed devices a page at a time.
+  rpc ListManagedDeviceWorkflows(ListManagedDeviceWorkflowsRequest) returns (ListManagedDeviceWorkflowsResponse);
+
+  // Signals a managed device.
+  rpc SignalManagedDeviceWorkflow(SignalManagedDeviceWorkflowRequest) returns (SignalManagedDeviceWorkflowResponse);
+}
+
+// The request of `StartManagedDeviceWorkflow`.
+message StartManagedDeviceWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  ManagedDevice managed_device = 3;
+  StartManagedDeviceWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartManagedDeviceWorkflow`.
+message StartManagedDeviceWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ManagedDevice managed_device = 1;
+  StartManagedDeviceWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceManagedDeviceWorkflow`.
+message AdvanceManagedDeviceWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  ManagedDevice managed_device = 3;
+  AdvanceManagedDeviceWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceManagedDeviceWorkflow`.
+message AdvanceManagedDeviceWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ManagedDevice managed_device = 1;
+  AdvanceManagedDeviceWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelManagedDeviceWorkflow`.
+message CancelManagedDeviceWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  ManagedDevice managed_device = 3;
+  CancelManagedDeviceWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelManagedDeviceWorkflow`.
+message CancelManagedDeviceWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ManagedDevice managed_device = 1;
+  CancelManagedDeviceWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryManagedDeviceWorkflow`.
+message RetryManagedDeviceWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  ManagedDevice managed_device = 3;
+  RetryManagedDeviceWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryManagedDeviceWorkflow`.
+message RetryManagedDeviceWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ManagedDevice managed_device = 1;
+  RetryManagedDeviceWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseManagedDeviceWorkflow`.
+message PauseManagedDeviceWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  ManagedDevice managed_device = 3;
+  PauseManagedDeviceWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseManagedDeviceWorkflow`.
+message PauseManagedDeviceWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ManagedDevice managed_device = 1;
+  PauseManagedDeviceWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeManagedDeviceWorkflow`.
+message ResumeManagedDeviceWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  ManagedDevice managed_device = 3;
+  ResumeManagedDeviceWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeManagedDeviceWorkflow`.
+message ResumeManagedDeviceWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ManagedDevice managed_device = 1;
+  ResumeManagedDeviceWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectManagedDeviceWorkflow`.
+message InspectManagedDeviceWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectManagedDeviceWorkflow`.
+message InspectManagedDeviceWorkflowResponse {
+  ManagedDevice managed_device = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListManagedDeviceWorkflows`.
+message ListManagedDeviceWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated ManagedDeviceStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListManagedDeviceWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListManagedDeviceWorkflows`.
+message ListManagedDeviceWorkflowsResponse {
+  repeated ManagedDevice managed_devices = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalManagedDeviceWorkflow`.
+message SignalManagedDeviceWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string managed_device_id = 2;
+  ManagedDevice managed_device = 3;
+  SignalManagedDeviceWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalManagedDeviceWorkflow`.
+message SignalManagedDeviceWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ManagedDevice managed_device = 1;
+  SignalManagedDeviceWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

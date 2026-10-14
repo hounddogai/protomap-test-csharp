@@ -1,0 +1,268 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.helpdesk.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/helpdesk/v1/helpdesk.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Helpdesk.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/helpdesk/v1;helpdeskv1";
+option java_multiple_files = true;
+option java_outer_classname = "EscalationValidationServiceProto";
+option java_package = "com.acme.helpdesk.v1";
+
+// Checks escalations against the rules before anything acts on them.
+service EscalationValidationService {
+  // Validates an escalation.
+  rpc ValidateEscalation(ValidateEscalationRequest) returns (ValidateEscalationResponse);
+
+  // Previews an escalation.
+  rpc PreviewEscalation(PreviewEscalationRequest) returns (PreviewEscalationResponse);
+
+  // Checks an escalation.
+  rpc CheckEscalationEligibility(CheckEscalationEligibilityRequest) returns (CheckEscalationEligibilityResponse);
+
+  // Normalizes an escalation.
+  rpc NormalizeEscalation(NormalizeEscalationRequest) returns (NormalizeEscalationResponse);
+
+  // Scores an escalation.
+  rpc ScoreEscalation(ScoreEscalationRequest) returns (ScoreEscalationResponse);
+
+  // Lints an escalation.
+  rpc LintEscalations(LintEscalationsRequest) returns (LintEscalationsResponse);
+
+  // Returns an escalation.
+  rpc GetEscalationRules(GetEscalationRulesRequest) returns (GetEscalationRulesResponse);
+}
+
+// The request of `ValidateEscalation`.
+message ValidateEscalationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  ValidateEscalationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateEscalation`.
+message ValidateEscalationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Escalation escalation = 1;
+  ValidateEscalationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewEscalation`.
+message PreviewEscalationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  PreviewEscalationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewEscalation`.
+message PreviewEscalationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Escalation escalation = 1;
+  PreviewEscalationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckEscalationEligibility`.
+message CheckEscalationEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  CheckEscalationEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckEscalationEligibility`.
+message CheckEscalationEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Escalation escalation = 1;
+  CheckEscalationEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeEscalation`.
+message NormalizeEscalationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  NormalizeEscalationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeEscalation`.
+message NormalizeEscalationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Escalation escalation = 1;
+  NormalizeEscalationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreEscalation`.
+message ScoreEscalationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  ScoreEscalationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreEscalation`.
+message ScoreEscalationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreEscalationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Escalation escalation = 1;
+  ScoreEscalationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintEscalations`.
+message LintEscalationsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  Escalation escalation = 3;
+  LintEscalationsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintEscalations`.
+message LintEscalationsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Escalation escalation = 1;
+  LintEscalationsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetEscalationRules`.
+message GetEscalationRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string escalation_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetEscalationRules`.
+message GetEscalationRulesResponse {
+  Escalation escalation = 1;
+  acme.common.v1.OperationResult result = 2;
+}

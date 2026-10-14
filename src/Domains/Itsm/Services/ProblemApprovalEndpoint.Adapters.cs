@@ -1,0 +1,47 @@
+using Acme.Workforce.Platform;
+using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using ApiCommon = Acme.Common.V1;
+using ApiDevices = Acme.Devices.V1;
+using ApiDocuments = Acme.Documents.V1;
+using ApiEmployees = Acme.Employees.V1;
+using ApiIdentity = Acme.Identity.V1;
+using ApiItsm = Acme.Itsm.V1;
+
+namespace Acme.Workforce.Itsm;
+
+public static class ProblemApprovalEndpointRequests
+{
+    /// <summary>
+    /// Builds the RecallIncident request from the current workflow state.
+    /// </summary>
+    public static ApiItsm.RecallIncidentRequest CommentProblemApprovalToRecallIncident0(this ApiItsm.CommentProblemApprovalRequest request)
+    {
+        return new ApiItsm.RecallIncidentRequest
+        {
+            Context = (request.Context ?? new ApiCommon.RequestContext()),
+            Details = new ApiItsm.RecallIncidentRequest.Types.Details
+            {
+                Approver = new ApiIdentity.UserRef
+                {
+                    UserId = (request.Problem?.Assignee?.UserId ?? ""),
+                },
+            },
+            Incident = new ApiItsm.Incident
+            {
+                Audit = new ApiCommon.AuditInfo
+                {
+                    UpdatedAt = (request.Problem?.Audit?.UpdatedAt ?? new Timestamp()),
+                },
+            },
+        };
+    }
+}

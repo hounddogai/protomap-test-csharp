@@ -1,0 +1,170 @@
+namespace Acme.Workforce.Compensation.BonusPool.OverrideItem;
+
+using Acme.Workforce.Kit.Clock;
+using Acme.Workforce.Kit.Collections;
+using Acme.Workforce.Kit.Text;
+
+/// <summary>Keeps regional bonus pool overrides by code.</summary>
+public interface IRegionalBonusPoolOverrideStore
+{
+    RegionalBonusPoolOverride? Find(string code);
+    void Save(RegionalBonusPoolOverride item);
+    bool Remove(string code);
+    List<RegionalBonusPoolOverride> List();
+}
+
+/// <summary>Keeps records in memory, in the order they were first saved.</summary>
+public sealed class MemoryRegionalBonusPoolOverrideStore(Dictionary<string, RegionalBonusPoolOverride> items, List<string> order) : IRegionalBonusPoolOverrideStore
+{
+    public Dictionary<string, RegionalBonusPoolOverride> Items { get; set; } = items;
+    public List<string> Order { get; set; } = order;
+
+    public RegionalBonusPoolOverride? Find(string code)
+    {
+        if (!Items.TryGetValue(code, out var found))
+        {
+            return null;
+        }
+        return found;
+    }
+
+    public void Save(RegionalBonusPoolOverride item)
+    {
+        if (!Items.ContainsKey(item.Code))
+        {
+            Order.Add(item.Code);
+        }
+        Items[item.Code] = item;
+    }
+
+    public bool Remove(string code)
+    {
+        if (!Items.ContainsKey(code))
+        {
+            return false;
+        }
+        Items.Remove(code);
+        var kept = new List<string>();
+        foreach (var existing in Order)
+        {
+            if (existing != code)
+            {
+                kept.Add(existing);
+            }
+        }
+        Order = kept;
+        return true;
+    }
+
+    public List<RegionalBonusPoolOverride> List()
+    {
+        var outValue = new List<RegionalBonusPoolOverride>();
+        foreach (var key in Order)
+        {
+            if (!Items.TryGetValue(key, out var found))
+            {
+                continue;
+            }
+            outValue.Add(found);
+        }
+        return outValue;
+    }
+}
+
+/// <summary>Serves reads from a short-lived cache in front of another store.</summary>
+public sealed class CachedRegionalBonusPoolOverrideStore(MemoryRegionalBonusPoolOverrideStore inner, RegionalBonusPoolOverrideCache cache, int hits, int misses) : IRegionalBonusPoolOverrideStore
+{
+    public MemoryRegionalBonusPoolOverrideStore Inner { get; set; } = inner;
+    public RegionalBonusPoolOverrideCache Cache { get; set; } = cache;
+    public int Hits { get; set; } = hits;
+    public int Misses { get; set; } = misses;
+
+    public RegionalBonusPoolOverride? Find(string code)
+    {
+        if (Cache.Get(code) is not { } hit)
+        {
+            Misses += 1;
+            if (Inner.Find(code) is not { } found)
+            {
+                return null;
+            }
+            Cache.Put(code, found);
+            return found;
+        }
+        Hits += 1;
+        return hit;
+    }
+
+    public void Save(RegionalBonusPoolOverride item)
+    {
+        Inner.Save(item);
+        Cache.Put(item.Code, item);
+    }
+
+    public bool Remove(string code)
+    {
+        // A cached copy expires on its own; reads after a removal may still see it until then.
+        return Inner.Remove(code);
+    }
+
+    public List<RegionalBonusPoolOverride> List()
+    {
+        return Inner.List();
+    }
+}
+
+/// <summary>Selects regional bonus pool overrides. Empty fields match all.</summary>
+public sealed record RegionalBonusPoolOverrideQuery(string Category, int MinDurationMinutes, List<string> Statuses, int Limit)
+{
+    public bool Matches(RegionalBonusPoolOverride item)
+    {
+        if (Category != "" && Text.Normalize(item.Category) != Text.Normalize(Category))
+        {
+            return false;
+        }
+        if (item.DurationMinutes < MinDurationMinutes)
+        {
+            return false;
+        }
+        if (Statuses.Count > 0 && !Statuses.Contains($"{item.Status}"))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public List<RegionalBonusPoolOverride> Apply(List<RegionalBonusPoolOverride> items)
+    {
+        var matched = Collections.Filter(items, (RegionalBonusPoolOverride candidate) => Matches(candidate));
+        if (Limit > 0 && matched.Count > Limit)
+        {
+            return Collections.Take(matched, Limit);
+        }
+        return matched;
+    }
+}
+
+/// <summary>Functions of regional bonus pool override store.</summary>
+public static class RegionalBonusPoolOverrideStore
+{
+    public static IRegionalBonusPoolOverrideStore NewMemoryRegionalBonusPoolOverrideStore()
+    {
+        return new MemoryRegionalBonusPoolOverrideStore(
+            new Dictionary<string, RegionalBonusPoolOverride>(),
+            new List<string>());
+    }
+
+    public static IRegionalBonusPoolOverrideStore NewCachedRegionalBonusPoolOverrideStore(MemoryRegionalBonusPoolOverrideStore inner, int ttl, IClock clock)
+    {
+        return new CachedRegionalBonusPoolOverrideStore(
+            inner,
+            RegionalBonusPoolOverrideCache.Create(1024, ttl, clock),
+            0,
+            0);
+    }
+
+    public static List<RegionalBonusPoolOverride> FindRegionalBonusPoolOverrides(IRegionalBonusPoolOverrideStore store, RegionalBonusPoolOverrideQuery query)
+    {
+        return query.Apply(store.List());
+    }
+}

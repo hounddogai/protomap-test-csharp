@@ -1,0 +1,294 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.travel.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/travel/v1/travel.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Travel.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/travel/v1;travelv1";
+option java_multiple_files = true;
+option java_outer_classname = "TravelBookingLifecycleServiceProto";
+option java_package = "com.acme.travel.v1";
+
+// Moves a travel booking between the states of its lifecycle.
+service TravelBookingLifecycleService {
+  // Activates a travel booking.
+  rpc ActivateTravelBooking(ActivateTravelBookingRequest) returns (ActivateTravelBookingResponse);
+
+  // Suspends a travel booking.
+  rpc SuspendTravelBooking(SuspendTravelBookingRequest) returns (SuspendTravelBookingResponse);
+
+  // Reinstates a travel booking.
+  rpc ReinstateTravelBooking(ReinstateTravelBookingRequest) returns (ReinstateTravelBookingResponse);
+
+  // Terminates a travel booking.
+  rpc TerminateTravelBooking(TerminateTravelBookingRequest) returns (TerminateTravelBookingResponse);
+
+  // Renews a travel booking.
+  rpc RenewTravelBooking(RenewTravelBookingRequest) returns (RenewTravelBookingResponse);
+
+  // Expires a travel booking.
+  rpc ExpireTravelBooking(ExpireTravelBookingRequest) returns (ExpireTravelBookingResponse);
+
+  // Returns a travel booking.
+  rpc GetTravelBookingLifecycle(GetTravelBookingLifecycleRequest) returns (GetTravelBookingLifecycleResponse);
+
+  // Schedules a travel booking.
+  rpc ScheduleTravelBookingExpiry(ScheduleTravelBookingExpiryRequest) returns (ScheduleTravelBookingExpiryResponse);
+}
+
+// The request of `ActivateTravelBooking`.
+message ActivateTravelBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_booking_id = 2;
+  ActivateTravelBookingRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateTravelBooking`.
+message ActivateTravelBookingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelBooking travel_booking = 1;
+  ActivateTravelBookingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendTravelBooking`.
+message SuspendTravelBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_booking_id = 2;
+  SuspendTravelBookingRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendTravelBooking`.
+message SuspendTravelBookingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelBooking travel_booking = 1;
+  SuspendTravelBookingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateTravelBooking`.
+message ReinstateTravelBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_booking_id = 2;
+  ReinstateTravelBookingRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateTravelBooking`.
+message ReinstateTravelBookingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelBooking travel_booking = 1;
+  ReinstateTravelBookingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateTravelBooking`.
+message TerminateTravelBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_booking_id = 2;
+  TerminateTravelBookingRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateTravelBooking`.
+message TerminateTravelBookingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelBooking travel_booking = 1;
+  TerminateTravelBookingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewTravelBooking`.
+message RenewTravelBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_booking_id = 2;
+  RenewTravelBookingRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewTravelBooking`.
+message RenewTravelBookingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelBooking travel_booking = 1;
+  RenewTravelBookingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireTravelBooking`.
+message ExpireTravelBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_booking_id = 2;
+  ExpireTravelBookingRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireTravelBooking`.
+message ExpireTravelBookingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelBooking travel_booking = 1;
+  ExpireTravelBookingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetTravelBookingLifecycle`.
+message GetTravelBookingLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string travel_booking_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetTravelBookingLifecycle`.
+message GetTravelBookingLifecycleResponse {
+  TravelBooking travel_booking = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleTravelBookingExpiry`.
+message ScheduleTravelBookingExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_booking_id = 2;
+  TravelBooking travel_booking = 3;
+  ScheduleTravelBookingExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleTravelBookingExpiry`.
+message ScheduleTravelBookingExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelBooking travel_booking = 1;
+  ScheduleTravelBookingExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

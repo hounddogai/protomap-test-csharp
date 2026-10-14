@@ -1,0 +1,251 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.recruiting.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/recruiting/v1/recruiting.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Recruiting.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/recruiting/v1;recruitingv1";
+option java_multiple_files = true;
+option java_outer_classname = "OfferValidationServiceProto";
+option java_package = "com.acme.recruiting.v1";
+
+// Checks offers against the rules before anything acts on them.
+service OfferValidationService {
+  // Validates an offer.
+  rpc ValidateOffer(ValidateOfferRequest) returns (ValidateOfferResponse);
+
+  // Previews an offer.
+  rpc PreviewOffer(PreviewOfferRequest) returns (PreviewOfferResponse);
+
+  // Checks an offer.
+  rpc CheckOfferEligibility(CheckOfferEligibilityRequest) returns (CheckOfferEligibilityResponse);
+
+  // Normalizes an offer.
+  rpc NormalizeOffer(NormalizeOfferRequest) returns (NormalizeOfferResponse);
+
+  // Scores an offer.
+  rpc ScoreOffer(ScoreOfferRequest) returns (ScoreOfferResponse);
+
+  // Lints an offer.
+  rpc LintOffers(LintOffersRequest) returns (LintOffersResponse);
+}
+
+// The request of `ValidateOffer`.
+message ValidateOfferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  Offer offer = 3;
+  ValidateOfferRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateOffer`.
+message ValidateOfferResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Offer offer = 1;
+  ValidateOfferResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewOffer`.
+message PreviewOfferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  Offer offer = 3;
+  PreviewOfferRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewOffer`.
+message PreviewOfferResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Offer offer = 1;
+  PreviewOfferResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckOfferEligibility`.
+message CheckOfferEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  Offer offer = 3;
+  CheckOfferEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckOfferEligibility`.
+message CheckOfferEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Offer offer = 1;
+  CheckOfferEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeOffer`.
+message NormalizeOfferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  Offer offer = 3;
+  NormalizeOfferRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeOffer`.
+message NormalizeOfferResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Offer offer = 1;
+  NormalizeOfferResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreOffer`.
+message ScoreOfferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  Offer offer = 3;
+  ScoreOfferRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreOffer`.
+message ScoreOfferResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreOfferResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Offer offer = 1;
+  ScoreOfferResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintOffers`.
+message LintOffersRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string offer_id = 2;
+  Offer offer = 3;
+  LintOffersRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintOffers`.
+message LintOffersResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Offer offer = 1;
+  LintOffersResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

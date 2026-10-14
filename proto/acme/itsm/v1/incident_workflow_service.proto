@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.itsm.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/itsm/v1/itsm.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Itsm.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/itsm/v1;itsmv1";
+option java_multiple_files = true;
+option java_outer_classname = "IncidentWorkflowServiceProto";
+option java_package = "com.acme.itsm.v1";
+
+// Runs the long-lived workflow that takes an incident from start to finish.
+service IncidentWorkflowService {
+  // Starts an incident.
+  rpc StartIncidentWorkflow(StartIncidentWorkflowRequest) returns (StartIncidentWorkflowResponse);
+
+  // Advances an incident.
+  rpc AdvanceIncidentWorkflow(AdvanceIncidentWorkflowRequest) returns (AdvanceIncidentWorkflowResponse);
+
+  // Cancels an incident.
+  rpc CancelIncidentWorkflow(CancelIncidentWorkflowRequest) returns (CancelIncidentWorkflowResponse);
+
+  // Retrys an incident.
+  rpc RetryIncidentWorkflow(RetryIncidentWorkflowRequest) returns (RetryIncidentWorkflowResponse);
+
+  // Pauses an incident.
+  rpc PauseIncidentWorkflow(PauseIncidentWorkflowRequest) returns (PauseIncidentWorkflowResponse);
+
+  // Resumes an incident.
+  rpc ResumeIncidentWorkflow(ResumeIncidentWorkflowRequest) returns (ResumeIncidentWorkflowResponse);
+
+  // Returns an incident.
+  rpc InspectIncidentWorkflow(InspectIncidentWorkflowRequest) returns (InspectIncidentWorkflowResponse);
+
+  // Lists incidents a page at a time.
+  rpc ListIncidentWorkflows(ListIncidentWorkflowsRequest) returns (ListIncidentWorkflowsResponse);
+
+  // Signals an incident.
+  rpc SignalIncidentWorkflow(SignalIncidentWorkflowRequest) returns (SignalIncidentWorkflowResponse);
+}
+
+// The request of `StartIncidentWorkflow`.
+message StartIncidentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string incident_id = 2;
+  Incident incident = 3;
+  StartIncidentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartIncidentWorkflow`.
+message StartIncidentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Incident incident = 1;
+  StartIncidentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceIncidentWorkflow`.
+message AdvanceIncidentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string incident_id = 2;
+  Incident incident = 3;
+  AdvanceIncidentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceIncidentWorkflow`.
+message AdvanceIncidentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Incident incident = 1;
+  AdvanceIncidentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelIncidentWorkflow`.
+message CancelIncidentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string incident_id = 2;
+  Incident incident = 3;
+  CancelIncidentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelIncidentWorkflow`.
+message CancelIncidentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Incident incident = 1;
+  CancelIncidentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryIncidentWorkflow`.
+message RetryIncidentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string incident_id = 2;
+  Incident incident = 3;
+  RetryIncidentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryIncidentWorkflow`.
+message RetryIncidentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Incident incident = 1;
+  RetryIncidentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseIncidentWorkflow`.
+message PauseIncidentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string incident_id = 2;
+  Incident incident = 3;
+  PauseIncidentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseIncidentWorkflow`.
+message PauseIncidentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Incident incident = 1;
+  PauseIncidentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeIncidentWorkflow`.
+message ResumeIncidentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string incident_id = 2;
+  Incident incident = 3;
+  ResumeIncidentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeIncidentWorkflow`.
+message ResumeIncidentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Incident incident = 1;
+  ResumeIncidentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectIncidentWorkflow`.
+message InspectIncidentWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string incident_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectIncidentWorkflow`.
+message InspectIncidentWorkflowResponse {
+  Incident incident = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListIncidentWorkflows`.
+message ListIncidentWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated IncidentStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListIncidentWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListIncidentWorkflows`.
+message ListIncidentWorkflowsResponse {
+  repeated Incident incidents = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalIncidentWorkflow`.
+message SignalIncidentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string incident_id = 2;
+  Incident incident = 3;
+  SignalIncidentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalIncidentWorkflow`.
+message SignalIncidentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Incident incident = 1;
+  SignalIncidentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

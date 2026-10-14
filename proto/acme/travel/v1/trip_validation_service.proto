@@ -1,0 +1,288 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.travel.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/travel/v1/travel.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Travel.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/travel/v1;travelv1";
+option java_multiple_files = true;
+option java_outer_classname = "TripValidationServiceProto";
+option java_package = "com.acme.travel.v1";
+
+// Checks trips against the rules before anything acts on them.
+service TripValidationService {
+  // Validates a trip.
+  rpc ValidateTrip(ValidateTripRequest) returns (ValidateTripResponse);
+
+  // Previews a trip.
+  rpc PreviewTrip(PreviewTripRequest) returns (PreviewTripResponse);
+
+  // Checks a trip.
+  rpc CheckTripEligibility(CheckTripEligibilityRequest) returns (CheckTripEligibilityResponse);
+
+  // Normalizes a trip.
+  rpc NormalizeTrip(NormalizeTripRequest) returns (NormalizeTripResponse);
+
+  // Explains a trip.
+  rpc ExplainTripDecision(ExplainTripDecisionRequest) returns (ExplainTripDecisionResponse);
+
+  // Scores a trip.
+  rpc ScoreTrip(ScoreTripRequest) returns (ScoreTripResponse);
+
+  // Lints a trip.
+  rpc LintTrips(LintTripsRequest) returns (LintTripsResponse);
+}
+
+// The request of `ValidateTrip`.
+message ValidateTripRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  ValidateTripRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateTrip`.
+message ValidateTripResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Trip trip = 1;
+  ValidateTripResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewTrip`.
+message PreviewTripRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  PreviewTripRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewTrip`.
+message PreviewTripResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Trip trip = 1;
+  PreviewTripResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckTripEligibility`.
+message CheckTripEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  CheckTripEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckTripEligibility`.
+message CheckTripEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Trip trip = 1;
+  CheckTripEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeTrip`.
+message NormalizeTripRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  NormalizeTripRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeTrip`.
+message NormalizeTripResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Trip trip = 1;
+  NormalizeTripResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainTripDecision`.
+message ExplainTripDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  ExplainTripDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainTripDecision`.
+message ExplainTripDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Trip trip = 1;
+  ExplainTripDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreTrip`.
+message ScoreTripRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  ScoreTripRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreTrip`.
+message ScoreTripResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreTripResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Trip trip = 1;
+  ScoreTripResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintTrips`.
+message LintTripsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  LintTripsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintTrips`.
+message LintTripsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Trip trip = 1;
+  LintTripsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

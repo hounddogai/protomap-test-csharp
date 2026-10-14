@@ -1,0 +1,258 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.onboarding.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/onboarding/v1/onboarding.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Onboarding.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/onboarding/v1;onboardingv1";
+option java_multiple_files = true;
+option java_outer_classname = "EquipmentLifecycleServiceProto";
+option java_package = "com.acme.onboarding.v1";
+
+// Moves an equipment between the states of its lifecycle.
+service EquipmentLifecycleService {
+  // Activates an equipment.
+  rpc ActivateEquipment(ActivateEquipmentRequest) returns (ActivateEquipmentResponse);
+
+  // Suspends an equipment.
+  rpc SuspendEquipment(SuspendEquipmentRequest) returns (SuspendEquipmentResponse);
+
+  // Terminates an equipment.
+  rpc TerminateEquipment(TerminateEquipmentRequest) returns (TerminateEquipmentResponse);
+
+  // Renews an equipment.
+  rpc RenewEquipment(RenewEquipmentRequest) returns (RenewEquipmentResponse);
+
+  // Expires an equipment.
+  rpc ExpireEquipment(ExpireEquipmentRequest) returns (ExpireEquipmentResponse);
+
+  // Returns an equipment.
+  rpc GetEquipmentLifecycle(GetEquipmentLifecycleRequest) returns (GetEquipmentLifecycleResponse);
+
+  // Schedules an equipment.
+  rpc ScheduleEquipmentExpiry(ScheduleEquipmentExpiryRequest) returns (ScheduleEquipmentExpiryResponse);
+}
+
+// The request of `ActivateEquipment`.
+message ActivateEquipmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  ActivateEquipmentRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateEquipment`.
+message ActivateEquipmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Equipment equipment = 1;
+  ActivateEquipmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendEquipment`.
+message SuspendEquipmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  SuspendEquipmentRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendEquipment`.
+message SuspendEquipmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Equipment equipment = 1;
+  SuspendEquipmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateEquipment`.
+message TerminateEquipmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  TerminateEquipmentRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateEquipment`.
+message TerminateEquipmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Equipment equipment = 1;
+  TerminateEquipmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewEquipment`.
+message RenewEquipmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  RenewEquipmentRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewEquipment`.
+message RenewEquipmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Equipment equipment = 1;
+  RenewEquipmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireEquipment`.
+message ExpireEquipmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  ExpireEquipmentRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireEquipment`.
+message ExpireEquipmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Equipment equipment = 1;
+  ExpireEquipmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetEquipmentLifecycle`.
+message GetEquipmentLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetEquipmentLifecycle`.
+message GetEquipmentLifecycleResponse {
+  Equipment equipment = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleEquipmentExpiry`.
+message ScheduleEquipmentExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string equipment_id = 2;
+  Equipment equipment = 3;
+  ScheduleEquipmentExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleEquipmentExpiry`.
+message ScheduleEquipmentExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Equipment equipment = 1;
+  ScheduleEquipmentExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

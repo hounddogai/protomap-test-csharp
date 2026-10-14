@@ -1,0 +1,257 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.travel.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/travel/v1/travel.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Travel.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/travel/v1;travelv1";
+option java_multiple_files = true;
+option java_outer_classname = "TripApprovalServiceProto";
+option java_package = "com.acme.travel.v1";
+
+// Routes trips through approval, with escalation and delegation.
+service TripApprovalService {
+  // Submits a trip.
+  rpc SubmitTrip(SubmitTripRequest) returns (SubmitTripResponse);
+
+  // Approves a trip.
+  rpc ApproveTrip(ApproveTripRequest) returns (ApproveTripResponse);
+
+  // Escalates a trip.
+  rpc EscalateTrip(EscalateTripRequest) returns (EscalateTripResponse);
+
+  // Lists trips a page at a time.
+  rpc ListPendingTrips(ListPendingTripsRequest) returns (ListPendingTripsResponse);
+
+  // Delegates a trip.
+  rpc DelegateTripApproval(DelegateTripApprovalRequest) returns (DelegateTripApprovalResponse);
+
+  // Recalls a trip.
+  rpc RecallTrip(RecallTripRequest) returns (RecallTripResponse);
+
+  // Returns a trip.
+  rpc GetTripApprovalStatus(GetTripApprovalStatusRequest) returns (GetTripApprovalStatusResponse);
+}
+
+// The request of `SubmitTrip`.
+message SubmitTripRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  SubmitTripRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitTrip`.
+message SubmitTripResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Trip trip = 1;
+  SubmitTripResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveTrip`.
+message ApproveTripRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  ApproveTripRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveTrip`.
+message ApproveTripResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Trip trip = 1;
+  ApproveTripResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateTrip`.
+message EscalateTripRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  EscalateTripRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateTrip`.
+message EscalateTripResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Trip trip = 1;
+  EscalateTripResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingTrips`.
+message ListPendingTripsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated TripStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingTripsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingTrips`.
+message ListPendingTripsResponse {
+  repeated Trip trips = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateTripApproval`.
+message DelegateTripApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  DelegateTripApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateTripApproval`.
+message DelegateTripApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Trip trip = 1;
+  DelegateTripApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallTrip`.
+message RecallTripRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  RecallTripRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallTrip`.
+message RecallTripResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Trip trip = 1;
+  RecallTripResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetTripApprovalStatus`.
+message GetTripApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetTripApprovalStatus`.
+message GetTripApprovalStatusResponse {
+  Trip trip = 1;
+  acme.common.v1.OperationResult result = 2;
+}

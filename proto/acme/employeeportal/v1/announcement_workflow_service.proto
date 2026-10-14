@@ -1,0 +1,296 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.employeeportal.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/employeeportal/v1/employeeportal.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Employeeportal.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/employeeportal/v1;employeeportalv1";
+option java_multiple_files = true;
+option java_outer_classname = "AnnouncementWorkflowServiceProto";
+option java_package = "com.acme.employeeportal.v1";
+
+// Runs the long-lived workflow that takes an announcement from start to finish.
+service AnnouncementWorkflowService {
+  // Starts an announcement.
+  rpc StartAnnouncementWorkflow(StartAnnouncementWorkflowRequest) returns (StartAnnouncementWorkflowResponse);
+
+  // Advances an announcement.
+  rpc AdvanceAnnouncementWorkflow(AdvanceAnnouncementWorkflowRequest) returns (AdvanceAnnouncementWorkflowResponse);
+
+  // Cancels an announcement.
+  rpc CancelAnnouncementWorkflow(CancelAnnouncementWorkflowRequest) returns (CancelAnnouncementWorkflowResponse);
+
+  // Retrys an announcement.
+  rpc RetryAnnouncementWorkflow(RetryAnnouncementWorkflowRequest) returns (RetryAnnouncementWorkflowResponse);
+
+  // Pauses an announcement.
+  rpc PauseAnnouncementWorkflow(PauseAnnouncementWorkflowRequest) returns (PauseAnnouncementWorkflowResponse);
+
+  // Returns an announcement.
+  rpc InspectAnnouncementWorkflow(InspectAnnouncementWorkflowRequest) returns (InspectAnnouncementWorkflowResponse);
+
+  // Lists announcements a page at a time.
+  rpc ListAnnouncementWorkflows(ListAnnouncementWorkflowsRequest) returns (ListAnnouncementWorkflowsResponse);
+
+  // Signals an announcement.
+  rpc SignalAnnouncementWorkflow(SignalAnnouncementWorkflowRequest) returns (SignalAnnouncementWorkflowResponse);
+}
+
+// The request of `StartAnnouncementWorkflow`.
+message StartAnnouncementWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string announcement_id = 2;
+  Announcement announcement = 3;
+  StartAnnouncementWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartAnnouncementWorkflow`.
+message StartAnnouncementWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Announcement announcement = 1;
+  StartAnnouncementWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceAnnouncementWorkflow`.
+message AdvanceAnnouncementWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string announcement_id = 2;
+  Announcement announcement = 3;
+  AdvanceAnnouncementWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceAnnouncementWorkflow`.
+message AdvanceAnnouncementWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Announcement announcement = 1;
+  AdvanceAnnouncementWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelAnnouncementWorkflow`.
+message CancelAnnouncementWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string announcement_id = 2;
+  Announcement announcement = 3;
+  CancelAnnouncementWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelAnnouncementWorkflow`.
+message CancelAnnouncementWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Announcement announcement = 1;
+  CancelAnnouncementWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryAnnouncementWorkflow`.
+message RetryAnnouncementWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string announcement_id = 2;
+  Announcement announcement = 3;
+  RetryAnnouncementWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryAnnouncementWorkflow`.
+message RetryAnnouncementWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Announcement announcement = 1;
+  RetryAnnouncementWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseAnnouncementWorkflow`.
+message PauseAnnouncementWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string announcement_id = 2;
+  Announcement announcement = 3;
+  PauseAnnouncementWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseAnnouncementWorkflow`.
+message PauseAnnouncementWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Announcement announcement = 1;
+  PauseAnnouncementWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectAnnouncementWorkflow`.
+message InspectAnnouncementWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string announcement_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectAnnouncementWorkflow`.
+message InspectAnnouncementWorkflowResponse {
+  Announcement announcement = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListAnnouncementWorkflows`.
+message ListAnnouncementWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated AnnouncementStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListAnnouncementWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListAnnouncementWorkflows`.
+message ListAnnouncementWorkflowsResponse {
+  repeated Announcement announcements = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalAnnouncementWorkflow`.
+message SignalAnnouncementWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string announcement_id = 2;
+  Announcement announcement = 3;
+  SignalAnnouncementWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalAnnouncementWorkflow`.
+message SignalAnnouncementWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Announcement announcement = 1;
+  SignalAnnouncementWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

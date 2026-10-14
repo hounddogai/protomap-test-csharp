@@ -1,0 +1,284 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.recruiting.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/recruiting/v1/recruiting.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Recruiting.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/recruiting/v1;recruitingv1";
+option java_multiple_files = true;
+option java_outer_classname = "InterviewSyncServiceProto";
+option java_package = "com.acme.recruiting.v1";
+
+// Keeps interviews in step with the systems of record in other regions.
+service InterviewSyncService {
+  // Syncs an interview.
+  rpc SyncInterviews(SyncInterviewsRequest) returns (SyncInterviewsResponse);
+
+  // Pushs an interview.
+  rpc PushInterview(PushInterviewRequest) returns (PushInterviewResponse);
+
+  // Pulls an interview.
+  rpc PullInterviews(PullInterviewsRequest) returns (PullInterviewsResponse);
+
+  // Reconciles an interview.
+  rpc ReconcileInterviews(ReconcileInterviewsRequest) returns (ReconcileInterviewsResponse);
+
+  // Exchanges changes of interviews with a peer.
+  rpc StreamInterviewChanges(stream StreamInterviewChangesRequest) returns (stream StreamInterviewChangesResponse);
+
+  // Resolves an interview.
+  rpc ResolveInterviewConflict(ResolveInterviewConflictRequest) returns (ResolveInterviewConflictResponse);
+
+  // Returns an interview.
+  rpc GetInterviewSyncState(GetInterviewSyncStateRequest) returns (GetInterviewSyncStateResponse);
+
+  // Lists interviews a page at a time.
+  rpc ListInterviewConflicts(ListInterviewConflictsRequest) returns (ListInterviewConflictsResponse);
+}
+
+// The request of `SyncInterviews`.
+message SyncInterviewsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  Interview interview = 3;
+  SyncInterviewsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SyncInterviews`.
+message SyncInterviewsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Interview interview = 1;
+  SyncInterviewsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PushInterview`.
+message PushInterviewRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  Interview interview = 3;
+  PushInterviewRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PushInterview`.
+message PushInterviewResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Interview interview = 1;
+  PushInterviewResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PullInterviews`.
+message PullInterviewsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  Interview interview = 3;
+  PullInterviewsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PullInterviews`.
+message PullInterviewsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Interview interview = 1;
+  PullInterviewsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReconcileInterviews`.
+message ReconcileInterviewsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  Interview interview = 3;
+  ReconcileInterviewsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ReconcileInterviews`.
+message ReconcileInterviewsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Interview interview = 1;
+  ReconcileInterviewsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `StreamInterviewChanges`.
+message StreamInterviewChangesRequest {
+  // An acknowledgment of a change the peer sent.
+  message ChangeAck {
+    int64 sequence = 1;
+    string status = 2;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  oneof frame {
+    Interview change = 2;
+    StreamInterviewChangesRequest.ChangeAck ack = 3;
+  }
+  string cursor = 4;
+}
+
+// The response of `StreamInterviewChanges`.
+message StreamInterviewChangesResponse {
+  Interview interview = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `ResolveInterviewConflict`.
+message ResolveInterviewConflictRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  Interview interview = 3;
+  ResolveInterviewConflictRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResolveInterviewConflict`.
+message ResolveInterviewConflictResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Interview interview = 1;
+  ResolveInterviewConflictResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetInterviewSyncState`.
+message GetInterviewSyncStateRequest {
+  acme.common.v1.RequestContext context = 1;
+  string interview_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetInterviewSyncState`.
+message GetInterviewSyncStateResponse {
+  Interview interview = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListInterviewConflicts`.
+message ListInterviewConflictsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated InterviewStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListInterviewConflictsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListInterviewConflicts`.
+message ListInterviewConflictsResponse {
+  repeated Interview interviews = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}

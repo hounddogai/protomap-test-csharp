@@ -1,0 +1,228 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.employeeportal.v1;
+
+import "acme/common/v1/audit.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/employeeportal/v1/employeeportal.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Employeeportal.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/employeeportal/v1;employeeportalv1";
+option java_multiple_files = true;
+option java_outer_classname = "AnnouncementQueryServiceProto";
+option java_package = "com.acme.employeeportal.v1";
+
+// Answers read-only questions about announcements, for screens and reports.
+service AnnouncementQueryService {
+  // Returns an announcement.
+  rpc LookupAnnouncement(LookupAnnouncementRequest) returns (LookupAnnouncementResponse);
+
+  // Lists announcements a page at a time.
+  rpc BrowseAnnouncements(BrowseAnnouncementsRequest) returns (BrowseAnnouncementsResponse);
+
+  // Lists announcements a page at a time.
+  rpc FindAnnouncements(FindAnnouncementsRequest) returns (FindAnnouncementsResponse);
+
+  // Counts announcements by status.
+  rpc CountAnnouncements(CountAnnouncementsRequest) returns (CountAnnouncementsResponse);
+
+  // Streams every matching announcement.
+  rpc ExportAnnouncements(ExportAnnouncementsRequest) returns (stream ExportAnnouncementsResponse);
+
+  // Summarizes an announcement.
+  rpc SummarizeAnnouncements(SummarizeAnnouncementsRequest) returns (SummarizeAnnouncementsResponse);
+
+  // Lists announcements a page at a time.
+  rpc SuggestAnnouncements(SuggestAnnouncementsRequest) returns (SuggestAnnouncementsResponse);
+
+  // Returns an announcement.
+  rpc PeekAnnouncement(PeekAnnouncementRequest) returns (PeekAnnouncementResponse);
+}
+
+// The request of `LookupAnnouncement`.
+message LookupAnnouncementRequest {
+  acme.common.v1.RequestContext context = 1;
+  string announcement_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `LookupAnnouncement`.
+message LookupAnnouncementResponse {
+  Announcement announcement = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `BrowseAnnouncements`.
+message BrowseAnnouncementsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated AnnouncementStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  BrowseAnnouncementsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `BrowseAnnouncements`.
+message BrowseAnnouncementsResponse {
+  repeated Announcement announcements = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `FindAnnouncements`.
+message FindAnnouncementsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated AnnouncementStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  FindAnnouncementsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `FindAnnouncements`.
+message FindAnnouncementsResponse {
+  repeated Announcement announcements = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CountAnnouncements`.
+message CountAnnouncementsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated AnnouncementStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  CountAnnouncementsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `CountAnnouncements`.
+message CountAnnouncementsResponse {
+  int64 count = 1;
+  map<string, int64> by_status = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExportAnnouncements`.
+message ExportAnnouncementsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated AnnouncementStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  ExportAnnouncementsRequest.Filter filter = 2;
+  string format = 3;
+  google.protobuf.FieldMask fields = 4;
+  string destination_uri = 5;
+}
+
+// The response of `ExportAnnouncements`.
+message ExportAnnouncementsResponse {
+  Announcement announcement = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SummarizeAnnouncements`.
+message SummarizeAnnouncementsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string announcement_id = 2;
+  SummarizeAnnouncementsRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SummarizeAnnouncements`.
+message SummarizeAnnouncementsResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SuggestAnnouncements`.
+message SuggestAnnouncementsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated AnnouncementStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SuggestAnnouncementsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SuggestAnnouncements`.
+message SuggestAnnouncementsResponse {
+  repeated Announcement announcements = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PeekAnnouncement`.
+message PeekAnnouncementRequest {
+  acme.common.v1.RequestContext context = 1;
+  string announcement_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `PeekAnnouncement`.
+message PeekAnnouncementResponse {
+  Announcement announcement = 1;
+  acme.common.v1.OperationResult result = 2;
+}

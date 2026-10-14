@@ -1,0 +1,89 @@
+namespace Acme.Workforce.Orgdesign.Span.Metric;
+
+using Acme.Workforce.Kit.Clock;
+
+/// <summary>Moves legacy span adjustments through their life cycle and keeps a journal of what it did.</summary>
+public sealed record LegacySpanAdjustmentDesk(ILegacySpanAdjustmentStore Store, LegacySpanAdjustmentValidator Validator, IClock Clock, List<string> Journal, LegacySpanAdjustmentEngine Engine)
+{
+    private void Note(string message)
+    {
+        Journal.Add($"{Clock.Now()} {message}");
+    }
+
+    public void Open(string code)
+    {
+        if (Store.Find(code) is not { } item)
+        {
+            throw new InvalidOperationException($"legacy span adjustment {code} not found");
+        }
+        Validator.RequireValid(item);
+        item.MoveTo(LegacySpanAdjustmentStatus.InReview);
+        Store.Save(item);
+        Note($"{code} is in review");
+    }
+
+    public void Complete(string code, string reason)
+    {
+        if (Store.Find(code) is not { } item)
+        {
+            throw new InvalidOperationException($"legacy span adjustment {code} not found");
+        }
+        if (item.IsTerminal())
+        {
+            Note($"{code} already closed");
+            return;
+        }
+        item.MoveTo(LegacySpanAdjustmentStatus.Archived);
+        Store.Save(item);
+        Note($"{code} is archived: {reason}");
+    }
+
+    public double Score(string code)
+    {
+        if (Store.Find(code) is not { } item)
+        {
+            throw new InvalidOperationException($"legacy span adjustment {code} not found");
+        }
+        var result = Engine.Evaluate(item);
+        Note($"{code} evaluated at {result}");
+        return result;
+    }
+
+    public int Audit(int cutoff)
+    {
+        var changed = 0;
+        foreach (var item in Store.List())
+        {
+            if (item.IsTerminal())
+            {
+                continue;
+            }
+            if (item.EndsAt > cutoff)
+            {
+                continue;
+            }
+            var problems = Validator.Validate(item);
+            if (problems.Count == 0)
+            {
+                continue;
+            }
+            Note($"{item.Code} needs attention: {string.Join(", ", problems)}");
+            changed += 1;
+        }
+        return changed;
+    }
+}
+
+/// <summary>Functions of legacy span adjustment workflow.</summary>
+public static class LegacySpanAdjustmentWorkflow
+{
+    public static LegacySpanAdjustmentDesk NewLegacySpanAdjustmentDesk(ILegacySpanAdjustmentStore store, IClock clock)
+    {
+        return new LegacySpanAdjustmentDesk(
+            store,
+            LegacySpanAdjustmentRules.DefaultLegacySpanAdjustmentValidator(),
+            clock,
+            new List<string>(),
+            LegacySpanAdjustmentEngine.DefaultLegacySpanAdjustmentEngine());
+    }
+}

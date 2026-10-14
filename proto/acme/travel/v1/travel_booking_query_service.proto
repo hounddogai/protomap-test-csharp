@@ -1,0 +1,245 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.travel.v1;
+
+import "acme/common/v1/audit.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/travel/v1/travel.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Travel.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/travel/v1;travelv1";
+option java_multiple_files = true;
+option java_outer_classname = "TravelBookingQueryServiceProto";
+option java_package = "com.acme.travel.v1";
+
+// Answers read-only questions about travel bookings, for screens and reports.
+service TravelBookingQueryService {
+  // Returns a travel booking.
+  rpc LookupTravelBooking(LookupTravelBookingRequest) returns (LookupTravelBookingResponse);
+
+  // Lists travel bookings a page at a time.
+  rpc BrowseTravelBookings(BrowseTravelBookingsRequest) returns (BrowseTravelBookingsResponse);
+
+  // Lists travel bookings a page at a time.
+  rpc FindTravelBookings(FindTravelBookingsRequest) returns (FindTravelBookingsResponse);
+
+  // Counts travel bookings by status.
+  rpc CountTravelBookings(CountTravelBookingsRequest) returns (CountTravelBookingsResponse);
+
+  // Returns several travel bookings at once.
+  rpc ResolveTravelBookings(ResolveTravelBookingsRequest) returns (ResolveTravelBookingsResponse);
+
+  // Streams every matching travel booking.
+  rpc ExportTravelBookings(ExportTravelBookingsRequest) returns (stream ExportTravelBookingsResponse);
+
+  // Summarizes a travel booking.
+  rpc SummarizeTravelBookings(SummarizeTravelBookingsRequest) returns (SummarizeTravelBookingsResponse);
+
+  // Lists travel bookings a page at a time.
+  rpc SuggestTravelBookings(SuggestTravelBookingsRequest) returns (SuggestTravelBookingsResponse);
+
+  // Returns a travel booking.
+  rpc PeekTravelBooking(PeekTravelBookingRequest) returns (PeekTravelBookingResponse);
+}
+
+// The request of `LookupTravelBooking`.
+message LookupTravelBookingRequest {
+  acme.common.v1.RequestContext context = 1;
+  string travel_booking_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `LookupTravelBooking`.
+message LookupTravelBookingResponse {
+  TravelBooking travel_booking = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `BrowseTravelBookings`.
+message BrowseTravelBookingsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated TravelBookingStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  BrowseTravelBookingsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `BrowseTravelBookings`.
+message BrowseTravelBookingsResponse {
+  repeated TravelBooking travel_bookings = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `FindTravelBookings`.
+message FindTravelBookingsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated TravelBookingStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  FindTravelBookingsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `FindTravelBookings`.
+message FindTravelBookingsResponse {
+  repeated TravelBooking travel_bookings = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CountTravelBookings`.
+message CountTravelBookingsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated TravelBookingStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  CountTravelBookingsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `CountTravelBookings`.
+message CountTravelBookingsResponse {
+  int64 count = 1;
+  map<string, int64> by_status = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResolveTravelBookings`.
+message ResolveTravelBookingsRequest {
+  acme.common.v1.RequestContext context = 1;
+  repeated string travel_booking_ids = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `ResolveTravelBookings`.
+message ResolveTravelBookingsResponse {
+  repeated TravelBooking travel_bookings = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExportTravelBookings`.
+message ExportTravelBookingsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated TravelBookingStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  ExportTravelBookingsRequest.Filter filter = 2;
+  string format = 3;
+  google.protobuf.FieldMask fields = 4;
+  string destination_uri = 5;
+}
+
+// The response of `ExportTravelBookings`.
+message ExportTravelBookingsResponse {
+  TravelBooking travel_booking = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SummarizeTravelBookings`.
+message SummarizeTravelBookingsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_booking_id = 2;
+  SummarizeTravelBookingsRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SummarizeTravelBookings`.
+message SummarizeTravelBookingsResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SuggestTravelBookings`.
+message SuggestTravelBookingsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated TravelBookingStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SuggestTravelBookingsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SuggestTravelBookings`.
+message SuggestTravelBookingsResponse {
+  repeated TravelBooking travel_bookings = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PeekTravelBooking`.
+message PeekTravelBookingRequest {
+  acme.common.v1.RequestContext context = 1;
+  string travel_booking_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `PeekTravelBooking`.
+message PeekTravelBookingResponse {
+  TravelBooking travel_booking = 1;
+  acme.common.v1.OperationResult result = 2;
+}

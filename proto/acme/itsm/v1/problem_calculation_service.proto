@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.itsm.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/itsm/v1/itsm.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Itsm.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/itsm/v1;itsmv1";
+option java_multiple_files = true;
+option java_outer_classname = "ProblemCalculationServiceProto";
+option java_package = "com.acme.itsm.v1";
+
+// Computes the figures of a problem, such as totals, taxes, and estimates.
+service ProblemCalculationService {
+  // Calculates a problem.
+  rpc CalculateProblem(CalculateProblemRequest) returns (CalculateProblemResponse);
+
+  // Estimates a problem.
+  rpc EstimateProblem(EstimateProblemRequest) returns (EstimateProblemResponse);
+
+  // Quotes a problem.
+  rpc QuoteProblem(QuoteProblemRequest) returns (QuoteProblemResponse);
+
+  // Compares a problem.
+  rpc CompareProblemOptions(CompareProblemOptionsRequest) returns (CompareProblemOptionsResponse);
+
+  // Recalculates a problem.
+  rpc RecalculateProblems(RecalculateProblemsRequest) returns (RecalculateProblemsResponse);
+
+  // Simulates a problem.
+  rpc SimulateProblem(SimulateProblemRequest) returns (SimulateProblemResponse);
+
+  // Explains a problem.
+  rpc ExplainProblemCalculation(ExplainProblemCalculationRequest) returns (ExplainProblemCalculationResponse);
+
+  // Returns a problem.
+  rpc GetProblemRates(GetProblemRatesRequest) returns (GetProblemRatesResponse);
+}
+
+// The request of `CalculateProblem`.
+message CalculateProblemRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  Problem problem = 3;
+  CalculateProblemRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateProblem`.
+message CalculateProblemResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateProblemResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Problem problem = 1;
+  CalculateProblemResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateProblem`.
+message EstimateProblemRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  Problem problem = 3;
+  EstimateProblemRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateProblem`.
+message EstimateProblemResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateProblemResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Problem problem = 1;
+  EstimateProblemResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteProblem`.
+message QuoteProblemRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  Problem problem = 3;
+  QuoteProblemRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteProblem`.
+message QuoteProblemResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteProblemResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Problem problem = 1;
+  QuoteProblemResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareProblemOptions`.
+message CompareProblemOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  Problem problem = 3;
+  CompareProblemOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareProblemOptions`.
+message CompareProblemOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareProblemOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Problem problem = 1;
+  CompareProblemOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateProblems`.
+message RecalculateProblemsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  Problem problem = 3;
+  RecalculateProblemsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateProblems`.
+message RecalculateProblemsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateProblemsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Problem problem = 1;
+  RecalculateProblemsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateProblem`.
+message SimulateProblemRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  Problem problem = 3;
+  SimulateProblemRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateProblem`.
+message SimulateProblemResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateProblemResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Problem problem = 1;
+  SimulateProblemResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainProblemCalculation`.
+message ExplainProblemCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  Problem problem = 3;
+  ExplainProblemCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainProblemCalculation`.
+message ExplainProblemCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Problem problem = 1;
+  ExplainProblemCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetProblemRates`.
+message GetProblemRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string problem_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetProblemRates`.
+message GetProblemRatesResponse {
+  Problem problem = 1;
+  acme.common.v1.OperationResult result = 2;
+}

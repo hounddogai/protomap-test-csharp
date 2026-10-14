@@ -1,0 +1,263 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.employeeportal.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/employeeportal/v1/employeeportal.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Employeeportal.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/employeeportal/v1;employeeportalv1";
+option java_multiple_files = true;
+option java_outer_classname = "AnnouncementIntegrationServiceProto";
+option java_package = "com.acme.employeeportal.v1";
+
+// Connects external systems that send announcement events.
+service AnnouncementIntegrationService {
+  // Connects an announcement.
+  rpc ConnectAnnouncementSource(ConnectAnnouncementSourceRequest) returns (ConnectAnnouncementSourceResponse);
+
+  // Disconnects an announcement.
+  rpc DisconnectAnnouncementSource(DisconnectAnnouncementSourceRequest) returns (DisconnectAnnouncementSourceResponse);
+
+  // Replays an announcement.
+  rpc ReplayAnnouncementEvents(ReplayAnnouncementEventsRequest) returns (ReplayAnnouncementEventsResponse);
+
+  // Acknowledges an announcement.
+  rpc AcknowledgeAnnouncementEvent(AcknowledgeAnnouncementEventRequest) returns (AcknowledgeAnnouncementEventResponse);
+
+  // Exchanges changes of announcements with a peer.
+  rpc RelayAnnouncementMessages(stream RelayAnnouncementMessagesRequest) returns (stream RelayAnnouncementMessagesResponse);
+
+  // Lists announcements a page at a time.
+  rpc ListAnnouncementSources(ListAnnouncementSourcesRequest) returns (ListAnnouncementSourcesResponse);
+
+  // Tests an announcement.
+  rpc TestAnnouncementConnection(TestAnnouncementConnectionRequest) returns (TestAnnouncementConnectionResponse);
+}
+
+// The request of `ConnectAnnouncementSource`.
+message ConnectAnnouncementSourceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string endpoint = 1;
+    google.protobuf.Any envelope = 2;
+    string message_id = 3;
+    string source_system = 4;
+    google.protobuf.Timestamp received_at = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string announcement_id = 2;
+  ConnectAnnouncementSourceRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ConnectAnnouncementSource`.
+message ConnectAnnouncementSourceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Announcement announcement = 1;
+  ConnectAnnouncementSourceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DisconnectAnnouncementSource`.
+message DisconnectAnnouncementSourceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string endpoint = 1;
+    google.protobuf.Any envelope = 2;
+    string message_id = 3;
+    string source_system = 4;
+    google.protobuf.Timestamp received_at = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string announcement_id = 2;
+  DisconnectAnnouncementSourceRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `DisconnectAnnouncementSource`.
+message DisconnectAnnouncementSourceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Announcement announcement = 1;
+  DisconnectAnnouncementSourceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReplayAnnouncementEvents`.
+message ReplayAnnouncementEventsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string endpoint = 1;
+    google.protobuf.Any envelope = 2;
+    string message_id = 3;
+    string source_system = 4;
+    google.protobuf.Timestamp received_at = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string announcement_id = 2;
+  ReplayAnnouncementEventsRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReplayAnnouncementEvents`.
+message ReplayAnnouncementEventsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Announcement announcement = 1;
+  ReplayAnnouncementEventsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AcknowledgeAnnouncementEvent`.
+message AcknowledgeAnnouncementEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string endpoint = 1;
+    google.protobuf.Any envelope = 2;
+    string message_id = 3;
+    string source_system = 4;
+    google.protobuf.Timestamp received_at = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string announcement_id = 2;
+  AcknowledgeAnnouncementEventRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `AcknowledgeAnnouncementEvent`.
+message AcknowledgeAnnouncementEventResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Announcement announcement = 1;
+  AcknowledgeAnnouncementEventResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RelayAnnouncementMessages`.
+message RelayAnnouncementMessagesRequest {
+  // An acknowledgment of a change the peer sent.
+  message ChangeAck {
+    int64 sequence = 1;
+    string status = 2;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  oneof frame {
+    Announcement change = 2;
+    RelayAnnouncementMessagesRequest.ChangeAck ack = 3;
+  }
+  string cursor = 4;
+}
+
+// The response of `RelayAnnouncementMessages`.
+message RelayAnnouncementMessagesResponse {
+  Announcement announcement = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `ListAnnouncementSources`.
+message ListAnnouncementSourcesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated AnnouncementStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListAnnouncementSourcesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListAnnouncementSources`.
+message ListAnnouncementSourcesResponse {
+  repeated Announcement announcements = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TestAnnouncementConnection`.
+message TestAnnouncementConnectionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string endpoint = 1;
+    google.protobuf.Any envelope = 2;
+    string message_id = 3;
+    string source_system = 4;
+    google.protobuf.Timestamp received_at = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string announcement_id = 2;
+  TestAnnouncementConnectionRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TestAnnouncementConnection`.
+message TestAnnouncementConnectionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Announcement announcement = 1;
+  TestAnnouncementConnectionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

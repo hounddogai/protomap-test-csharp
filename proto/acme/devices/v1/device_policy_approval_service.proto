@@ -1,0 +1,257 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.devices.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/devices/v1/devices.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Devices.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/devices/v1;devicesv1";
+option java_multiple_files = true;
+option java_outer_classname = "DevicePolicyApprovalServiceProto";
+option java_package = "com.acme.devices.v1";
+
+// Routes device policies through approval, with escalation and delegation.
+service DevicePolicyApprovalService {
+  // Submits a device policy.
+  rpc SubmitDevicePolicy(SubmitDevicePolicyRequest) returns (SubmitDevicePolicyResponse);
+
+  // Approves a device policy.
+  rpc ApproveDevicePolicy(ApproveDevicePolicyRequest) returns (ApproveDevicePolicyResponse);
+
+  // Rejects a device policy.
+  rpc RejectDevicePolicy(RejectDevicePolicyRequest) returns (RejectDevicePolicyResponse);
+
+  // Lists device policies a page at a time.
+  rpc ListPendingDevicePolicies(ListPendingDevicePoliciesRequest) returns (ListPendingDevicePoliciesResponse);
+
+  // Delegates a device policy.
+  rpc DelegateDevicePolicyApproval(DelegateDevicePolicyApprovalRequest) returns (DelegateDevicePolicyApprovalResponse);
+
+  // Recalls a device policy.
+  rpc RecallDevicePolicy(RecallDevicePolicyRequest) returns (RecallDevicePolicyResponse);
+
+  // Returns a device policy.
+  rpc GetDevicePolicyApprovalStatus(GetDevicePolicyApprovalStatusRequest) returns (GetDevicePolicyApprovalStatusResponse);
+}
+
+// The request of `SubmitDevicePolicy`.
+message SubmitDevicePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  DevicePolicy device_policy = 3;
+  SubmitDevicePolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitDevicePolicy`.
+message SubmitDevicePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DevicePolicy device_policy = 1;
+  SubmitDevicePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveDevicePolicy`.
+message ApproveDevicePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  DevicePolicy device_policy = 3;
+  ApproveDevicePolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveDevicePolicy`.
+message ApproveDevicePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DevicePolicy device_policy = 1;
+  ApproveDevicePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectDevicePolicy`.
+message RejectDevicePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  DevicePolicy device_policy = 3;
+  RejectDevicePolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectDevicePolicy`.
+message RejectDevicePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DevicePolicy device_policy = 1;
+  RejectDevicePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingDevicePolicies`.
+message ListPendingDevicePoliciesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DevicePolicyStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingDevicePoliciesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingDevicePolicies`.
+message ListPendingDevicePoliciesResponse {
+  repeated DevicePolicy device_policies = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateDevicePolicyApproval`.
+message DelegateDevicePolicyApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  DevicePolicy device_policy = 3;
+  DelegateDevicePolicyApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateDevicePolicyApproval`.
+message DelegateDevicePolicyApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DevicePolicy device_policy = 1;
+  DelegateDevicePolicyApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallDevicePolicy`.
+message RecallDevicePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  DevicePolicy device_policy = 3;
+  RecallDevicePolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallDevicePolicy`.
+message RecallDevicePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DevicePolicy device_policy = 1;
+  RecallDevicePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetDevicePolicyApprovalStatus`.
+message GetDevicePolicyApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetDevicePolicyApprovalStatus`.
+message GetDevicePolicyApprovalStatusResponse {
+  DevicePolicy device_policy = 1;
+  acme.common.v1.OperationResult result = 2;
+}

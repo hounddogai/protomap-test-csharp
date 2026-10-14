@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.timekeeping.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/timekeeping/v1/timekeeping.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Timekeeping.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/timekeeping/v1;timekeepingv1";
+option java_multiple_files = true;
+option java_outer_classname = "ClockEventWorkflowServiceProto";
+option java_package = "com.acme.timekeeping.v1";
+
+// Runs the long-lived workflow that takes a clock event from start to finish.
+service ClockEventWorkflowService {
+  // Starts a clock event.
+  rpc StartClockEventWorkflow(StartClockEventWorkflowRequest) returns (StartClockEventWorkflowResponse);
+
+  // Advances a clock event.
+  rpc AdvanceClockEventWorkflow(AdvanceClockEventWorkflowRequest) returns (AdvanceClockEventWorkflowResponse);
+
+  // Cancels a clock event.
+  rpc CancelClockEventWorkflow(CancelClockEventWorkflowRequest) returns (CancelClockEventWorkflowResponse);
+
+  // Retrys a clock event.
+  rpc RetryClockEventWorkflow(RetryClockEventWorkflowRequest) returns (RetryClockEventWorkflowResponse);
+
+  // Pauses a clock event.
+  rpc PauseClockEventWorkflow(PauseClockEventWorkflowRequest) returns (PauseClockEventWorkflowResponse);
+
+  // Resumes a clock event.
+  rpc ResumeClockEventWorkflow(ResumeClockEventWorkflowRequest) returns (ResumeClockEventWorkflowResponse);
+
+  // Returns a clock event.
+  rpc InspectClockEventWorkflow(InspectClockEventWorkflowRequest) returns (InspectClockEventWorkflowResponse);
+
+  // Lists clock events a page at a time.
+  rpc ListClockEventWorkflows(ListClockEventWorkflowsRequest) returns (ListClockEventWorkflowsResponse);
+
+  // Signals a clock event.
+  rpc SignalClockEventWorkflow(SignalClockEventWorkflowRequest) returns (SignalClockEventWorkflowResponse);
+}
+
+// The request of `StartClockEventWorkflow`.
+message StartClockEventWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  StartClockEventWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartClockEventWorkflow`.
+message StartClockEventWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  StartClockEventWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceClockEventWorkflow`.
+message AdvanceClockEventWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  AdvanceClockEventWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceClockEventWorkflow`.
+message AdvanceClockEventWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  AdvanceClockEventWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelClockEventWorkflow`.
+message CancelClockEventWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  CancelClockEventWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelClockEventWorkflow`.
+message CancelClockEventWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  CancelClockEventWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryClockEventWorkflow`.
+message RetryClockEventWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  RetryClockEventWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryClockEventWorkflow`.
+message RetryClockEventWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  RetryClockEventWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseClockEventWorkflow`.
+message PauseClockEventWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  PauseClockEventWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseClockEventWorkflow`.
+message PauseClockEventWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  PauseClockEventWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeClockEventWorkflow`.
+message ResumeClockEventWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  ResumeClockEventWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeClockEventWorkflow`.
+message ResumeClockEventWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  ResumeClockEventWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectClockEventWorkflow`.
+message InspectClockEventWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectClockEventWorkflow`.
+message InspectClockEventWorkflowResponse {
+  ClockEvent clock_event = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListClockEventWorkflows`.
+message ListClockEventWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated ClockEventStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListClockEventWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListClockEventWorkflows`.
+message ListClockEventWorkflowsResponse {
+  repeated ClockEvent clock_events = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalClockEventWorkflow`.
+message SignalClockEventWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  SignalClockEventWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalClockEventWorkflow`.
+message SignalClockEventWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  SignalClockEventWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

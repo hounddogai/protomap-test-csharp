@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.benefits.v1;
+
+import "acme/benefits/v1/benefits.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Benefits.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/benefits/v1;benefitsv1";
+option java_multiple_files = true;
+option java_outer_classname = "DependentWorkflowServiceProto";
+option java_package = "com.acme.benefits.v1";
+
+// Runs the long-lived workflow that takes a dependent from start to finish.
+service DependentWorkflowService {
+  // Starts a dependent.
+  rpc StartDependentWorkflow(StartDependentWorkflowRequest) returns (StartDependentWorkflowResponse);
+
+  // Advances a dependent.
+  rpc AdvanceDependentWorkflow(AdvanceDependentWorkflowRequest) returns (AdvanceDependentWorkflowResponse);
+
+  // Cancels a dependent.
+  rpc CancelDependentWorkflow(CancelDependentWorkflowRequest) returns (CancelDependentWorkflowResponse);
+
+  // Retrys a dependent.
+  rpc RetryDependentWorkflow(RetryDependentWorkflowRequest) returns (RetryDependentWorkflowResponse);
+
+  // Pauses a dependent.
+  rpc PauseDependentWorkflow(PauseDependentWorkflowRequest) returns (PauseDependentWorkflowResponse);
+
+  // Resumes a dependent.
+  rpc ResumeDependentWorkflow(ResumeDependentWorkflowRequest) returns (ResumeDependentWorkflowResponse);
+
+  // Returns a dependent.
+  rpc InspectDependentWorkflow(InspectDependentWorkflowRequest) returns (InspectDependentWorkflowResponse);
+
+  // Lists dependents a page at a time.
+  rpc ListDependentWorkflows(ListDependentWorkflowsRequest) returns (ListDependentWorkflowsResponse);
+
+  // Signals a dependent.
+  rpc SignalDependentWorkflow(SignalDependentWorkflowRequest) returns (SignalDependentWorkflowResponse);
+}
+
+// The request of `StartDependentWorkflow`.
+message StartDependentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  StartDependentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartDependentWorkflow`.
+message StartDependentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Dependent dependent = 1;
+  StartDependentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceDependentWorkflow`.
+message AdvanceDependentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  AdvanceDependentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceDependentWorkflow`.
+message AdvanceDependentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Dependent dependent = 1;
+  AdvanceDependentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelDependentWorkflow`.
+message CancelDependentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  CancelDependentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelDependentWorkflow`.
+message CancelDependentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Dependent dependent = 1;
+  CancelDependentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryDependentWorkflow`.
+message RetryDependentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  RetryDependentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryDependentWorkflow`.
+message RetryDependentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Dependent dependent = 1;
+  RetryDependentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseDependentWorkflow`.
+message PauseDependentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  PauseDependentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseDependentWorkflow`.
+message PauseDependentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Dependent dependent = 1;
+  PauseDependentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeDependentWorkflow`.
+message ResumeDependentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  ResumeDependentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeDependentWorkflow`.
+message ResumeDependentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Dependent dependent = 1;
+  ResumeDependentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectDependentWorkflow`.
+message InspectDependentWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectDependentWorkflow`.
+message InspectDependentWorkflowResponse {
+  Dependent dependent = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListDependentWorkflows`.
+message ListDependentWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DependentStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListDependentWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListDependentWorkflows`.
+message ListDependentWorkflowsResponse {
+  repeated Dependent dependents = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalDependentWorkflow`.
+message SignalDependentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string dependent_id = 2;
+  Dependent dependent = 3;
+  SignalDependentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalDependentWorkflow`.
+message SignalDependentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Dependent dependent = 1;
+  SignalDependentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

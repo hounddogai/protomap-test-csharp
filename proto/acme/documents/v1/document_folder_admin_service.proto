@@ -1,0 +1,273 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.documents.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/documents/v1/documents.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Documents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/documents/v1;documentsv1";
+option java_multiple_files = true;
+option java_outer_classname = "DocumentFolderAdminServiceProto";
+option java_package = "com.acme.documents.v1";
+
+// Operator actions on document folders that support staff run by hand.
+service DocumentFolderAdminService {
+  // Archives a document folder.
+  rpc ArchiveDocumentFolder(ArchiveDocumentFolderRequest) returns (ArchiveDocumentFolderResponse);
+
+  // Restores a document folder.
+  rpc RestoreDocumentFolder(RestoreDocumentFolderRequest) returns (RestoreDocumentFolderResponse);
+
+  // Deletes a document folder.
+  rpc PurgeDocumentFolder(PurgeDocumentFolderRequest) returns (PurgeDocumentFolderResponse);
+
+  // Reassigns a document folder.
+  rpc ReassignDocumentFolder(ReassignDocumentFolderRequest) returns (ReassignDocumentFolderResponse);
+
+  // Locks a document folder.
+  rpc LockDocumentFolder(LockDocumentFolderRequest) returns (LockDocumentFolderResponse);
+
+  // Unlocks a document folder.
+  rpc UnlockDocumentFolder(UnlockDocumentFolderRequest) returns (UnlockDocumentFolderResponse);
+
+  // Transfers a document folder.
+  rpc TransferDocumentFolder(TransferDocumentFolderRequest) returns (TransferDocumentFolderResponse);
+
+  // Returns a document folder.
+  rpc InspectDocumentFolder(InspectDocumentFolderRequest) returns (InspectDocumentFolderResponse);
+}
+
+// The request of `ArchiveDocumentFolder`.
+message ArchiveDocumentFolderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  ArchiveDocumentFolderRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ArchiveDocumentFolder`.
+message ArchiveDocumentFolderResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  ArchiveDocumentFolderResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RestoreDocumentFolder`.
+message RestoreDocumentFolderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  RestoreDocumentFolderRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RestoreDocumentFolder`.
+message RestoreDocumentFolderResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  RestoreDocumentFolderResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PurgeDocumentFolder`.
+message PurgeDocumentFolderRequest {
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  string reason = 3;
+  string etag = 4;
+  bool force = 5;
+}
+
+// The response of `PurgeDocumentFolder`.
+message PurgeDocumentFolderResponse {
+  acme.common.v1.OperationResult result = 1;
+  google.protobuf.Timestamp effective_at = 2;
+}
+
+// The request of `ReassignDocumentFolder`.
+message ReassignDocumentFolderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.identity.v1.UserRef assignee = 1;
+    string queue = 2;
+    int32 capacity = 3;
+    string assignee_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  ReassignDocumentFolderRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReassignDocumentFolder`.
+message ReassignDocumentFolderResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  ReassignDocumentFolderResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LockDocumentFolder`.
+message LockDocumentFolderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  LockDocumentFolderRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `LockDocumentFolder`.
+message LockDocumentFolderResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  LockDocumentFolderResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `UnlockDocumentFolder`.
+message UnlockDocumentFolderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  UnlockDocumentFolderRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `UnlockDocumentFolder`.
+message UnlockDocumentFolderResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  UnlockDocumentFolderResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TransferDocumentFolder`.
+message TransferDocumentFolderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  TransferDocumentFolderRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TransferDocumentFolder`.
+message TransferDocumentFolderResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  TransferDocumentFolderResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectDocumentFolder`.
+message InspectDocumentFolderRequest {
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectDocumentFolder`.
+message InspectDocumentFolderResponse {
+  DocumentFolder document_folder = 1;
+  acme.common.v1.OperationResult result = 2;
+}

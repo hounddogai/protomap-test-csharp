@@ -1,0 +1,222 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.scheduling.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/scheduling/v1/scheduling.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Scheduling.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/scheduling/v1;schedulingv1";
+option java_multiple_files = true;
+option java_outer_classname = "SwapRequestLifecycleServiceProto";
+option java_package = "com.acme.scheduling.v1";
+
+// Moves a swap request between the states of its lifecycle.
+service SwapRequestLifecycleService {
+  // Activates a swap request.
+  rpc ActivateSwapRequest(ActivateSwapRequestRequest) returns (ActivateSwapRequestResponse);
+
+  // Suspends a swap request.
+  rpc SuspendSwapRequest(SuspendSwapRequestRequest) returns (SuspendSwapRequestResponse);
+
+  // Reinstates a swap request.
+  rpc ReinstateSwapRequest(ReinstateSwapRequestRequest) returns (ReinstateSwapRequestResponse);
+
+  // Terminates a swap request.
+  rpc TerminateSwapRequest(TerminateSwapRequestRequest) returns (TerminateSwapRequestResponse);
+
+  // Returns a swap request.
+  rpc GetSwapRequestLifecycle(GetSwapRequestLifecycleRequest) returns (GetSwapRequestLifecycleResponse);
+
+  // Schedules a swap request.
+  rpc ScheduleSwapRequestExpiry(ScheduleSwapRequestExpiryRequest) returns (ScheduleSwapRequestExpiryResponse);
+}
+
+// The request of `ActivateSwapRequest`.
+message ActivateSwapRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  ActivateSwapRequestRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateSwapRequest`.
+message ActivateSwapRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SwapRequest swap_request = 1;
+  ActivateSwapRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendSwapRequest`.
+message SuspendSwapRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SuspendSwapRequestRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendSwapRequest`.
+message SuspendSwapRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SwapRequest swap_request = 1;
+  SuspendSwapRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateSwapRequest`.
+message ReinstateSwapRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  ReinstateSwapRequestRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateSwapRequest`.
+message ReinstateSwapRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SwapRequest swap_request = 1;
+  ReinstateSwapRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateSwapRequest`.
+message TerminateSwapRequestRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  TerminateSwapRequestRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateSwapRequest`.
+message TerminateSwapRequestResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SwapRequest swap_request = 1;
+  TerminateSwapRequestResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetSwapRequestLifecycle`.
+message GetSwapRequestLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetSwapRequestLifecycle`.
+message GetSwapRequestLifecycleResponse {
+  SwapRequest swap_request = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleSwapRequestExpiry`.
+message ScheduleSwapRequestExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string swap_request_id = 2;
+  SwapRequest swap_request = 3;
+  ScheduleSwapRequestExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleSwapRequestExpiry`.
+message ScheduleSwapRequestExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SwapRequest swap_request = 1;
+  ScheduleSwapRequestExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

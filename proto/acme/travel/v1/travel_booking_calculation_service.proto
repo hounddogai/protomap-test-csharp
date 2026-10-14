@@ -1,0 +1,292 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.travel.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/travel/v1/travel.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Travel.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/travel/v1;travelv1";
+option java_multiple_files = true;
+option java_outer_classname = "TravelBookingCalculationServiceProto";
+option java_package = "com.acme.travel.v1";
+
+// Computes the figures of a travel booking, such as totals, taxes, and estimates.
+service TravelBookingCalculationService {
+  // Calculates a travel booking.
+  rpc CalculateTravelBooking(CalculateTravelBookingRequest) returns (CalculateTravelBookingResponse);
+
+  // Estimates a travel booking.
+  rpc EstimateTravelBooking(EstimateTravelBookingRequest) returns (EstimateTravelBookingResponse);
+
+  // Quotes a travel booking.
+  rpc QuoteTravelBooking(QuoteTravelBookingRequest) returns (QuoteTravelBookingResponse);
+
+  // Recalculates a travel booking.
+  rpc RecalculateTravelBookings(RecalculateTravelBookingsRequest) returns (RecalculateTravelBookingsResponse);
+
+  // Simulates a travel booking.
+  rpc SimulateTravelBooking(SimulateTravelBookingRequest) returns (SimulateTravelBookingResponse);
+
+  // Explains a travel booking.
+  rpc ExplainTravelBookingCalculation(ExplainTravelBookingCalculationRequest) returns (ExplainTravelBookingCalculationResponse);
+
+  // Returns a travel booking.
+  rpc GetTravelBookingRates(GetTravelBookingRatesRequest) returns (GetTravelBookingRatesResponse);
+}
+
+// The request of `CalculateTravelBooking`.
+message CalculateTravelBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_booking_id = 2;
+  TravelBooking travel_booking = 3;
+  CalculateTravelBookingRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateTravelBooking`.
+message CalculateTravelBookingResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateTravelBookingResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  TravelBooking travel_booking = 1;
+  CalculateTravelBookingResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateTravelBooking`.
+message EstimateTravelBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_booking_id = 2;
+  TravelBooking travel_booking = 3;
+  EstimateTravelBookingRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateTravelBooking`.
+message EstimateTravelBookingResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateTravelBookingResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  TravelBooking travel_booking = 1;
+  EstimateTravelBookingResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteTravelBooking`.
+message QuoteTravelBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_booking_id = 2;
+  TravelBooking travel_booking = 3;
+  QuoteTravelBookingRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteTravelBooking`.
+message QuoteTravelBookingResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteTravelBookingResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  TravelBooking travel_booking = 1;
+  QuoteTravelBookingResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateTravelBookings`.
+message RecalculateTravelBookingsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_booking_id = 2;
+  TravelBooking travel_booking = 3;
+  RecalculateTravelBookingsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateTravelBookings`.
+message RecalculateTravelBookingsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateTravelBookingsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  TravelBooking travel_booking = 1;
+  RecalculateTravelBookingsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateTravelBooking`.
+message SimulateTravelBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_booking_id = 2;
+  TravelBooking travel_booking = 3;
+  SimulateTravelBookingRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateTravelBooking`.
+message SimulateTravelBookingResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateTravelBookingResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  TravelBooking travel_booking = 1;
+  SimulateTravelBookingResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainTravelBookingCalculation`.
+message ExplainTravelBookingCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_booking_id = 2;
+  TravelBooking travel_booking = 3;
+  ExplainTravelBookingCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainTravelBookingCalculation`.
+message ExplainTravelBookingCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelBooking travel_booking = 1;
+  ExplainTravelBookingCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetTravelBookingRates`.
+message GetTravelBookingRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string travel_booking_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetTravelBookingRates`.
+message GetTravelBookingRatesResponse {
+  TravelBooking travel_booking = 1;
+  acme.common.v1.OperationResult result = 2;
+}

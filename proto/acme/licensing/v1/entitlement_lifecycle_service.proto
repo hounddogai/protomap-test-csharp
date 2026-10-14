@@ -1,0 +1,241 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.licensing.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/licensing/v1/licensing.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Licensing.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/licensing/v1;licensingv1";
+option java_multiple_files = true;
+option java_outer_classname = "EntitlementLifecycleServiceProto";
+option java_package = "com.acme.licensing.v1";
+
+// Moves an entitlement between the states of its lifecycle.
+service EntitlementLifecycleService {
+  // Activates an entitlement.
+  rpc ActivateEntitlement(ActivateEntitlementRequest) returns (ActivateEntitlementResponse);
+
+  // Suspends an entitlement.
+  rpc SuspendEntitlement(SuspendEntitlementRequest) returns (SuspendEntitlementResponse);
+
+  // Terminates an entitlement.
+  rpc TerminateEntitlement(TerminateEntitlementRequest) returns (TerminateEntitlementResponse);
+
+  // Renews an entitlement.
+  rpc RenewEntitlement(RenewEntitlementRequest) returns (RenewEntitlementResponse);
+
+  // Expires an entitlement.
+  rpc ExpireEntitlement(ExpireEntitlementRequest) returns (ExpireEntitlementResponse);
+
+  // Schedules an entitlement.
+  rpc ScheduleEntitlementExpiry(ScheduleEntitlementExpiryRequest) returns (ScheduleEntitlementExpiryResponse);
+}
+
+// The request of `ActivateEntitlement`.
+message ActivateEntitlementRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  ActivateEntitlementRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateEntitlement`.
+message ActivateEntitlementResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  ActivateEntitlementResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendEntitlement`.
+message SuspendEntitlementRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  SuspendEntitlementRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendEntitlement`.
+message SuspendEntitlementResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  SuspendEntitlementResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateEntitlement`.
+message TerminateEntitlementRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  TerminateEntitlementRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateEntitlement`.
+message TerminateEntitlementResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  TerminateEntitlementResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewEntitlement`.
+message RenewEntitlementRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  RenewEntitlementRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewEntitlement`.
+message RenewEntitlementResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  RenewEntitlementResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireEntitlement`.
+message ExpireEntitlementRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  ExpireEntitlementRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireEntitlement`.
+message ExpireEntitlementResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  ExpireEntitlementResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScheduleEntitlementExpiry`.
+message ScheduleEntitlementExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  ScheduleEntitlementExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleEntitlementExpiry`.
+message ScheduleEntitlementExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  ScheduleEntitlementExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

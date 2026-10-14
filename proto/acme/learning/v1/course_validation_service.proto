@@ -1,0 +1,223 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.learning.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/learning/v1/learning.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Learning.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/learning/v1;learningv1";
+option java_multiple_files = true;
+option java_outer_classname = "CourseValidationServiceProto";
+option java_package = "com.acme.learning.v1";
+
+// Checks courses against the rules before anything acts on them.
+service CourseValidationService {
+  // Validates a course.
+  rpc ValidateCourse(ValidateCourseRequest) returns (ValidateCourseResponse);
+
+  // Previews a course.
+  rpc PreviewCourse(PreviewCourseRequest) returns (PreviewCourseResponse);
+
+  // Checks a course.
+  rpc CheckCourseEligibility(CheckCourseEligibilityRequest) returns (CheckCourseEligibilityResponse);
+
+  // Explains a course.
+  rpc ExplainCourseDecision(ExplainCourseDecisionRequest) returns (ExplainCourseDecisionResponse);
+
+  // Lints a course.
+  rpc LintCourses(LintCoursesRequest) returns (LintCoursesResponse);
+
+  // Returns a course.
+  rpc GetCourseRules(GetCourseRulesRequest) returns (GetCourseRulesResponse);
+}
+
+// The request of `ValidateCourse`.
+message ValidateCourseRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_id = 2;
+  Course course = 3;
+  ValidateCourseRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateCourse`.
+message ValidateCourseResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Course course = 1;
+  ValidateCourseResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewCourse`.
+message PreviewCourseRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_id = 2;
+  Course course = 3;
+  PreviewCourseRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewCourse`.
+message PreviewCourseResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Course course = 1;
+  PreviewCourseResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckCourseEligibility`.
+message CheckCourseEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_id = 2;
+  Course course = 3;
+  CheckCourseEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckCourseEligibility`.
+message CheckCourseEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Course course = 1;
+  CheckCourseEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainCourseDecision`.
+message ExplainCourseDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_id = 2;
+  Course course = 3;
+  ExplainCourseDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainCourseDecision`.
+message ExplainCourseDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Course course = 1;
+  ExplainCourseDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintCourses`.
+message LintCoursesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string course_id = 2;
+  Course course = 3;
+  LintCoursesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintCourses`.
+message LintCoursesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Course course = 1;
+  LintCoursesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetCourseRules`.
+message GetCourseRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string course_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetCourseRules`.
+message GetCourseRulesResponse {
+  Course course = 1;
+  acme.common.v1.OperationResult result = 2;
+}

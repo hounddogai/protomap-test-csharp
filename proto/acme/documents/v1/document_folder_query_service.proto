@@ -1,0 +1,214 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.documents.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/documents/v1/documents.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Documents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/documents/v1;documentsv1";
+option java_multiple_files = true;
+option java_outer_classname = "DocumentFolderQueryServiceProto";
+option java_package = "com.acme.documents.v1";
+
+// Answers read-only questions about document folders, for screens and reports.
+service DocumentFolderQueryService {
+  // Returns a document folder.
+  rpc LookupDocumentFolder(LookupDocumentFolderRequest) returns (LookupDocumentFolderResponse);
+
+  // Lists document folders a page at a time.
+  rpc BrowseDocumentFolders(BrowseDocumentFoldersRequest) returns (BrowseDocumentFoldersResponse);
+
+  // Lists document folders a page at a time.
+  rpc FindDocumentFolders(FindDocumentFoldersRequest) returns (FindDocumentFoldersResponse);
+
+  // Counts document folders by status.
+  rpc CountDocumentFolders(CountDocumentFoldersRequest) returns (CountDocumentFoldersResponse);
+
+  // Returns several document folders at once.
+  rpc ResolveDocumentFolders(ResolveDocumentFoldersRequest) returns (ResolveDocumentFoldersResponse);
+
+  // Streams every matching document folder.
+  rpc ExportDocumentFolders(ExportDocumentFoldersRequest) returns (stream ExportDocumentFoldersResponse);
+
+  // Lists document folders a page at a time.
+  rpc SuggestDocumentFolders(SuggestDocumentFoldersRequest) returns (SuggestDocumentFoldersResponse);
+
+  // Returns a document folder.
+  rpc PeekDocumentFolder(PeekDocumentFolderRequest) returns (PeekDocumentFolderResponse);
+}
+
+// The request of `LookupDocumentFolder`.
+message LookupDocumentFolderRequest {
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `LookupDocumentFolder`.
+message LookupDocumentFolderResponse {
+  DocumentFolder document_folder = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `BrowseDocumentFolders`.
+message BrowseDocumentFoldersRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DocumentFolderStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  BrowseDocumentFoldersRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `BrowseDocumentFolders`.
+message BrowseDocumentFoldersResponse {
+  repeated DocumentFolder document_folders = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `FindDocumentFolders`.
+message FindDocumentFoldersRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DocumentFolderStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  FindDocumentFoldersRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `FindDocumentFolders`.
+message FindDocumentFoldersResponse {
+  repeated DocumentFolder document_folders = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CountDocumentFolders`.
+message CountDocumentFoldersRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DocumentFolderStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  CountDocumentFoldersRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `CountDocumentFolders`.
+message CountDocumentFoldersResponse {
+  int64 count = 1;
+  map<string, int64> by_status = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResolveDocumentFolders`.
+message ResolveDocumentFoldersRequest {
+  acme.common.v1.RequestContext context = 1;
+  repeated string document_folder_ids = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `ResolveDocumentFolders`.
+message ResolveDocumentFoldersResponse {
+  repeated DocumentFolder document_folders = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExportDocumentFolders`.
+message ExportDocumentFoldersRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DocumentFolderStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  ExportDocumentFoldersRequest.Filter filter = 2;
+  string format = 3;
+  google.protobuf.FieldMask fields = 4;
+  string destination_uri = 5;
+}
+
+// The response of `ExportDocumentFolders`.
+message ExportDocumentFoldersResponse {
+  DocumentFolder document_folder = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SuggestDocumentFolders`.
+message SuggestDocumentFoldersRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DocumentFolderStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SuggestDocumentFoldersRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SuggestDocumentFolders`.
+message SuggestDocumentFoldersResponse {
+  repeated DocumentFolder document_folders = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PeekDocumentFolder`.
+message PeekDocumentFolderRequest {
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `PeekDocumentFolder`.
+message PeekDocumentFolderResponse {
+  DocumentFolder document_folder = 1;
+  acme.common.v1.OperationResult result = 2;
+}

@@ -1,0 +1,223 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.recruiting.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/recruiting/v1/recruiting.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Recruiting.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/recruiting/v1;recruitingv1";
+option java_multiple_files = true;
+option java_outer_classname = "CandidateValidationServiceProto";
+option java_package = "com.acme.recruiting.v1";
+
+// Checks candidates against the rules before anything acts on them.
+service CandidateValidationService {
+  // Validates a candidate.
+  rpc ValidateCandidate(ValidateCandidateRequest) returns (ValidateCandidateResponse);
+
+  // Previews a candidate.
+  rpc PreviewCandidate(PreviewCandidateRequest) returns (PreviewCandidateResponse);
+
+  // Checks a candidate.
+  rpc CheckCandidateEligibility(CheckCandidateEligibilityRequest) returns (CheckCandidateEligibilityResponse);
+
+  // Explains a candidate.
+  rpc ExplainCandidateDecision(ExplainCandidateDecisionRequest) returns (ExplainCandidateDecisionResponse);
+
+  // Lints a candidate.
+  rpc LintCandidates(LintCandidatesRequest) returns (LintCandidatesResponse);
+
+  // Returns a candidate.
+  rpc GetCandidateRules(GetCandidateRulesRequest) returns (GetCandidateRulesResponse);
+}
+
+// The request of `ValidateCandidate`.
+message ValidateCandidateRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string candidate_id = 2;
+  Candidate candidate = 3;
+  ValidateCandidateRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateCandidate`.
+message ValidateCandidateResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Candidate candidate = 1;
+  ValidateCandidateResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewCandidate`.
+message PreviewCandidateRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string candidate_id = 2;
+  Candidate candidate = 3;
+  PreviewCandidateRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewCandidate`.
+message PreviewCandidateResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Candidate candidate = 1;
+  PreviewCandidateResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckCandidateEligibility`.
+message CheckCandidateEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string candidate_id = 2;
+  Candidate candidate = 3;
+  CheckCandidateEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckCandidateEligibility`.
+message CheckCandidateEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Candidate candidate = 1;
+  CheckCandidateEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainCandidateDecision`.
+message ExplainCandidateDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string candidate_id = 2;
+  Candidate candidate = 3;
+  ExplainCandidateDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainCandidateDecision`.
+message ExplainCandidateDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Candidate candidate = 1;
+  ExplainCandidateDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintCandidates`.
+message LintCandidatesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string candidate_id = 2;
+  Candidate candidate = 3;
+  LintCandidatesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintCandidates`.
+message LintCandidatesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Candidate candidate = 1;
+  LintCandidatesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetCandidateRules`.
+message GetCandidateRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string candidate_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetCandidateRules`.
+message GetCandidateRulesResponse {
+  Candidate candidate = 1;
+  acme.common.v1.OperationResult result = 2;
+}

@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.workplaces.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/workplaces/v1/workplaces.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Workplaces.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/workplaces/v1;workplacesv1";
+option java_multiple_files = true;
+option java_outer_classname = "DeskCalculationServiceProto";
+option java_package = "com.acme.workplaces.v1";
+
+// Computes the figures of a desk, such as totals, taxes, and estimates.
+service DeskCalculationService {
+  // Calculates a desk.
+  rpc CalculateDesk(CalculateDeskRequest) returns (CalculateDeskResponse);
+
+  // Estimates a desk.
+  rpc EstimateDesk(EstimateDeskRequest) returns (EstimateDeskResponse);
+
+  // Quotes a desk.
+  rpc QuoteDesk(QuoteDeskRequest) returns (QuoteDeskResponse);
+
+  // Compares a desk.
+  rpc CompareDeskOptions(CompareDeskOptionsRequest) returns (CompareDeskOptionsResponse);
+
+  // Recalculates a desk.
+  rpc RecalculateDesks(RecalculateDesksRequest) returns (RecalculateDesksResponse);
+
+  // Simulates a desk.
+  rpc SimulateDesk(SimulateDeskRequest) returns (SimulateDeskResponse);
+
+  // Explains a desk.
+  rpc ExplainDeskCalculation(ExplainDeskCalculationRequest) returns (ExplainDeskCalculationResponse);
+
+  // Returns a desk.
+  rpc GetDeskRates(GetDeskRatesRequest) returns (GetDeskRatesResponse);
+}
+
+// The request of `CalculateDesk`.
+message CalculateDeskRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string desk_id = 2;
+  Desk desk = 3;
+  CalculateDeskRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateDesk`.
+message CalculateDeskResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateDeskResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Desk desk = 1;
+  CalculateDeskResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateDesk`.
+message EstimateDeskRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string desk_id = 2;
+  Desk desk = 3;
+  EstimateDeskRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateDesk`.
+message EstimateDeskResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateDeskResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Desk desk = 1;
+  EstimateDeskResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteDesk`.
+message QuoteDeskRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string desk_id = 2;
+  Desk desk = 3;
+  QuoteDeskRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteDesk`.
+message QuoteDeskResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteDeskResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Desk desk = 1;
+  QuoteDeskResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareDeskOptions`.
+message CompareDeskOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string desk_id = 2;
+  Desk desk = 3;
+  CompareDeskOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareDeskOptions`.
+message CompareDeskOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareDeskOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Desk desk = 1;
+  CompareDeskOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateDesks`.
+message RecalculateDesksRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string desk_id = 2;
+  Desk desk = 3;
+  RecalculateDesksRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateDesks`.
+message RecalculateDesksResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateDesksResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Desk desk = 1;
+  RecalculateDesksResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateDesk`.
+message SimulateDeskRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string desk_id = 2;
+  Desk desk = 3;
+  SimulateDeskRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateDesk`.
+message SimulateDeskResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateDeskResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Desk desk = 1;
+  SimulateDeskResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainDeskCalculation`.
+message ExplainDeskCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string desk_id = 2;
+  Desk desk = 3;
+  ExplainDeskCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainDeskCalculation`.
+message ExplainDeskCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Desk desk = 1;
+  ExplainDeskCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetDeskRates`.
+message GetDeskRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string desk_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetDeskRates`.
+message GetDeskRatesResponse {
+  Desk desk = 1;
+  acme.common.v1.OperationResult result = 2;
+}

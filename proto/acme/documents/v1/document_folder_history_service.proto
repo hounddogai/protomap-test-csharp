@@ -1,0 +1,232 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.documents.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/documents/v1/documents.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Documents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/documents/v1;documentsv1";
+option java_multiple_files = true;
+option java_outer_classname = "DocumentFolderHistoryServiceProto";
+option java_package = "com.acme.documents.v1";
+
+// Keeps every version of a document folder and restores earlier ones.
+service DocumentFolderHistoryService {
+  // Records a document folder.
+  rpc RecordDocumentFolderVersion(RecordDocumentFolderVersionRequest) returns (RecordDocumentFolderVersionResponse);
+
+  // Lists document folders a page at a time.
+  rpc ListDocumentFolderVersions(ListDocumentFolderVersionsRequest) returns (ListDocumentFolderVersionsResponse);
+
+  // Returns a document folder.
+  rpc GetDocumentFolderVersion(GetDocumentFolderVersionRequest) returns (GetDocumentFolderVersionResponse);
+
+  // Compares a document folder.
+  rpc CompareDocumentFolderVersions(CompareDocumentFolderVersionsRequest) returns (CompareDocumentFolderVersionsResponse);
+
+  // Reverts a document folder.
+  rpc RevertDocumentFolder(RevertDocumentFolderRequest) returns (RevertDocumentFolderResponse);
+
+  // Annotates a document folder.
+  rpc AnnotateDocumentFolderVersion(AnnotateDocumentFolderVersionRequest) returns (AnnotateDocumentFolderVersionResponse);
+
+  // Deletes a document folder.
+  rpc PruneDocumentFolderVersions(PruneDocumentFolderVersionsRequest) returns (PruneDocumentFolderVersionsResponse);
+}
+
+// The request of `RecordDocumentFolderVersion`.
+message RecordDocumentFolderVersionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    int64 version = 1;
+    int64 other_version = 2;
+    bytes snapshot = 3;
+    string author_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  DocumentFolder document_folder = 3;
+  RecordDocumentFolderVersionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecordDocumentFolderVersion`.
+message RecordDocumentFolderVersionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  RecordDocumentFolderVersionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListDocumentFolderVersions`.
+message ListDocumentFolderVersionsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DocumentFolderStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListDocumentFolderVersionsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListDocumentFolderVersions`.
+message ListDocumentFolderVersionsResponse {
+  repeated DocumentFolder document_folders = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetDocumentFolderVersion`.
+message GetDocumentFolderVersionRequest {
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetDocumentFolderVersion`.
+message GetDocumentFolderVersionResponse {
+  DocumentFolder document_folder = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CompareDocumentFolderVersions`.
+message CompareDocumentFolderVersionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    int64 version = 1;
+    int64 other_version = 2;
+    bytes snapshot = 3;
+    string author_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  DocumentFolder document_folder = 3;
+  CompareDocumentFolderVersionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareDocumentFolderVersions`.
+message CompareDocumentFolderVersionsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  CompareDocumentFolderVersionsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RevertDocumentFolder`.
+message RevertDocumentFolderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    int64 version = 1;
+    int64 other_version = 2;
+    bytes snapshot = 3;
+    string author_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  DocumentFolder document_folder = 3;
+  RevertDocumentFolderRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RevertDocumentFolder`.
+message RevertDocumentFolderResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  RevertDocumentFolderResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AnnotateDocumentFolderVersion`.
+message AnnotateDocumentFolderVersionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    int64 version = 1;
+    int64 other_version = 2;
+    bytes snapshot = 3;
+    string author_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  DocumentFolder document_folder = 3;
+  AnnotateDocumentFolderVersionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AnnotateDocumentFolderVersion`.
+message AnnotateDocumentFolderVersionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  AnnotateDocumentFolderVersionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PruneDocumentFolderVersions`.
+message PruneDocumentFolderVersionsRequest {
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  string reason = 3;
+  string etag = 4;
+  bool force = 5;
+}
+
+// The response of `PruneDocumentFolderVersions`.
+message PruneDocumentFolderVersionsResponse {
+  acme.common.v1.OperationResult result = 1;
+  google.protobuf.Timestamp effective_at = 2;
+}

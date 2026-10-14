@@ -1,0 +1,249 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.workplaces.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/workplaces/v1/workplaces.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Workplaces.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/workplaces/v1;workplacesv1";
+option java_multiple_files = true;
+option java_outer_classname = "RoomBookingCalculationServiceProto";
+option java_package = "com.acme.workplaces.v1";
+
+// Computes the figures of a room booking, such as totals, taxes, and estimates.
+service RoomBookingCalculationService {
+  // Calculates a room booking.
+  rpc CalculateRoomBooking(CalculateRoomBookingRequest) returns (CalculateRoomBookingResponse);
+
+  // Estimates a room booking.
+  rpc EstimateRoomBooking(EstimateRoomBookingRequest) returns (EstimateRoomBookingResponse);
+
+  // Compares a room booking.
+  rpc CompareRoomBookingOptions(CompareRoomBookingOptionsRequest) returns (CompareRoomBookingOptionsResponse);
+
+  // Recalculates a room booking.
+  rpc RecalculateRoomBookings(RecalculateRoomBookingsRequest) returns (RecalculateRoomBookingsResponse);
+
+  // Explains a room booking.
+  rpc ExplainRoomBookingCalculation(ExplainRoomBookingCalculationRequest) returns (ExplainRoomBookingCalculationResponse);
+
+  // Returns a room booking.
+  rpc GetRoomBookingRates(GetRoomBookingRatesRequest) returns (GetRoomBookingRatesResponse);
+}
+
+// The request of `CalculateRoomBooking`.
+message CalculateRoomBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  RoomBooking room_booking = 3;
+  CalculateRoomBookingRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateRoomBooking`.
+message CalculateRoomBookingResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateRoomBookingResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  RoomBooking room_booking = 1;
+  CalculateRoomBookingResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateRoomBooking`.
+message EstimateRoomBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  RoomBooking room_booking = 3;
+  EstimateRoomBookingRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateRoomBooking`.
+message EstimateRoomBookingResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateRoomBookingResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  RoomBooking room_booking = 1;
+  EstimateRoomBookingResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareRoomBookingOptions`.
+message CompareRoomBookingOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  RoomBooking room_booking = 3;
+  CompareRoomBookingOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareRoomBookingOptions`.
+message CompareRoomBookingOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareRoomBookingOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  RoomBooking room_booking = 1;
+  CompareRoomBookingOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateRoomBookings`.
+message RecalculateRoomBookingsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  RoomBooking room_booking = 3;
+  RecalculateRoomBookingsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateRoomBookings`.
+message RecalculateRoomBookingsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateRoomBookingsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  RoomBooking room_booking = 1;
+  RecalculateRoomBookingsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainRoomBookingCalculation`.
+message ExplainRoomBookingCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  RoomBooking room_booking = 3;
+  ExplainRoomBookingCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainRoomBookingCalculation`.
+message ExplainRoomBookingCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  ExplainRoomBookingCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetRoomBookingRates`.
+message GetRoomBookingRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetRoomBookingRates`.
+message GetRoomBookingRatesResponse {
+  RoomBooking room_booking = 1;
+  acme.common.v1.OperationResult result = 2;
+}

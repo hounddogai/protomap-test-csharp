@@ -1,0 +1,249 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.devices.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/devices/v1/devices.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Devices.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/devices/v1;devicesv1";
+option java_multiple_files = true;
+option java_outer_classname = "ComplianceScanCalculationServiceProto";
+option java_package = "com.acme.devices.v1";
+
+// Computes the figures of a compliance scan, such as totals, taxes, and estimates.
+service ComplianceScanCalculationService {
+  // Calculates a compliance scan.
+  rpc CalculateComplianceScan(CalculateComplianceScanRequest) returns (CalculateComplianceScanResponse);
+
+  // Estimates a compliance scan.
+  rpc EstimateComplianceScan(EstimateComplianceScanRequest) returns (EstimateComplianceScanResponse);
+
+  // Compares a compliance scan.
+  rpc CompareComplianceScanOptions(CompareComplianceScanOptionsRequest) returns (CompareComplianceScanOptionsResponse);
+
+  // Recalculates a compliance scan.
+  rpc RecalculateComplianceScans(RecalculateComplianceScansRequest) returns (RecalculateComplianceScansResponse);
+
+  // Explains a compliance scan.
+  rpc ExplainComplianceScanCalculation(ExplainComplianceScanCalculationRequest) returns (ExplainComplianceScanCalculationResponse);
+
+  // Returns a compliance scan.
+  rpc GetComplianceScanRates(GetComplianceScanRatesRequest) returns (GetComplianceScanRatesResponse);
+}
+
+// The request of `CalculateComplianceScan`.
+message CalculateComplianceScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ComplianceScan compliance_scan = 3;
+  CalculateComplianceScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateComplianceScan`.
+message CalculateComplianceScanResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateComplianceScanResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  CalculateComplianceScanResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateComplianceScan`.
+message EstimateComplianceScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ComplianceScan compliance_scan = 3;
+  EstimateComplianceScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateComplianceScan`.
+message EstimateComplianceScanResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateComplianceScanResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  EstimateComplianceScanResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareComplianceScanOptions`.
+message CompareComplianceScanOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ComplianceScan compliance_scan = 3;
+  CompareComplianceScanOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareComplianceScanOptions`.
+message CompareComplianceScanOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareComplianceScanOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  CompareComplianceScanOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateComplianceScans`.
+message RecalculateComplianceScansRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ComplianceScan compliance_scan = 3;
+  RecalculateComplianceScansRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateComplianceScans`.
+message RecalculateComplianceScansResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateComplianceScansResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  RecalculateComplianceScansResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainComplianceScanCalculation`.
+message ExplainComplianceScanCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ComplianceScan compliance_scan = 3;
+  ExplainComplianceScanCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainComplianceScanCalculation`.
+message ExplainComplianceScanCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  ExplainComplianceScanCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetComplianceScanRates`.
+message GetComplianceScanRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetComplianceScanRates`.
+message GetComplianceScanRatesResponse {
+  ComplianceScan compliance_scan = 1;
+  acme.common.v1.OperationResult result = 2;
+}

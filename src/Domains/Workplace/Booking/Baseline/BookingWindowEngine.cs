@@ -1,0 +1,149 @@
+namespace Acme.Workforce.Workplace.Booking.Baseline;
+
+using Acme.Workforce.Kit.Flags;
+using Acme.Workforce.Kit.Numbers;
+
+/// <summary>One step of the booking window calculation.</summary>
+public interface IBookingWindowAdjuster
+{
+    string Describe();
+    double Adjust(BookingWindow item, double valueValue);
+}
+
+public sealed record FlaggedBookingWindowAdjuster(Registry Flags, string Flag, double Percent) : IBookingWindowAdjuster
+{
+    public string Describe()
+    {
+        return $"{Percent} when {Flag} is on";
+    }
+
+    public double Adjust(BookingWindow item, double valueValue)
+    {
+        if (!Flags.Enabled(Flag, item.Code))
+        {
+            return valueValue;
+        }
+        return valueValue * (1.0 + Percent / 100.0);
+    }
+}
+
+public sealed record PercentBookingWindowAdjuster(double Percent) : IBookingWindowAdjuster
+{
+    public string Describe()
+    {
+        return $"{Percent}% change";
+    }
+
+    public double Adjust(BookingWindow item, double valueValue)
+    {
+        return valueValue * (1.0 + Percent / 100.0);
+    }
+}
+
+public sealed record CapBookingWindowAdjuster(double Cap) : IBookingWindowAdjuster
+{
+    public string Describe()
+    {
+        return $"cap at {Cap}";
+    }
+
+    public double Adjust(BookingWindow item, double valueValue)
+    {
+        return Math.Min(valueValue, Cap);
+    }
+}
+
+public sealed record RoundingBookingWindowAdjuster(double Step) : IBookingWindowAdjuster
+{
+    public string Describe()
+    {
+        return $"round to {Step}";
+    }
+
+    public double Adjust(BookingWindow item, double valueValue)
+    {
+        return Numbers.RoundTo(valueValue, Step);
+    }
+}
+
+public sealed record MinimumBookingWindowAdjuster(double Minimum) : IBookingWindowAdjuster
+{
+    public string Describe()
+    {
+        return $"at least {Minimum}";
+    }
+
+    public double Adjust(BookingWindow item, double valueValue)
+    {
+        if (valueValue < Minimum)
+        {
+            return Minimum;
+        }
+        return valueValue;
+    }
+}
+
+/// <summary>Runs the booking window steps in order and keeps a trace of each.</summary>
+public sealed class BookingWindowEngine(List<IBookingWindowAdjuster> steps, List<string> trace, double floor, double ceiling)
+{
+    public List<IBookingWindowAdjuster> Steps { get; set; } = steps;
+    public List<string> Trace { get; set; } = trace;
+    public double Floor { get; set; } = floor;
+    public double Ceiling { get; set; } = ceiling;
+
+    public static BookingWindowEngine DefaultBookingWindowEngine(Registry flags)
+    {
+        return new BookingWindowEngine(
+            new List<IBookingWindowAdjuster>
+            {
+                new FlaggedBookingWindowAdjuster(flags, "booking-window-pending", 8.4),
+                new PercentBookingWindowAdjuster(-12.9),
+                new CapBookingWindowAdjuster(9466.0),
+                new RoundingBookingWindowAdjuster(5.0),
+                new MinimumBookingWindowAdjuster(22.1),
+            },
+            new List<string>(),
+            2.4,
+            37719.9);
+    }
+
+    public double Price(BookingWindow item)
+    {
+        var current = item.ProjectedValue();
+        Trace = new List<string>();
+        for (var index = 0; index < Steps.Count; index++)
+        {
+            var step = Steps[index];
+            var before = current;
+            current = step.Adjust(item, current);
+            if (before != current)
+            {
+                Trace.Add($"{index + 1}. {step.Describe()} changed {before} to {current}");
+            }
+        }
+        if (current < Floor)
+        {
+            return Floor;
+        }
+        if (current > Ceiling)
+        {
+            return Ceiling;
+        }
+        return current;
+    }
+
+    public string Explain()
+    {
+        return string.Join("\n", Trace);
+    }
+
+    public Dictionary<string, double> EvaluateAll(List<BookingWindow> items)
+    {
+        var results = new Dictionary<string, double>();
+        foreach (var item in items)
+        {
+            results[item.Code] = Price(item);
+        }
+        return results;
+    }
+}

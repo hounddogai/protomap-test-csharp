@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.corporateevents.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/corporateevents/v1/corporateevents.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Corporateevents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/corporateevents/v1;corporateeventsv1";
+option java_multiple_files = true;
+option java_outer_classname = "VenueCalculationServiceProto";
+option java_package = "com.acme.corporateevents.v1";
+
+// Computes the figures of a venue, such as totals, taxes, and estimates.
+service VenueCalculationService {
+  // Calculates a venue.
+  rpc CalculateVenue(CalculateVenueRequest) returns (CalculateVenueResponse);
+
+  // Estimates a venue.
+  rpc EstimateVenue(EstimateVenueRequest) returns (EstimateVenueResponse);
+
+  // Quotes a venue.
+  rpc QuoteVenue(QuoteVenueRequest) returns (QuoteVenueResponse);
+
+  // Compares a venue.
+  rpc CompareVenueOptions(CompareVenueOptionsRequest) returns (CompareVenueOptionsResponse);
+
+  // Recalculates a venue.
+  rpc RecalculateVenues(RecalculateVenuesRequest) returns (RecalculateVenuesResponse);
+
+  // Simulates a venue.
+  rpc SimulateVenue(SimulateVenueRequest) returns (SimulateVenueResponse);
+
+  // Explains a venue.
+  rpc ExplainVenueCalculation(ExplainVenueCalculationRequest) returns (ExplainVenueCalculationResponse);
+
+  // Returns a venue.
+  rpc GetVenueRates(GetVenueRatesRequest) returns (GetVenueRatesResponse);
+}
+
+// The request of `CalculateVenue`.
+message CalculateVenueRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  Venue venue = 3;
+  CalculateVenueRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateVenue`.
+message CalculateVenueResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateVenueResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Venue venue = 1;
+  CalculateVenueResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateVenue`.
+message EstimateVenueRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  Venue venue = 3;
+  EstimateVenueRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateVenue`.
+message EstimateVenueResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateVenueResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Venue venue = 1;
+  EstimateVenueResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteVenue`.
+message QuoteVenueRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  Venue venue = 3;
+  QuoteVenueRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteVenue`.
+message QuoteVenueResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteVenueResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Venue venue = 1;
+  QuoteVenueResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareVenueOptions`.
+message CompareVenueOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  Venue venue = 3;
+  CompareVenueOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareVenueOptions`.
+message CompareVenueOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareVenueOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Venue venue = 1;
+  CompareVenueOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateVenues`.
+message RecalculateVenuesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  Venue venue = 3;
+  RecalculateVenuesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateVenues`.
+message RecalculateVenuesResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateVenuesResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Venue venue = 1;
+  RecalculateVenuesResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateVenue`.
+message SimulateVenueRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  Venue venue = 3;
+  SimulateVenueRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateVenue`.
+message SimulateVenueResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateVenueResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Venue venue = 1;
+  SimulateVenueResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainVenueCalculation`.
+message ExplainVenueCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  Venue venue = 3;
+  ExplainVenueCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainVenueCalculation`.
+message ExplainVenueCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Venue venue = 1;
+  ExplainVenueCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetVenueRates`.
+message GetVenueRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetVenueRates`.
+message GetVenueRatesResponse {
+  Venue venue = 1;
+  acme.common.v1.OperationResult result = 2;
+}

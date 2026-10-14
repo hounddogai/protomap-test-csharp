@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.devices.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/devices/v1/devices.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Devices.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/devices/v1;devicesv1";
+option java_multiple_files = true;
+option java_outer_classname = "ComplianceScanValidationServiceProto";
+option java_package = "com.acme.devices.v1";
+
+// Checks compliance scans against the rules before anything acts on them.
+service ComplianceScanValidationService {
+  // Validates a compliance scan.
+  rpc ValidateComplianceScan(ValidateComplianceScanRequest) returns (ValidateComplianceScanResponse);
+
+  // Previews a compliance scan.
+  rpc PreviewComplianceScan(PreviewComplianceScanRequest) returns (PreviewComplianceScanResponse);
+
+  // Checks a compliance scan.
+  rpc CheckComplianceScanEligibility(CheckComplianceScanEligibilityRequest) returns (CheckComplianceScanEligibilityResponse);
+
+  // Normalizes a compliance scan.
+  rpc NormalizeComplianceScan(NormalizeComplianceScanRequest) returns (NormalizeComplianceScanResponse);
+
+  // Explains a compliance scan.
+  rpc ExplainComplianceScanDecision(ExplainComplianceScanDecisionRequest) returns (ExplainComplianceScanDecisionResponse);
+
+  // Scores a compliance scan.
+  rpc ScoreComplianceScan(ScoreComplianceScanRequest) returns (ScoreComplianceScanResponse);
+
+  // Lints a compliance scan.
+  rpc LintComplianceScans(LintComplianceScansRequest) returns (LintComplianceScansResponse);
+
+  // Returns a compliance scan.
+  rpc GetComplianceScanRules(GetComplianceScanRulesRequest) returns (GetComplianceScanRulesResponse);
+}
+
+// The request of `ValidateComplianceScan`.
+message ValidateComplianceScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ComplianceScan compliance_scan = 3;
+  ValidateComplianceScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateComplianceScan`.
+message ValidateComplianceScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  ValidateComplianceScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewComplianceScan`.
+message PreviewComplianceScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ComplianceScan compliance_scan = 3;
+  PreviewComplianceScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewComplianceScan`.
+message PreviewComplianceScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  PreviewComplianceScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckComplianceScanEligibility`.
+message CheckComplianceScanEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ComplianceScan compliance_scan = 3;
+  CheckComplianceScanEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckComplianceScanEligibility`.
+message CheckComplianceScanEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  CheckComplianceScanEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeComplianceScan`.
+message NormalizeComplianceScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ComplianceScan compliance_scan = 3;
+  NormalizeComplianceScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeComplianceScan`.
+message NormalizeComplianceScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  NormalizeComplianceScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainComplianceScanDecision`.
+message ExplainComplianceScanDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ComplianceScan compliance_scan = 3;
+  ExplainComplianceScanDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainComplianceScanDecision`.
+message ExplainComplianceScanDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  ExplainComplianceScanDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreComplianceScan`.
+message ScoreComplianceScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ComplianceScan compliance_scan = 3;
+  ScoreComplianceScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreComplianceScan`.
+message ScoreComplianceScanResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreComplianceScanResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  ScoreComplianceScanResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintComplianceScans`.
+message LintComplianceScansRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ComplianceScan compliance_scan = 3;
+  LintComplianceScansRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintComplianceScans`.
+message LintComplianceScansResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  LintComplianceScansResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetComplianceScanRules`.
+message GetComplianceScanRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetComplianceScanRules`.
+message GetComplianceScanRulesResponse {
+  ComplianceScan compliance_scan = 1;
+  acme.common.v1.OperationResult result = 2;
+}

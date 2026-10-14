@@ -1,0 +1,258 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.helpdesk.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/helpdesk/v1/helpdesk.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Helpdesk.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/helpdesk/v1;helpdeskv1";
+option java_multiple_files = true;
+option java_outer_classname = "KnowledgeArticleWorkflowServiceProto";
+option java_package = "com.acme.helpdesk.v1";
+
+// Runs the long-lived workflow that takes a knowledge article from start to finish.
+service KnowledgeArticleWorkflowService {
+  // Starts a knowledge article.
+  rpc StartKnowledgeArticleWorkflow(StartKnowledgeArticleWorkflowRequest) returns (StartKnowledgeArticleWorkflowResponse);
+
+  // Advances a knowledge article.
+  rpc AdvanceKnowledgeArticleWorkflow(AdvanceKnowledgeArticleWorkflowRequest) returns (AdvanceKnowledgeArticleWorkflowResponse);
+
+  // Cancels a knowledge article.
+  rpc CancelKnowledgeArticleWorkflow(CancelKnowledgeArticleWorkflowRequest) returns (CancelKnowledgeArticleWorkflowResponse);
+
+  // Resumes a knowledge article.
+  rpc ResumeKnowledgeArticleWorkflow(ResumeKnowledgeArticleWorkflowRequest) returns (ResumeKnowledgeArticleWorkflowResponse);
+
+  // Returns a knowledge article.
+  rpc InspectKnowledgeArticleWorkflow(InspectKnowledgeArticleWorkflowRequest) returns (InspectKnowledgeArticleWorkflowResponse);
+
+  // Lists knowledge articles a page at a time.
+  rpc ListKnowledgeArticleWorkflows(ListKnowledgeArticleWorkflowsRequest) returns (ListKnowledgeArticleWorkflowsResponse);
+
+  // Signals a knowledge article.
+  rpc SignalKnowledgeArticleWorkflow(SignalKnowledgeArticleWorkflowRequest) returns (SignalKnowledgeArticleWorkflowResponse);
+}
+
+// The request of `StartKnowledgeArticleWorkflow`.
+message StartKnowledgeArticleWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  StartKnowledgeArticleWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartKnowledgeArticleWorkflow`.
+message StartKnowledgeArticleWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  StartKnowledgeArticleWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceKnowledgeArticleWorkflow`.
+message AdvanceKnowledgeArticleWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  AdvanceKnowledgeArticleWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceKnowledgeArticleWorkflow`.
+message AdvanceKnowledgeArticleWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  AdvanceKnowledgeArticleWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelKnowledgeArticleWorkflow`.
+message CancelKnowledgeArticleWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  CancelKnowledgeArticleWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelKnowledgeArticleWorkflow`.
+message CancelKnowledgeArticleWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  CancelKnowledgeArticleWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeKnowledgeArticleWorkflow`.
+message ResumeKnowledgeArticleWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  ResumeKnowledgeArticleWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeKnowledgeArticleWorkflow`.
+message ResumeKnowledgeArticleWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  ResumeKnowledgeArticleWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectKnowledgeArticleWorkflow`.
+message InspectKnowledgeArticleWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectKnowledgeArticleWorkflow`.
+message InspectKnowledgeArticleWorkflowResponse {
+  KnowledgeArticle knowledge_article = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListKnowledgeArticleWorkflows`.
+message ListKnowledgeArticleWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated KnowledgeArticleStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListKnowledgeArticleWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListKnowledgeArticleWorkflows`.
+message ListKnowledgeArticleWorkflowsResponse {
+  repeated KnowledgeArticle knowledge_articles = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalKnowledgeArticleWorkflow`.
+message SignalKnowledgeArticleWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string knowledge_article_id = 2;
+  KnowledgeArticle knowledge_article = 3;
+  SignalKnowledgeArticleWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalKnowledgeArticleWorkflow`.
+message SignalKnowledgeArticleWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  KnowledgeArticle knowledge_article = 1;
+  SignalKnowledgeArticleWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

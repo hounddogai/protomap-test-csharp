@@ -1,0 +1,284 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.documents.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/documents/v1/documents.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Documents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/documents/v1;documentsv1";
+option java_multiple_files = true;
+option java_outer_classname = "DocumentFolderSyncServiceProto";
+option java_package = "com.acme.documents.v1";
+
+// Keeps document folders in step with the systems of record in other regions.
+service DocumentFolderSyncService {
+  // Syncs a document folder.
+  rpc SyncDocumentFolders(SyncDocumentFoldersRequest) returns (SyncDocumentFoldersResponse);
+
+  // Pushs a document folder.
+  rpc PushDocumentFolder(PushDocumentFolderRequest) returns (PushDocumentFolderResponse);
+
+  // Pulls a document folder.
+  rpc PullDocumentFolders(PullDocumentFoldersRequest) returns (PullDocumentFoldersResponse);
+
+  // Reconciles a document folder.
+  rpc ReconcileDocumentFolders(ReconcileDocumentFoldersRequest) returns (ReconcileDocumentFoldersResponse);
+
+  // Exchanges changes of document folders with a peer.
+  rpc StreamDocumentFolderChanges(stream StreamDocumentFolderChangesRequest) returns (stream StreamDocumentFolderChangesResponse);
+
+  // Resolves a document folder.
+  rpc ResolveDocumentFolderConflict(ResolveDocumentFolderConflictRequest) returns (ResolveDocumentFolderConflictResponse);
+
+  // Returns a document folder.
+  rpc GetDocumentFolderSyncState(GetDocumentFolderSyncStateRequest) returns (GetDocumentFolderSyncStateResponse);
+
+  // Lists document folders a page at a time.
+  rpc ListDocumentFolderConflicts(ListDocumentFolderConflictsRequest) returns (ListDocumentFolderConflictsResponse);
+}
+
+// The request of `SyncDocumentFolders`.
+message SyncDocumentFoldersRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  DocumentFolder document_folder = 3;
+  SyncDocumentFoldersRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SyncDocumentFolders`.
+message SyncDocumentFoldersResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  SyncDocumentFoldersResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PushDocumentFolder`.
+message PushDocumentFolderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  DocumentFolder document_folder = 3;
+  PushDocumentFolderRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PushDocumentFolder`.
+message PushDocumentFolderResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  PushDocumentFolderResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PullDocumentFolders`.
+message PullDocumentFoldersRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  DocumentFolder document_folder = 3;
+  PullDocumentFoldersRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PullDocumentFolders`.
+message PullDocumentFoldersResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  PullDocumentFoldersResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReconcileDocumentFolders`.
+message ReconcileDocumentFoldersRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  DocumentFolder document_folder = 3;
+  ReconcileDocumentFoldersRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ReconcileDocumentFolders`.
+message ReconcileDocumentFoldersResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  ReconcileDocumentFoldersResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `StreamDocumentFolderChanges`.
+message StreamDocumentFolderChangesRequest {
+  // An acknowledgment of a change the peer sent.
+  message ChangeAck {
+    int64 sequence = 1;
+    string status = 2;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  oneof frame {
+    DocumentFolder change = 2;
+    StreamDocumentFolderChangesRequest.ChangeAck ack = 3;
+  }
+  string cursor = 4;
+}
+
+// The response of `StreamDocumentFolderChanges`.
+message StreamDocumentFolderChangesResponse {
+  DocumentFolder document_folder = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `ResolveDocumentFolderConflict`.
+message ResolveDocumentFolderConflictRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  DocumentFolder document_folder = 3;
+  ResolveDocumentFolderConflictRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResolveDocumentFolderConflict`.
+message ResolveDocumentFolderConflictResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  ResolveDocumentFolderConflictResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetDocumentFolderSyncState`.
+message GetDocumentFolderSyncStateRequest {
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetDocumentFolderSyncState`.
+message GetDocumentFolderSyncStateResponse {
+  DocumentFolder document_folder = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListDocumentFolderConflicts`.
+message ListDocumentFolderConflictsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DocumentFolderStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListDocumentFolderConflictsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListDocumentFolderConflicts`.
+message ListDocumentFolderConflictsResponse {
+  repeated DocumentFolder document_folders = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}

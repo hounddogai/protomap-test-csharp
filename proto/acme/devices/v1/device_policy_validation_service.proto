@@ -1,0 +1,268 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.devices.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/devices/v1/devices.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Devices.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/devices/v1;devicesv1";
+option java_multiple_files = true;
+option java_outer_classname = "DevicePolicyValidationServiceProto";
+option java_package = "com.acme.devices.v1";
+
+// Checks device policies against the rules before anything acts on them.
+service DevicePolicyValidationService {
+  // Validates a device policy.
+  rpc ValidateDevicePolicy(ValidateDevicePolicyRequest) returns (ValidateDevicePolicyResponse);
+
+  // Previews a device policy.
+  rpc PreviewDevicePolicy(PreviewDevicePolicyRequest) returns (PreviewDevicePolicyResponse);
+
+  // Normalizes a device policy.
+  rpc NormalizeDevicePolicy(NormalizeDevicePolicyRequest) returns (NormalizeDevicePolicyResponse);
+
+  // Explains a device policy.
+  rpc ExplainDevicePolicyDecision(ExplainDevicePolicyDecisionRequest) returns (ExplainDevicePolicyDecisionResponse);
+
+  // Scores a device policy.
+  rpc ScoreDevicePolicy(ScoreDevicePolicyRequest) returns (ScoreDevicePolicyResponse);
+
+  // Lints a device policy.
+  rpc LintDevicePolicies(LintDevicePoliciesRequest) returns (LintDevicePoliciesResponse);
+
+  // Returns a device policy.
+  rpc GetDevicePolicyRules(GetDevicePolicyRulesRequest) returns (GetDevicePolicyRulesResponse);
+}
+
+// The request of `ValidateDevicePolicy`.
+message ValidateDevicePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  DevicePolicy device_policy = 3;
+  ValidateDevicePolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateDevicePolicy`.
+message ValidateDevicePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DevicePolicy device_policy = 1;
+  ValidateDevicePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewDevicePolicy`.
+message PreviewDevicePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  DevicePolicy device_policy = 3;
+  PreviewDevicePolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewDevicePolicy`.
+message PreviewDevicePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DevicePolicy device_policy = 1;
+  PreviewDevicePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeDevicePolicy`.
+message NormalizeDevicePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  DevicePolicy device_policy = 3;
+  NormalizeDevicePolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeDevicePolicy`.
+message NormalizeDevicePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DevicePolicy device_policy = 1;
+  NormalizeDevicePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainDevicePolicyDecision`.
+message ExplainDevicePolicyDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  DevicePolicy device_policy = 3;
+  ExplainDevicePolicyDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainDevicePolicyDecision`.
+message ExplainDevicePolicyDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DevicePolicy device_policy = 1;
+  ExplainDevicePolicyDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreDevicePolicy`.
+message ScoreDevicePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  DevicePolicy device_policy = 3;
+  ScoreDevicePolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreDevicePolicy`.
+message ScoreDevicePolicyResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreDevicePolicyResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  DevicePolicy device_policy = 1;
+  ScoreDevicePolicyResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintDevicePolicies`.
+message LintDevicePoliciesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  DevicePolicy device_policy = 3;
+  LintDevicePoliciesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintDevicePolicies`.
+message LintDevicePoliciesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DevicePolicy device_policy = 1;
+  LintDevicePoliciesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetDevicePolicyRules`.
+message GetDevicePolicyRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetDevicePolicyRules`.
+message GetDevicePolicyRulesResponse {
+  DevicePolicy device_policy = 1;
+  acme.common.v1.OperationResult result = 2;
+}

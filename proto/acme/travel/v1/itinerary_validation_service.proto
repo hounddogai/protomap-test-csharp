@@ -1,0 +1,288 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.travel.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/travel/v1/travel.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Travel.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/travel/v1;travelv1";
+option java_multiple_files = true;
+option java_outer_classname = "ItineraryValidationServiceProto";
+option java_package = "com.acme.travel.v1";
+
+// Checks itineraries against the rules before anything acts on them.
+service ItineraryValidationService {
+  // Validates an itinerary.
+  rpc ValidateItinerary(ValidateItineraryRequest) returns (ValidateItineraryResponse);
+
+  // Previews an itinerary.
+  rpc PreviewItinerary(PreviewItineraryRequest) returns (PreviewItineraryResponse);
+
+  // Checks an itinerary.
+  rpc CheckItineraryEligibility(CheckItineraryEligibilityRequest) returns (CheckItineraryEligibilityResponse);
+
+  // Normalizes an itinerary.
+  rpc NormalizeItinerary(NormalizeItineraryRequest) returns (NormalizeItineraryResponse);
+
+  // Explains an itinerary.
+  rpc ExplainItineraryDecision(ExplainItineraryDecisionRequest) returns (ExplainItineraryDecisionResponse);
+
+  // Scores an itinerary.
+  rpc ScoreItinerary(ScoreItineraryRequest) returns (ScoreItineraryResponse);
+
+  // Lints an itinerary.
+  rpc LintItineraries(LintItinerariesRequest) returns (LintItinerariesResponse);
+}
+
+// The request of `ValidateItinerary`.
+message ValidateItineraryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  ValidateItineraryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateItinerary`.
+message ValidateItineraryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  ValidateItineraryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewItinerary`.
+message PreviewItineraryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  PreviewItineraryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewItinerary`.
+message PreviewItineraryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  PreviewItineraryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckItineraryEligibility`.
+message CheckItineraryEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  CheckItineraryEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckItineraryEligibility`.
+message CheckItineraryEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  CheckItineraryEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeItinerary`.
+message NormalizeItineraryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  NormalizeItineraryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeItinerary`.
+message NormalizeItineraryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  NormalizeItineraryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainItineraryDecision`.
+message ExplainItineraryDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  ExplainItineraryDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainItineraryDecision`.
+message ExplainItineraryDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  ExplainItineraryDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreItinerary`.
+message ScoreItineraryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  ScoreItineraryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreItinerary`.
+message ScoreItineraryResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreItineraryResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Itinerary itinerary = 1;
+  ScoreItineraryResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintItineraries`.
+message LintItinerariesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  LintItinerariesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintItineraries`.
+message LintItinerariesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  LintItinerariesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

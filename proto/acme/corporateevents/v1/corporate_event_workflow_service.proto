@@ -1,0 +1,267 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.corporateevents.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/corporateevents/v1/corporateevents.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Corporateevents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/corporateevents/v1;corporateeventsv1";
+option java_multiple_files = true;
+option java_outer_classname = "CorporateEventWorkflowServiceProto";
+option java_package = "com.acme.corporateevents.v1";
+
+// Runs the long-lived workflow that takes a corporate event from start to finish.
+service CorporateEventWorkflowService {
+  // Starts a corporate event.
+  rpc StartCorporateEventWorkflow(StartCorporateEventWorkflowRequest) returns (StartCorporateEventWorkflowResponse);
+
+  // Advances a corporate event.
+  rpc AdvanceCorporateEventWorkflow(AdvanceCorporateEventWorkflowRequest) returns (AdvanceCorporateEventWorkflowResponse);
+
+  // Cancels a corporate event.
+  rpc CancelCorporateEventWorkflow(CancelCorporateEventWorkflowRequest) returns (CancelCorporateEventWorkflowResponse);
+
+  // Retrys a corporate event.
+  rpc RetryCorporateEventWorkflow(RetryCorporateEventWorkflowRequest) returns (RetryCorporateEventWorkflowResponse);
+
+  // Pauses a corporate event.
+  rpc PauseCorporateEventWorkflow(PauseCorporateEventWorkflowRequest) returns (PauseCorporateEventWorkflowResponse);
+
+  // Resumes a corporate event.
+  rpc ResumeCorporateEventWorkflow(ResumeCorporateEventWorkflowRequest) returns (ResumeCorporateEventWorkflowResponse);
+
+  // Returns a corporate event.
+  rpc InspectCorporateEventWorkflow(InspectCorporateEventWorkflowRequest) returns (InspectCorporateEventWorkflowResponse);
+}
+
+// The request of `StartCorporateEventWorkflow`.
+message StartCorporateEventWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string corporate_event_id = 2;
+  CorporateEvent corporate_event = 3;
+  StartCorporateEventWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartCorporateEventWorkflow`.
+message StartCorporateEventWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CorporateEvent corporate_event = 1;
+  StartCorporateEventWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceCorporateEventWorkflow`.
+message AdvanceCorporateEventWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string corporate_event_id = 2;
+  CorporateEvent corporate_event = 3;
+  AdvanceCorporateEventWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceCorporateEventWorkflow`.
+message AdvanceCorporateEventWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CorporateEvent corporate_event = 1;
+  AdvanceCorporateEventWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelCorporateEventWorkflow`.
+message CancelCorporateEventWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string corporate_event_id = 2;
+  CorporateEvent corporate_event = 3;
+  CancelCorporateEventWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelCorporateEventWorkflow`.
+message CancelCorporateEventWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CorporateEvent corporate_event = 1;
+  CancelCorporateEventWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryCorporateEventWorkflow`.
+message RetryCorporateEventWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string corporate_event_id = 2;
+  CorporateEvent corporate_event = 3;
+  RetryCorporateEventWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryCorporateEventWorkflow`.
+message RetryCorporateEventWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CorporateEvent corporate_event = 1;
+  RetryCorporateEventWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseCorporateEventWorkflow`.
+message PauseCorporateEventWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string corporate_event_id = 2;
+  CorporateEvent corporate_event = 3;
+  PauseCorporateEventWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseCorporateEventWorkflow`.
+message PauseCorporateEventWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CorporateEvent corporate_event = 1;
+  PauseCorporateEventWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeCorporateEventWorkflow`.
+message ResumeCorporateEventWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string corporate_event_id = 2;
+  CorporateEvent corporate_event = 3;
+  ResumeCorporateEventWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeCorporateEventWorkflow`.
+message ResumeCorporateEventWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CorporateEvent corporate_event = 1;
+  ResumeCorporateEventWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectCorporateEventWorkflow`.
+message InspectCorporateEventWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string corporate_event_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectCorporateEventWorkflow`.
+message InspectCorporateEventWorkflowResponse {
+  CorporateEvent corporate_event = 1;
+  acme.common.v1.OperationResult result = 2;
+}

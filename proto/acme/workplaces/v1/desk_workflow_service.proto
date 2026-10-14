@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.workplaces.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/workplaces/v1/workplaces.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Workplaces.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/workplaces/v1;workplacesv1";
+option java_multiple_files = true;
+option java_outer_classname = "DeskWorkflowServiceProto";
+option java_package = "com.acme.workplaces.v1";
+
+// Runs the long-lived workflow that takes a desk from start to finish.
+service DeskWorkflowService {
+  // Starts a desk.
+  rpc StartDeskWorkflow(StartDeskWorkflowRequest) returns (StartDeskWorkflowResponse);
+
+  // Advances a desk.
+  rpc AdvanceDeskWorkflow(AdvanceDeskWorkflowRequest) returns (AdvanceDeskWorkflowResponse);
+
+  // Cancels a desk.
+  rpc CancelDeskWorkflow(CancelDeskWorkflowRequest) returns (CancelDeskWorkflowResponse);
+
+  // Retrys a desk.
+  rpc RetryDeskWorkflow(RetryDeskWorkflowRequest) returns (RetryDeskWorkflowResponse);
+
+  // Pauses a desk.
+  rpc PauseDeskWorkflow(PauseDeskWorkflowRequest) returns (PauseDeskWorkflowResponse);
+
+  // Resumes a desk.
+  rpc ResumeDeskWorkflow(ResumeDeskWorkflowRequest) returns (ResumeDeskWorkflowResponse);
+
+  // Returns a desk.
+  rpc InspectDeskWorkflow(InspectDeskWorkflowRequest) returns (InspectDeskWorkflowResponse);
+
+  // Lists desks a page at a time.
+  rpc ListDeskWorkflows(ListDeskWorkflowsRequest) returns (ListDeskWorkflowsResponse);
+
+  // Signals a desk.
+  rpc SignalDeskWorkflow(SignalDeskWorkflowRequest) returns (SignalDeskWorkflowResponse);
+}
+
+// The request of `StartDeskWorkflow`.
+message StartDeskWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string desk_id = 2;
+  Desk desk = 3;
+  StartDeskWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartDeskWorkflow`.
+message StartDeskWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Desk desk = 1;
+  StartDeskWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceDeskWorkflow`.
+message AdvanceDeskWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string desk_id = 2;
+  Desk desk = 3;
+  AdvanceDeskWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceDeskWorkflow`.
+message AdvanceDeskWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Desk desk = 1;
+  AdvanceDeskWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelDeskWorkflow`.
+message CancelDeskWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string desk_id = 2;
+  Desk desk = 3;
+  CancelDeskWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelDeskWorkflow`.
+message CancelDeskWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Desk desk = 1;
+  CancelDeskWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryDeskWorkflow`.
+message RetryDeskWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string desk_id = 2;
+  Desk desk = 3;
+  RetryDeskWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryDeskWorkflow`.
+message RetryDeskWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Desk desk = 1;
+  RetryDeskWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseDeskWorkflow`.
+message PauseDeskWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string desk_id = 2;
+  Desk desk = 3;
+  PauseDeskWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseDeskWorkflow`.
+message PauseDeskWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Desk desk = 1;
+  PauseDeskWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeDeskWorkflow`.
+message ResumeDeskWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string desk_id = 2;
+  Desk desk = 3;
+  ResumeDeskWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeDeskWorkflow`.
+message ResumeDeskWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Desk desk = 1;
+  ResumeDeskWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectDeskWorkflow`.
+message InspectDeskWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string desk_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectDeskWorkflow`.
+message InspectDeskWorkflowResponse {
+  Desk desk = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListDeskWorkflows`.
+message ListDeskWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DeskStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListDeskWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListDeskWorkflows`.
+message ListDeskWorkflowsResponse {
+  repeated Desk desks = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalDeskWorkflow`.
+message SignalDeskWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string desk_id = 2;
+  Desk desk = 3;
+  SignalDeskWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalDeskWorkflow`.
+message SignalDeskWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Desk desk = 1;
+  SignalDeskWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

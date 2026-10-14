@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.scheduling.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/scheduling/v1/scheduling.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Scheduling.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/scheduling/v1;schedulingv1";
+option java_multiple_files = true;
+option java_outer_classname = "RosterValidationServiceProto";
+option java_package = "com.acme.scheduling.v1";
+
+// Checks rosters against the rules before anything acts on them.
+service RosterValidationService {
+  // Validates a roster.
+  rpc ValidateRoster(ValidateRosterRequest) returns (ValidateRosterResponse);
+
+  // Previews a roster.
+  rpc PreviewRoster(PreviewRosterRequest) returns (PreviewRosterResponse);
+
+  // Checks a roster.
+  rpc CheckRosterEligibility(CheckRosterEligibilityRequest) returns (CheckRosterEligibilityResponse);
+
+  // Normalizes a roster.
+  rpc NormalizeRoster(NormalizeRosterRequest) returns (NormalizeRosterResponse);
+
+  // Explains a roster.
+  rpc ExplainRosterDecision(ExplainRosterDecisionRequest) returns (ExplainRosterDecisionResponse);
+
+  // Scores a roster.
+  rpc ScoreRoster(ScoreRosterRequest) returns (ScoreRosterResponse);
+
+  // Lints a roster.
+  rpc LintRosters(LintRostersRequest) returns (LintRostersResponse);
+
+  // Returns a roster.
+  rpc GetRosterRules(GetRosterRulesRequest) returns (GetRosterRulesResponse);
+}
+
+// The request of `ValidateRoster`.
+message ValidateRosterRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  ValidateRosterRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateRoster`.
+message ValidateRosterResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Roster roster = 1;
+  ValidateRosterResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewRoster`.
+message PreviewRosterRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  PreviewRosterRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewRoster`.
+message PreviewRosterResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Roster roster = 1;
+  PreviewRosterResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckRosterEligibility`.
+message CheckRosterEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  CheckRosterEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckRosterEligibility`.
+message CheckRosterEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Roster roster = 1;
+  CheckRosterEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeRoster`.
+message NormalizeRosterRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  NormalizeRosterRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeRoster`.
+message NormalizeRosterResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Roster roster = 1;
+  NormalizeRosterResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainRosterDecision`.
+message ExplainRosterDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  ExplainRosterDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainRosterDecision`.
+message ExplainRosterDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Roster roster = 1;
+  ExplainRosterDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreRoster`.
+message ScoreRosterRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  ScoreRosterRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreRoster`.
+message ScoreRosterResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreRosterResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Roster roster = 1;
+  ScoreRosterResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintRosters`.
+message LintRostersRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  LintRostersRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintRosters`.
+message LintRostersResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Roster roster = 1;
+  LintRostersResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetRosterRules`.
+message GetRosterRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetRosterRules`.
+message GetRosterRulesResponse {
+  Roster roster = 1;
+  acme.common.v1.OperationResult result = 2;
+}

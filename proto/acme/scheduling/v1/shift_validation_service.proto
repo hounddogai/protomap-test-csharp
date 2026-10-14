@@ -1,0 +1,288 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.scheduling.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/scheduling/v1/scheduling.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Scheduling.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/scheduling/v1;schedulingv1";
+option java_multiple_files = true;
+option java_outer_classname = "ShiftValidationServiceProto";
+option java_package = "com.acme.scheduling.v1";
+
+// Checks shifts against the rules before anything acts on them.
+service ShiftValidationService {
+  // Validates a shift.
+  rpc ValidateShift(ValidateShiftRequest) returns (ValidateShiftResponse);
+
+  // Previews a shift.
+  rpc PreviewShift(PreviewShiftRequest) returns (PreviewShiftResponse);
+
+  // Checks a shift.
+  rpc CheckShiftEligibility(CheckShiftEligibilityRequest) returns (CheckShiftEligibilityResponse);
+
+  // Normalizes a shift.
+  rpc NormalizeShift(NormalizeShiftRequest) returns (NormalizeShiftResponse);
+
+  // Explains a shift.
+  rpc ExplainShiftDecision(ExplainShiftDecisionRequest) returns (ExplainShiftDecisionResponse);
+
+  // Scores a shift.
+  rpc ScoreShift(ScoreShiftRequest) returns (ScoreShiftResponse);
+
+  // Lints a shift.
+  rpc LintShifts(LintShiftsRequest) returns (LintShiftsResponse);
+}
+
+// The request of `ValidateShift`.
+message ValidateShiftRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  Shift shift = 3;
+  ValidateShiftRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateShift`.
+message ValidateShiftResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Shift shift = 1;
+  ValidateShiftResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewShift`.
+message PreviewShiftRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  Shift shift = 3;
+  PreviewShiftRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewShift`.
+message PreviewShiftResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Shift shift = 1;
+  PreviewShiftResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckShiftEligibility`.
+message CheckShiftEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  Shift shift = 3;
+  CheckShiftEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckShiftEligibility`.
+message CheckShiftEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Shift shift = 1;
+  CheckShiftEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeShift`.
+message NormalizeShiftRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  Shift shift = 3;
+  NormalizeShiftRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeShift`.
+message NormalizeShiftResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Shift shift = 1;
+  NormalizeShiftResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainShiftDecision`.
+message ExplainShiftDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  Shift shift = 3;
+  ExplainShiftDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainShiftDecision`.
+message ExplainShiftDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Shift shift = 1;
+  ExplainShiftDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreShift`.
+message ScoreShiftRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  Shift shift = 3;
+  ScoreShiftRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreShift`.
+message ScoreShiftResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreShiftResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Shift shift = 1;
+  ScoreShiftResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintShifts`.
+message LintShiftsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string shift_id = 2;
+  Shift shift = 3;
+  LintShiftsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintShifts`.
+message LintShiftsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Shift shift = 1;
+  LintShiftsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

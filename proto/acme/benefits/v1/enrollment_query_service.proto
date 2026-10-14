@@ -1,0 +1,245 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.benefits.v1;
+
+import "acme/benefits/v1/benefits.proto";
+import "acme/common/v1/audit.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Benefits.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/benefits/v1;benefitsv1";
+option java_multiple_files = true;
+option java_outer_classname = "EnrollmentQueryServiceProto";
+option java_package = "com.acme.benefits.v1";
+
+// Answers read-only questions about enrollments, for screens and reports.
+service EnrollmentQueryService {
+  // Returns an enrollment.
+  rpc LookupEnrollment(LookupEnrollmentRequest) returns (LookupEnrollmentResponse);
+
+  // Lists enrollments a page at a time.
+  rpc BrowseEnrollments(BrowseEnrollmentsRequest) returns (BrowseEnrollmentsResponse);
+
+  // Lists enrollments a page at a time.
+  rpc FindEnrollments(FindEnrollmentsRequest) returns (FindEnrollmentsResponse);
+
+  // Counts enrollments by status.
+  rpc CountEnrollments(CountEnrollmentsRequest) returns (CountEnrollmentsResponse);
+
+  // Returns several enrollments at once.
+  rpc ResolveEnrollments(ResolveEnrollmentsRequest) returns (ResolveEnrollmentsResponse);
+
+  // Streams every matching enrollment.
+  rpc ExportEnrollments(ExportEnrollmentsRequest) returns (stream ExportEnrollmentsResponse);
+
+  // Summarizes an enrollment.
+  rpc SummarizeEnrollments(SummarizeEnrollmentsRequest) returns (SummarizeEnrollmentsResponse);
+
+  // Lists enrollments a page at a time.
+  rpc SuggestEnrollments(SuggestEnrollmentsRequest) returns (SuggestEnrollmentsResponse);
+
+  // Returns an enrollment.
+  rpc PeekEnrollment(PeekEnrollmentRequest) returns (PeekEnrollmentResponse);
+}
+
+// The request of `LookupEnrollment`.
+message LookupEnrollmentRequest {
+  acme.common.v1.RequestContext context = 1;
+  string enrollment_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `LookupEnrollment`.
+message LookupEnrollmentResponse {
+  Enrollment enrollment = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `BrowseEnrollments`.
+message BrowseEnrollmentsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EnrollmentStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  BrowseEnrollmentsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `BrowseEnrollments`.
+message BrowseEnrollmentsResponse {
+  repeated Enrollment enrollments = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `FindEnrollments`.
+message FindEnrollmentsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EnrollmentStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  FindEnrollmentsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `FindEnrollments`.
+message FindEnrollmentsResponse {
+  repeated Enrollment enrollments = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CountEnrollments`.
+message CountEnrollmentsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EnrollmentStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  CountEnrollmentsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `CountEnrollments`.
+message CountEnrollmentsResponse {
+  int64 count = 1;
+  map<string, int64> by_status = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResolveEnrollments`.
+message ResolveEnrollmentsRequest {
+  acme.common.v1.RequestContext context = 1;
+  repeated string enrollment_ids = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `ResolveEnrollments`.
+message ResolveEnrollmentsResponse {
+  repeated Enrollment enrollments = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExportEnrollments`.
+message ExportEnrollmentsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EnrollmentStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  ExportEnrollmentsRequest.Filter filter = 2;
+  string format = 3;
+  google.protobuf.FieldMask fields = 4;
+  string destination_uri = 5;
+}
+
+// The response of `ExportEnrollments`.
+message ExportEnrollmentsResponse {
+  Enrollment enrollment = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SummarizeEnrollments`.
+message SummarizeEnrollmentsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string enrollment_id = 2;
+  SummarizeEnrollmentsRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SummarizeEnrollments`.
+message SummarizeEnrollmentsResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SuggestEnrollments`.
+message SuggestEnrollmentsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EnrollmentStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SuggestEnrollmentsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SuggestEnrollments`.
+message SuggestEnrollmentsResponse {
+  repeated Enrollment enrollments = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PeekEnrollment`.
+message PeekEnrollmentRequest {
+  acme.common.v1.RequestContext context = 1;
+  string enrollment_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `PeekEnrollment`.
+message PeekEnrollmentResponse {
+  Enrollment enrollment = 1;
+  acme.common.v1.OperationResult result = 2;
+}

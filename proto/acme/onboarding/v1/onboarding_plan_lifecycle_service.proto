@@ -1,0 +1,294 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.onboarding.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/onboarding/v1/onboarding.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Onboarding.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/onboarding/v1;onboardingv1";
+option java_multiple_files = true;
+option java_outer_classname = "OnboardingPlanLifecycleServiceProto";
+option java_package = "com.acme.onboarding.v1";
+
+// Moves an onboarding plan between the states of its lifecycle.
+service OnboardingPlanLifecycleService {
+  // Activates an onboarding plan.
+  rpc ActivateOnboardingPlan(ActivateOnboardingPlanRequest) returns (ActivateOnboardingPlanResponse);
+
+  // Suspends an onboarding plan.
+  rpc SuspendOnboardingPlan(SuspendOnboardingPlanRequest) returns (SuspendOnboardingPlanResponse);
+
+  // Reinstates an onboarding plan.
+  rpc ReinstateOnboardingPlan(ReinstateOnboardingPlanRequest) returns (ReinstateOnboardingPlanResponse);
+
+  // Terminates an onboarding plan.
+  rpc TerminateOnboardingPlan(TerminateOnboardingPlanRequest) returns (TerminateOnboardingPlanResponse);
+
+  // Renews an onboarding plan.
+  rpc RenewOnboardingPlan(RenewOnboardingPlanRequest) returns (RenewOnboardingPlanResponse);
+
+  // Expires an onboarding plan.
+  rpc ExpireOnboardingPlan(ExpireOnboardingPlanRequest) returns (ExpireOnboardingPlanResponse);
+
+  // Returns an onboarding plan.
+  rpc GetOnboardingPlanLifecycle(GetOnboardingPlanLifecycleRequest) returns (GetOnboardingPlanLifecycleResponse);
+
+  // Schedules an onboarding plan.
+  rpc ScheduleOnboardingPlanExpiry(ScheduleOnboardingPlanExpiryRequest) returns (ScheduleOnboardingPlanExpiryResponse);
+}
+
+// The request of `ActivateOnboardingPlan`.
+message ActivateOnboardingPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  ActivateOnboardingPlanRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateOnboardingPlan`.
+message ActivateOnboardingPlanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  ActivateOnboardingPlanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendOnboardingPlan`.
+message SuspendOnboardingPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  SuspendOnboardingPlanRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendOnboardingPlan`.
+message SuspendOnboardingPlanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  SuspendOnboardingPlanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateOnboardingPlan`.
+message ReinstateOnboardingPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  ReinstateOnboardingPlanRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateOnboardingPlan`.
+message ReinstateOnboardingPlanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  ReinstateOnboardingPlanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateOnboardingPlan`.
+message TerminateOnboardingPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  TerminateOnboardingPlanRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateOnboardingPlan`.
+message TerminateOnboardingPlanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  TerminateOnboardingPlanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewOnboardingPlan`.
+message RenewOnboardingPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  RenewOnboardingPlanRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewOnboardingPlan`.
+message RenewOnboardingPlanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  RenewOnboardingPlanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireOnboardingPlan`.
+message ExpireOnboardingPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  ExpireOnboardingPlanRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireOnboardingPlan`.
+message ExpireOnboardingPlanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  ExpireOnboardingPlanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetOnboardingPlanLifecycle`.
+message GetOnboardingPlanLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetOnboardingPlanLifecycle`.
+message GetOnboardingPlanLifecycleResponse {
+  OnboardingPlan onboarding_plan = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleOnboardingPlanExpiry`.
+message ScheduleOnboardingPlanExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  OnboardingPlan onboarding_plan = 3;
+  ScheduleOnboardingPlanExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleOnboardingPlanExpiry`.
+message ScheduleOnboardingPlanExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  ScheduleOnboardingPlanExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

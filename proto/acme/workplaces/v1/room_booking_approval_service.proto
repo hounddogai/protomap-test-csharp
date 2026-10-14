@@ -1,0 +1,295 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.workplaces.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/workplaces/v1/workplaces.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Workplaces.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/workplaces/v1;workplacesv1";
+option java_multiple_files = true;
+option java_outer_classname = "RoomBookingApprovalServiceProto";
+option java_package = "com.acme.workplaces.v1";
+
+// Routes room bookings through approval, with escalation and delegation.
+service RoomBookingApprovalService {
+  // Submits a room booking.
+  rpc SubmitRoomBooking(SubmitRoomBookingRequest) returns (SubmitRoomBookingResponse);
+
+  // Approves a room booking.
+  rpc ApproveRoomBooking(ApproveRoomBookingRequest) returns (ApproveRoomBookingResponse);
+
+  // Escalates a room booking.
+  rpc EscalateRoomBooking(EscalateRoomBookingRequest) returns (EscalateRoomBookingResponse);
+
+  // Lists room bookings a page at a time.
+  rpc ListPendingRoomBookings(ListPendingRoomBookingsRequest) returns (ListPendingRoomBookingsResponse);
+
+  // Delegates a room booking.
+  rpc DelegateRoomBookingApproval(DelegateRoomBookingApprovalRequest) returns (DelegateRoomBookingApprovalResponse);
+
+  // Recalls a room booking.
+  rpc RecallRoomBooking(RecallRoomBookingRequest) returns (RecallRoomBookingResponse);
+
+  // Returns a room booking.
+  rpc GetRoomBookingApprovalStatus(GetRoomBookingApprovalStatusRequest) returns (GetRoomBookingApprovalStatusResponse);
+
+  // Comments a room booking.
+  rpc CommentRoomBookingApproval(CommentRoomBookingApprovalRequest) returns (CommentRoomBookingApprovalResponse);
+}
+
+// The request of `SubmitRoomBooking`.
+message SubmitRoomBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  RoomBooking room_booking = 3;
+  SubmitRoomBookingRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitRoomBooking`.
+message SubmitRoomBookingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  SubmitRoomBookingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveRoomBooking`.
+message ApproveRoomBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  RoomBooking room_booking = 3;
+  ApproveRoomBookingRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveRoomBooking`.
+message ApproveRoomBookingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  ApproveRoomBookingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateRoomBooking`.
+message EscalateRoomBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  RoomBooking room_booking = 3;
+  EscalateRoomBookingRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateRoomBooking`.
+message EscalateRoomBookingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  EscalateRoomBookingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingRoomBookings`.
+message ListPendingRoomBookingsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated RoomBookingStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingRoomBookingsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingRoomBookings`.
+message ListPendingRoomBookingsResponse {
+  repeated RoomBooking room_bookings = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateRoomBookingApproval`.
+message DelegateRoomBookingApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  RoomBooking room_booking = 3;
+  DelegateRoomBookingApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateRoomBookingApproval`.
+message DelegateRoomBookingApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  DelegateRoomBookingApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallRoomBooking`.
+message RecallRoomBookingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  RoomBooking room_booking = 3;
+  RecallRoomBookingRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallRoomBooking`.
+message RecallRoomBookingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  RecallRoomBookingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetRoomBookingApprovalStatus`.
+message GetRoomBookingApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetRoomBookingApprovalStatus`.
+message GetRoomBookingApprovalStatusResponse {
+  RoomBooking room_booking = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentRoomBookingApproval`.
+message CommentRoomBookingApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string room_booking_id = 2;
+  RoomBooking room_booking = 3;
+  CommentRoomBookingApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentRoomBookingApproval`.
+message CommentRoomBookingApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  RoomBooking room_booking = 1;
+  CommentRoomBookingApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

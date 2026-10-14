@@ -1,0 +1,203 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.invoicing.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/invoicing/v1/invoicing.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Invoicing.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/invoicing/v1;invoicingv1";
+option java_multiple_files = true;
+option java_outer_classname = "InvoiceBatchServiceProto";
+option java_package = "com.acme.invoicing.v1";
+
+// Manages invoice batches: creates, reads, changes, and lists them.
+service InvoiceBatchService {
+  // Creates an invoice batch.
+  rpc CreateInvoiceBatch(CreateInvoiceBatchRequest) returns (CreateInvoiceBatchResponse);
+
+  // Returns an invoice batch.
+  rpc GetInvoiceBatch(GetInvoiceBatchRequest) returns (GetInvoiceBatchResponse);
+
+  // Changes an invoice batch.
+  rpc UpdateInvoiceBatch(UpdateInvoiceBatchRequest) returns (UpdateInvoiceBatchResponse);
+
+  // Deletes an invoice batch.
+  rpc DeleteInvoiceBatch(DeleteInvoiceBatchRequest) returns (DeleteInvoiceBatchResponse);
+
+  // Lists invoice batches a page at a time.
+  rpc ListInvoiceBatches(ListInvoiceBatchesRequest) returns (ListInvoiceBatchesResponse);
+
+  // Streams the changes of invoice batches as they happen.
+  rpc WatchInvoiceBatches(WatchInvoiceBatchesRequest) returns (stream WatchInvoiceBatchesResponse);
+
+  // Takes a stream of invoice batches and answers once at the end.
+  rpc BatchCreateInvoiceBatches(stream BatchCreateInvoiceBatchesRequest) returns (BatchCreateInvoiceBatchesResponse);
+
+  // Creates an invoice batch.
+  rpc CloneInvoiceBatch(CloneInvoiceBatchRequest) returns (CloneInvoiceBatchResponse);
+}
+
+// The request of `CreateInvoiceBatch`.
+message CreateInvoiceBatchRequest {
+  acme.common.v1.RequestContext context = 1;
+  InvoiceBatch invoice_batch = 2;
+  string request_id = 3;
+  bool validate_only = 4;
+}
+
+// The response of `CreateInvoiceBatch`.
+message CreateInvoiceBatchResponse {
+  InvoiceBatch invoice_batch = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `GetInvoiceBatch`.
+message GetInvoiceBatchRequest {
+  acme.common.v1.RequestContext context = 1;
+  string invoice_batch_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetInvoiceBatch`.
+message GetInvoiceBatchResponse {
+  InvoiceBatch invoice_batch = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `UpdateInvoiceBatch`.
+message UpdateInvoiceBatchRequest {
+  acme.common.v1.RequestContext context = 1;
+  InvoiceBatch invoice_batch = 2;
+  google.protobuf.FieldMask update_mask = 3;
+  bool allow_missing = 4;
+}
+
+// The response of `UpdateInvoiceBatch`.
+message UpdateInvoiceBatchResponse {
+  InvoiceBatch invoice_batch = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `DeleteInvoiceBatch`.
+message DeleteInvoiceBatchRequest {
+  acme.common.v1.RequestContext context = 1;
+  string invoice_batch_id = 2;
+  string reason = 3;
+  string etag = 4;
+  bool force = 5;
+}
+
+// The response of `DeleteInvoiceBatch`.
+message DeleteInvoiceBatchResponse {
+  acme.common.v1.OperationResult result = 1;
+  google.protobuf.Timestamp effective_at = 2;
+}
+
+// The request of `ListInvoiceBatches`.
+message ListInvoiceBatchesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated InvoiceBatchStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListInvoiceBatchesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListInvoiceBatches`.
+message ListInvoiceBatchesResponse {
+  repeated InvoiceBatch invoice_batches = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `WatchInvoiceBatches`.
+message WatchInvoiceBatchesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated InvoiceBatchStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  WatchInvoiceBatchesRequest.Filter filter = 2;
+  google.protobuf.Timestamp since = 3;
+  int32 max_events = 4;
+  acme.common.v1.ContactInfo subscriber = 5;
+}
+
+// The response of `WatchInvoiceBatches`.
+message WatchInvoiceBatchesResponse {
+  InvoiceBatch invoice_batch = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `BatchCreateInvoiceBatches`.
+message BatchCreateInvoiceBatchesRequest {
+  // What a stream of records starts with.
+  message StreamHeader {
+    string source = 1;
+    string format = 2;
+    int64 total_records = 3;
+    acme.common.v1.ContactInfo submitted_by = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  oneof chunk {
+    BatchCreateInvoiceBatchesRequest.StreamHeader header = 2;
+    InvoiceBatch record = 3;
+  }
+  int64 sequence = 4;
+}
+
+// The response of `BatchCreateInvoiceBatches`.
+message BatchCreateInvoiceBatchesResponse {
+  // A record the import turned down.
+  message Rejection {
+    int64 sequence = 1;
+    string reason = 2;
+    string invoice_batch_id = 3;
+  }
+
+  int64 accepted = 1;
+  int64 rejected = 2;
+  repeated BatchCreateInvoiceBatchesResponse.Rejection rejections = 3;
+  acme.common.v1.OperationResult result = 4;
+}
+
+// The request of `CloneInvoiceBatch`.
+message CloneInvoiceBatchRequest {
+  acme.common.v1.RequestContext context = 1;
+  InvoiceBatch invoice_batch = 2;
+  string request_id = 3;
+  bool validate_only = 4;
+}
+
+// The response of `CloneInvoiceBatch`.
+message CloneInvoiceBatchResponse {
+  InvoiceBatch invoice_batch = 1;
+  acme.common.v1.OperationResult result = 2;
+}

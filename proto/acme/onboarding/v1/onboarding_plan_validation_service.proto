@@ -1,0 +1,268 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.onboarding.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/onboarding/v1/onboarding.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Onboarding.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/onboarding/v1;onboardingv1";
+option java_multiple_files = true;
+option java_outer_classname = "OnboardingPlanValidationServiceProto";
+option java_package = "com.acme.onboarding.v1";
+
+// Checks onboarding plans against the rules before anything acts on them.
+service OnboardingPlanValidationService {
+  // Validates an onboarding plan.
+  rpc ValidateOnboardingPlan(ValidateOnboardingPlanRequest) returns (ValidateOnboardingPlanResponse);
+
+  // Previews an onboarding plan.
+  rpc PreviewOnboardingPlan(PreviewOnboardingPlanRequest) returns (PreviewOnboardingPlanResponse);
+
+  // Checks an onboarding plan.
+  rpc CheckOnboardingPlanEligibility(CheckOnboardingPlanEligibilityRequest) returns (CheckOnboardingPlanEligibilityResponse);
+
+  // Normalizes an onboarding plan.
+  rpc NormalizeOnboardingPlan(NormalizeOnboardingPlanRequest) returns (NormalizeOnboardingPlanResponse);
+
+  // Explains an onboarding plan.
+  rpc ExplainOnboardingPlanDecision(ExplainOnboardingPlanDecisionRequest) returns (ExplainOnboardingPlanDecisionResponse);
+
+  // Scores an onboarding plan.
+  rpc ScoreOnboardingPlan(ScoreOnboardingPlanRequest) returns (ScoreOnboardingPlanResponse);
+
+  // Returns an onboarding plan.
+  rpc GetOnboardingPlanRules(GetOnboardingPlanRulesRequest) returns (GetOnboardingPlanRulesResponse);
+}
+
+// The request of `ValidateOnboardingPlan`.
+message ValidateOnboardingPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  OnboardingPlan onboarding_plan = 3;
+  ValidateOnboardingPlanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateOnboardingPlan`.
+message ValidateOnboardingPlanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  ValidateOnboardingPlanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewOnboardingPlan`.
+message PreviewOnboardingPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  OnboardingPlan onboarding_plan = 3;
+  PreviewOnboardingPlanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewOnboardingPlan`.
+message PreviewOnboardingPlanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  PreviewOnboardingPlanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckOnboardingPlanEligibility`.
+message CheckOnboardingPlanEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  OnboardingPlan onboarding_plan = 3;
+  CheckOnboardingPlanEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckOnboardingPlanEligibility`.
+message CheckOnboardingPlanEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  CheckOnboardingPlanEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeOnboardingPlan`.
+message NormalizeOnboardingPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  OnboardingPlan onboarding_plan = 3;
+  NormalizeOnboardingPlanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeOnboardingPlan`.
+message NormalizeOnboardingPlanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  NormalizeOnboardingPlanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainOnboardingPlanDecision`.
+message ExplainOnboardingPlanDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  OnboardingPlan onboarding_plan = 3;
+  ExplainOnboardingPlanDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainOnboardingPlanDecision`.
+message ExplainOnboardingPlanDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  ExplainOnboardingPlanDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreOnboardingPlan`.
+message ScoreOnboardingPlanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  OnboardingPlan onboarding_plan = 3;
+  ScoreOnboardingPlanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreOnboardingPlan`.
+message ScoreOnboardingPlanResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreOnboardingPlanResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  OnboardingPlan onboarding_plan = 1;
+  ScoreOnboardingPlanResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetOnboardingPlanRules`.
+message GetOnboardingPlanRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_plan_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetOnboardingPlanRules`.
+message GetOnboardingPlanRulesResponse {
+  OnboardingPlan onboarding_plan = 1;
+  acme.common.v1.OperationResult result = 2;
+}

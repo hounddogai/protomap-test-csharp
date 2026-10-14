@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.scheduling.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/scheduling/v1/scheduling.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Scheduling.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/scheduling/v1;schedulingv1";
+option java_multiple_files = true;
+option java_outer_classname = "RosterApprovalServiceProto";
+option java_package = "com.acme.scheduling.v1";
+
+// Routes rosters through approval, with escalation and delegation.
+service RosterApprovalService {
+  // Submits a roster.
+  rpc SubmitRoster(SubmitRosterRequest) returns (SubmitRosterResponse);
+
+  // Approves a roster.
+  rpc ApproveRoster(ApproveRosterRequest) returns (ApproveRosterResponse);
+
+  // Rejects a roster.
+  rpc RejectRoster(RejectRosterRequest) returns (RejectRosterResponse);
+
+  // Escalates a roster.
+  rpc EscalateRoster(EscalateRosterRequest) returns (EscalateRosterResponse);
+
+  // Lists rosters a page at a time.
+  rpc ListPendingRosters(ListPendingRostersRequest) returns (ListPendingRostersResponse);
+
+  // Delegates a roster.
+  rpc DelegateRosterApproval(DelegateRosterApprovalRequest) returns (DelegateRosterApprovalResponse);
+
+  // Recalls a roster.
+  rpc RecallRoster(RecallRosterRequest) returns (RecallRosterResponse);
+
+  // Returns a roster.
+  rpc GetRosterApprovalStatus(GetRosterApprovalStatusRequest) returns (GetRosterApprovalStatusResponse);
+
+  // Comments a roster.
+  rpc CommentRosterApproval(CommentRosterApprovalRequest) returns (CommentRosterApprovalResponse);
+}
+
+// The request of `SubmitRoster`.
+message SubmitRosterRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  SubmitRosterRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitRoster`.
+message SubmitRosterResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Roster roster = 1;
+  SubmitRosterResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveRoster`.
+message ApproveRosterRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  ApproveRosterRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveRoster`.
+message ApproveRosterResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Roster roster = 1;
+  ApproveRosterResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectRoster`.
+message RejectRosterRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  RejectRosterRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectRoster`.
+message RejectRosterResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Roster roster = 1;
+  RejectRosterResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateRoster`.
+message EscalateRosterRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  EscalateRosterRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateRoster`.
+message EscalateRosterResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Roster roster = 1;
+  EscalateRosterResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingRosters`.
+message ListPendingRostersRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated RosterStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingRostersRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingRosters`.
+message ListPendingRostersResponse {
+  repeated Roster rosters = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateRosterApproval`.
+message DelegateRosterApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  DelegateRosterApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateRosterApproval`.
+message DelegateRosterApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Roster roster = 1;
+  DelegateRosterApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallRoster`.
+message RecallRosterRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  RecallRosterRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallRoster`.
+message RecallRosterResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Roster roster = 1;
+  RecallRosterResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetRosterApprovalStatus`.
+message GetRosterApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetRosterApprovalStatus`.
+message GetRosterApprovalStatusResponse {
+  Roster roster = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentRosterApproval`.
+message CommentRosterApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  CommentRosterApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentRosterApproval`.
+message CommentRosterApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Roster roster = 1;
+  CommentRosterApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

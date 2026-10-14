@@ -1,0 +1,219 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.travel.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/travel/v1/travel.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Travel.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/travel/v1;travelv1";
+option java_multiple_files = true;
+option java_outer_classname = "TravelPolicyLifecycleServiceProto";
+option java_package = "com.acme.travel.v1";
+
+// Moves a travel policy between the states of its lifecycle.
+service TravelPolicyLifecycleService {
+  // Activates a travel policy.
+  rpc ActivateTravelPolicy(ActivateTravelPolicyRequest) returns (ActivateTravelPolicyResponse);
+
+  // Suspends a travel policy.
+  rpc SuspendTravelPolicy(SuspendTravelPolicyRequest) returns (SuspendTravelPolicyResponse);
+
+  // Reinstates a travel policy.
+  rpc ReinstateTravelPolicy(ReinstateTravelPolicyRequest) returns (ReinstateTravelPolicyResponse);
+
+  // Renews a travel policy.
+  rpc RenewTravelPolicy(RenewTravelPolicyRequest) returns (RenewTravelPolicyResponse);
+
+  // Expires a travel policy.
+  rpc ExpireTravelPolicy(ExpireTravelPolicyRequest) returns (ExpireTravelPolicyResponse);
+
+  // Returns a travel policy.
+  rpc GetTravelPolicyLifecycle(GetTravelPolicyLifecycleRequest) returns (GetTravelPolicyLifecycleResponse);
+}
+
+// The request of `ActivateTravelPolicy`.
+message ActivateTravelPolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  ActivateTravelPolicyRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateTravelPolicy`.
+message ActivateTravelPolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelPolicy travel_policy = 1;
+  ActivateTravelPolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendTravelPolicy`.
+message SuspendTravelPolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  SuspendTravelPolicyRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendTravelPolicy`.
+message SuspendTravelPolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelPolicy travel_policy = 1;
+  SuspendTravelPolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateTravelPolicy`.
+message ReinstateTravelPolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  ReinstateTravelPolicyRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateTravelPolicy`.
+message ReinstateTravelPolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelPolicy travel_policy = 1;
+  ReinstateTravelPolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewTravelPolicy`.
+message RenewTravelPolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  RenewTravelPolicyRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewTravelPolicy`.
+message RenewTravelPolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelPolicy travel_policy = 1;
+  RenewTravelPolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireTravelPolicy`.
+message ExpireTravelPolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  ExpireTravelPolicyRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireTravelPolicy`.
+message ExpireTravelPolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelPolicy travel_policy = 1;
+  ExpireTravelPolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetTravelPolicyLifecycle`.
+message GetTravelPolicyLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetTravelPolicyLifecycle`.
+message GetTravelPolicyLifecycleResponse {
+  TravelPolicy travel_policy = 1;
+  acme.common.v1.OperationResult result = 2;
+}

@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.onboarding.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/onboarding/v1/onboarding.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Onboarding.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/onboarding/v1;onboardingv1";
+option java_multiple_files = true;
+option java_outer_classname = "OnboardingTaskApprovalServiceProto";
+option java_package = "com.acme.onboarding.v1";
+
+// Routes onboarding tasks through approval, with escalation and delegation.
+service OnboardingTaskApprovalService {
+  // Submits an onboarding task.
+  rpc SubmitOnboardingTask(SubmitOnboardingTaskRequest) returns (SubmitOnboardingTaskResponse);
+
+  // Approves an onboarding task.
+  rpc ApproveOnboardingTask(ApproveOnboardingTaskRequest) returns (ApproveOnboardingTaskResponse);
+
+  // Rejects an onboarding task.
+  rpc RejectOnboardingTask(RejectOnboardingTaskRequest) returns (RejectOnboardingTaskResponse);
+
+  // Escalates an onboarding task.
+  rpc EscalateOnboardingTask(EscalateOnboardingTaskRequest) returns (EscalateOnboardingTaskResponse);
+
+  // Lists onboarding tasks a page at a time.
+  rpc ListPendingOnboardingTasks(ListPendingOnboardingTasksRequest) returns (ListPendingOnboardingTasksResponse);
+
+  // Delegates an onboarding task.
+  rpc DelegateOnboardingTaskApproval(DelegateOnboardingTaskApprovalRequest) returns (DelegateOnboardingTaskApprovalResponse);
+
+  // Recalls an onboarding task.
+  rpc RecallOnboardingTask(RecallOnboardingTaskRequest) returns (RecallOnboardingTaskResponse);
+
+  // Returns an onboarding task.
+  rpc GetOnboardingTaskApprovalStatus(GetOnboardingTaskApprovalStatusRequest) returns (GetOnboardingTaskApprovalStatusResponse);
+
+  // Comments an onboarding task.
+  rpc CommentOnboardingTaskApproval(CommentOnboardingTaskApprovalRequest) returns (CommentOnboardingTaskApprovalResponse);
+}
+
+// The request of `SubmitOnboardingTask`.
+message SubmitOnboardingTaskRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_task_id = 2;
+  OnboardingTask onboarding_task = 3;
+  SubmitOnboardingTaskRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitOnboardingTask`.
+message SubmitOnboardingTaskResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingTask onboarding_task = 1;
+  SubmitOnboardingTaskResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveOnboardingTask`.
+message ApproveOnboardingTaskRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_task_id = 2;
+  OnboardingTask onboarding_task = 3;
+  ApproveOnboardingTaskRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveOnboardingTask`.
+message ApproveOnboardingTaskResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingTask onboarding_task = 1;
+  ApproveOnboardingTaskResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectOnboardingTask`.
+message RejectOnboardingTaskRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_task_id = 2;
+  OnboardingTask onboarding_task = 3;
+  RejectOnboardingTaskRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectOnboardingTask`.
+message RejectOnboardingTaskResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingTask onboarding_task = 1;
+  RejectOnboardingTaskResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateOnboardingTask`.
+message EscalateOnboardingTaskRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_task_id = 2;
+  OnboardingTask onboarding_task = 3;
+  EscalateOnboardingTaskRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateOnboardingTask`.
+message EscalateOnboardingTaskResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingTask onboarding_task = 1;
+  EscalateOnboardingTaskResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingOnboardingTasks`.
+message ListPendingOnboardingTasksRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated OnboardingTaskStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingOnboardingTasksRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingOnboardingTasks`.
+message ListPendingOnboardingTasksResponse {
+  repeated OnboardingTask onboarding_tasks = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateOnboardingTaskApproval`.
+message DelegateOnboardingTaskApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_task_id = 2;
+  OnboardingTask onboarding_task = 3;
+  DelegateOnboardingTaskApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateOnboardingTaskApproval`.
+message DelegateOnboardingTaskApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingTask onboarding_task = 1;
+  DelegateOnboardingTaskApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallOnboardingTask`.
+message RecallOnboardingTaskRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_task_id = 2;
+  OnboardingTask onboarding_task = 3;
+  RecallOnboardingTaskRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallOnboardingTask`.
+message RecallOnboardingTaskResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingTask onboarding_task = 1;
+  RecallOnboardingTaskResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetOnboardingTaskApprovalStatus`.
+message GetOnboardingTaskApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_task_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetOnboardingTaskApprovalStatus`.
+message GetOnboardingTaskApprovalStatusResponse {
+  OnboardingTask onboarding_task = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentOnboardingTaskApproval`.
+message CommentOnboardingTaskApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string onboarding_task_id = 2;
+  OnboardingTask onboarding_task = 3;
+  CommentOnboardingTaskApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentOnboardingTaskApproval`.
+message CommentOnboardingTaskApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OnboardingTask onboarding_task = 1;
+  CommentOnboardingTaskApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

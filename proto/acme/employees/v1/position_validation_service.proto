@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.employees.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/employees/v1/employees.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Employees.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/employees/v1;employeesv1";
+option java_multiple_files = true;
+option java_outer_classname = "PositionValidationServiceProto";
+option java_package = "com.acme.employees.v1";
+
+// Checks positions against the rules before anything acts on them.
+service PositionValidationService {
+  // Validates a position.
+  rpc ValidatePosition(ValidatePositionRequest) returns (ValidatePositionResponse);
+
+  // Previews a position.
+  rpc PreviewPosition(PreviewPositionRequest) returns (PreviewPositionResponse);
+
+  // Checks a position.
+  rpc CheckPositionEligibility(CheckPositionEligibilityRequest) returns (CheckPositionEligibilityResponse);
+
+  // Normalizes a position.
+  rpc NormalizePosition(NormalizePositionRequest) returns (NormalizePositionResponse);
+
+  // Explains a position.
+  rpc ExplainPositionDecision(ExplainPositionDecisionRequest) returns (ExplainPositionDecisionResponse);
+
+  // Scores a position.
+  rpc ScorePosition(ScorePositionRequest) returns (ScorePositionResponse);
+
+  // Lints a position.
+  rpc LintPositions(LintPositionsRequest) returns (LintPositionsResponse);
+
+  // Returns a position.
+  rpc GetPositionRules(GetPositionRulesRequest) returns (GetPositionRulesResponse);
+}
+
+// The request of `ValidatePosition`.
+message ValidatePositionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string position_id = 2;
+  Position position = 3;
+  ValidatePositionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidatePosition`.
+message ValidatePositionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Position position = 1;
+  ValidatePositionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewPosition`.
+message PreviewPositionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string position_id = 2;
+  Position position = 3;
+  PreviewPositionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewPosition`.
+message PreviewPositionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Position position = 1;
+  PreviewPositionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckPositionEligibility`.
+message CheckPositionEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string position_id = 2;
+  Position position = 3;
+  CheckPositionEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckPositionEligibility`.
+message CheckPositionEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Position position = 1;
+  CheckPositionEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizePosition`.
+message NormalizePositionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string position_id = 2;
+  Position position = 3;
+  NormalizePositionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizePosition`.
+message NormalizePositionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Position position = 1;
+  NormalizePositionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainPositionDecision`.
+message ExplainPositionDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string position_id = 2;
+  Position position = 3;
+  ExplainPositionDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainPositionDecision`.
+message ExplainPositionDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Position position = 1;
+  ExplainPositionDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScorePosition`.
+message ScorePositionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string position_id = 2;
+  Position position = 3;
+  ScorePositionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScorePosition`.
+message ScorePositionResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScorePositionResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Position position = 1;
+  ScorePositionResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintPositions`.
+message LintPositionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string position_id = 2;
+  Position position = 3;
+  LintPositionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintPositions`.
+message LintPositionsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Position position = 1;
+  LintPositionsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetPositionRules`.
+message GetPositionRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string position_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetPositionRules`.
+message GetPositionRulesResponse {
+  Position position = 1;
+  acme.common.v1.OperationResult result = 2;
+}

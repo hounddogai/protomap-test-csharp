@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.employees.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/employees/v1/employees.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Employees.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/employees/v1;employeesv1";
+option java_multiple_files = true;
+option java_outer_classname = "EmploymentContractCalculationServiceProto";
+option java_package = "com.acme.employees.v1";
+
+// Computes the figures of an employment contract, such as totals, taxes, and estimates.
+service EmploymentContractCalculationService {
+  // Calculates an employment contract.
+  rpc CalculateEmploymentContract(CalculateEmploymentContractRequest) returns (CalculateEmploymentContractResponse);
+
+  // Estimates an employment contract.
+  rpc EstimateEmploymentContract(EstimateEmploymentContractRequest) returns (EstimateEmploymentContractResponse);
+
+  // Quotes an employment contract.
+  rpc QuoteEmploymentContract(QuoteEmploymentContractRequest) returns (QuoteEmploymentContractResponse);
+
+  // Compares an employment contract.
+  rpc CompareEmploymentContractOptions(CompareEmploymentContractOptionsRequest) returns (CompareEmploymentContractOptionsResponse);
+
+  // Recalculates an employment contract.
+  rpc RecalculateEmploymentContracts(RecalculateEmploymentContractsRequest) returns (RecalculateEmploymentContractsResponse);
+
+  // Simulates an employment contract.
+  rpc SimulateEmploymentContract(SimulateEmploymentContractRequest) returns (SimulateEmploymentContractResponse);
+
+  // Explains an employment contract.
+  rpc ExplainEmploymentContractCalculation(ExplainEmploymentContractCalculationRequest) returns (ExplainEmploymentContractCalculationResponse);
+
+  // Returns an employment contract.
+  rpc GetEmploymentContractRates(GetEmploymentContractRatesRequest) returns (GetEmploymentContractRatesResponse);
+}
+
+// The request of `CalculateEmploymentContract`.
+message CalculateEmploymentContractRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  CalculateEmploymentContractRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateEmploymentContract`.
+message CalculateEmploymentContractResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateEmploymentContractResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  EmploymentContract employment_contract = 1;
+  CalculateEmploymentContractResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateEmploymentContract`.
+message EstimateEmploymentContractRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  EstimateEmploymentContractRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateEmploymentContract`.
+message EstimateEmploymentContractResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateEmploymentContractResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  EmploymentContract employment_contract = 1;
+  EstimateEmploymentContractResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteEmploymentContract`.
+message QuoteEmploymentContractRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  QuoteEmploymentContractRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteEmploymentContract`.
+message QuoteEmploymentContractResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteEmploymentContractResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  EmploymentContract employment_contract = 1;
+  QuoteEmploymentContractResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareEmploymentContractOptions`.
+message CompareEmploymentContractOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  CompareEmploymentContractOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareEmploymentContractOptions`.
+message CompareEmploymentContractOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareEmploymentContractOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  EmploymentContract employment_contract = 1;
+  CompareEmploymentContractOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateEmploymentContracts`.
+message RecalculateEmploymentContractsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  RecalculateEmploymentContractsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateEmploymentContracts`.
+message RecalculateEmploymentContractsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateEmploymentContractsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  EmploymentContract employment_contract = 1;
+  RecalculateEmploymentContractsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateEmploymentContract`.
+message SimulateEmploymentContractRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  SimulateEmploymentContractRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateEmploymentContract`.
+message SimulateEmploymentContractResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateEmploymentContractResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  EmploymentContract employment_contract = 1;
+  SimulateEmploymentContractResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainEmploymentContractCalculation`.
+message ExplainEmploymentContractCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  EmploymentContract employment_contract = 3;
+  ExplainEmploymentContractCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainEmploymentContractCalculation`.
+message ExplainEmploymentContractCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  EmploymentContract employment_contract = 1;
+  ExplainEmploymentContractCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetEmploymentContractRates`.
+message GetEmploymentContractRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string employment_contract_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetEmploymentContractRates`.
+message GetEmploymentContractRatesResponse {
+  EmploymentContract employment_contract = 1;
+  acme.common.v1.OperationResult result = 2;
+}

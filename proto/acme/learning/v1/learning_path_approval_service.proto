@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.learning.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/learning/v1/learning.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Learning.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/learning/v1;learningv1";
+option java_multiple_files = true;
+option java_outer_classname = "LearningPathApprovalServiceProto";
+option java_package = "com.acme.learning.v1";
+
+// Routes learning paths through approval, with escalation and delegation.
+service LearningPathApprovalService {
+  // Submits a learning path.
+  rpc SubmitLearningPath(SubmitLearningPathRequest) returns (SubmitLearningPathResponse);
+
+  // Approves a learning path.
+  rpc ApproveLearningPath(ApproveLearningPathRequest) returns (ApproveLearningPathResponse);
+
+  // Rejects a learning path.
+  rpc RejectLearningPath(RejectLearningPathRequest) returns (RejectLearningPathResponse);
+
+  // Escalates a learning path.
+  rpc EscalateLearningPath(EscalateLearningPathRequest) returns (EscalateLearningPathResponse);
+
+  // Lists learning paths a page at a time.
+  rpc ListPendingLearningPaths(ListPendingLearningPathsRequest) returns (ListPendingLearningPathsResponse);
+
+  // Delegates a learning path.
+  rpc DelegateLearningPathApproval(DelegateLearningPathApprovalRequest) returns (DelegateLearningPathApprovalResponse);
+
+  // Recalls a learning path.
+  rpc RecallLearningPath(RecallLearningPathRequest) returns (RecallLearningPathResponse);
+
+  // Returns a learning path.
+  rpc GetLearningPathApprovalStatus(GetLearningPathApprovalStatusRequest) returns (GetLearningPathApprovalStatusResponse);
+
+  // Comments a learning path.
+  rpc CommentLearningPathApproval(CommentLearningPathApprovalRequest) returns (CommentLearningPathApprovalResponse);
+}
+
+// The request of `SubmitLearningPath`.
+message SubmitLearningPathRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  LearningPath learning_path = 3;
+  SubmitLearningPathRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitLearningPath`.
+message SubmitLearningPathResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LearningPath learning_path = 1;
+  SubmitLearningPathResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveLearningPath`.
+message ApproveLearningPathRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  LearningPath learning_path = 3;
+  ApproveLearningPathRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveLearningPath`.
+message ApproveLearningPathResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LearningPath learning_path = 1;
+  ApproveLearningPathResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectLearningPath`.
+message RejectLearningPathRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  LearningPath learning_path = 3;
+  RejectLearningPathRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectLearningPath`.
+message RejectLearningPathResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LearningPath learning_path = 1;
+  RejectLearningPathResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateLearningPath`.
+message EscalateLearningPathRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  LearningPath learning_path = 3;
+  EscalateLearningPathRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateLearningPath`.
+message EscalateLearningPathResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LearningPath learning_path = 1;
+  EscalateLearningPathResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingLearningPaths`.
+message ListPendingLearningPathsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated LearningPathStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingLearningPathsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingLearningPaths`.
+message ListPendingLearningPathsResponse {
+  repeated LearningPath learning_paths = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateLearningPathApproval`.
+message DelegateLearningPathApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  LearningPath learning_path = 3;
+  DelegateLearningPathApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateLearningPathApproval`.
+message DelegateLearningPathApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LearningPath learning_path = 1;
+  DelegateLearningPathApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallLearningPath`.
+message RecallLearningPathRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  LearningPath learning_path = 3;
+  RecallLearningPathRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallLearningPath`.
+message RecallLearningPathResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LearningPath learning_path = 1;
+  RecallLearningPathResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetLearningPathApprovalStatus`.
+message GetLearningPathApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetLearningPathApprovalStatus`.
+message GetLearningPathApprovalStatusResponse {
+  LearningPath learning_path = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentLearningPathApproval`.
+message CommentLearningPathApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string learning_path_id = 2;
+  LearningPath learning_path = 3;
+  CommentLearningPathApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentLearningPathApproval`.
+message CommentLearningPathApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  LearningPath learning_path = 1;
+  CommentLearningPathApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

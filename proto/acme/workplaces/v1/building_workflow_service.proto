@@ -1,0 +1,296 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.workplaces.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/workplaces/v1/workplaces.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Workplaces.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/workplaces/v1;workplacesv1";
+option java_multiple_files = true;
+option java_outer_classname = "BuildingWorkflowServiceProto";
+option java_package = "com.acme.workplaces.v1";
+
+// Runs the long-lived workflow that takes a building from start to finish.
+service BuildingWorkflowService {
+  // Starts a building.
+  rpc StartBuildingWorkflow(StartBuildingWorkflowRequest) returns (StartBuildingWorkflowResponse);
+
+  // Advances a building.
+  rpc AdvanceBuildingWorkflow(AdvanceBuildingWorkflowRequest) returns (AdvanceBuildingWorkflowResponse);
+
+  // Cancels a building.
+  rpc CancelBuildingWorkflow(CancelBuildingWorkflowRequest) returns (CancelBuildingWorkflowResponse);
+
+  // Pauses a building.
+  rpc PauseBuildingWorkflow(PauseBuildingWorkflowRequest) returns (PauseBuildingWorkflowResponse);
+
+  // Resumes a building.
+  rpc ResumeBuildingWorkflow(ResumeBuildingWorkflowRequest) returns (ResumeBuildingWorkflowResponse);
+
+  // Returns a building.
+  rpc InspectBuildingWorkflow(InspectBuildingWorkflowRequest) returns (InspectBuildingWorkflowResponse);
+
+  // Lists buildings a page at a time.
+  rpc ListBuildingWorkflows(ListBuildingWorkflowsRequest) returns (ListBuildingWorkflowsResponse);
+
+  // Signals a building.
+  rpc SignalBuildingWorkflow(SignalBuildingWorkflowRequest) returns (SignalBuildingWorkflowResponse);
+}
+
+// The request of `StartBuildingWorkflow`.
+message StartBuildingWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string building_id = 2;
+  Building building = 3;
+  StartBuildingWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartBuildingWorkflow`.
+message StartBuildingWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Building building = 1;
+  StartBuildingWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceBuildingWorkflow`.
+message AdvanceBuildingWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string building_id = 2;
+  Building building = 3;
+  AdvanceBuildingWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceBuildingWorkflow`.
+message AdvanceBuildingWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Building building = 1;
+  AdvanceBuildingWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelBuildingWorkflow`.
+message CancelBuildingWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string building_id = 2;
+  Building building = 3;
+  CancelBuildingWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelBuildingWorkflow`.
+message CancelBuildingWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Building building = 1;
+  CancelBuildingWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseBuildingWorkflow`.
+message PauseBuildingWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string building_id = 2;
+  Building building = 3;
+  PauseBuildingWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseBuildingWorkflow`.
+message PauseBuildingWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Building building = 1;
+  PauseBuildingWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeBuildingWorkflow`.
+message ResumeBuildingWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string building_id = 2;
+  Building building = 3;
+  ResumeBuildingWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeBuildingWorkflow`.
+message ResumeBuildingWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Building building = 1;
+  ResumeBuildingWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectBuildingWorkflow`.
+message InspectBuildingWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string building_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectBuildingWorkflow`.
+message InspectBuildingWorkflowResponse {
+  Building building = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListBuildingWorkflows`.
+message ListBuildingWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated BuildingStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListBuildingWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListBuildingWorkflows`.
+message ListBuildingWorkflowsResponse {
+  repeated Building buildings = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalBuildingWorkflow`.
+message SignalBuildingWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string building_id = 2;
+  Building building = 3;
+  SignalBuildingWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalBuildingWorkflow`.
+message SignalBuildingWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Building building = 1;
+  SignalBuildingWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

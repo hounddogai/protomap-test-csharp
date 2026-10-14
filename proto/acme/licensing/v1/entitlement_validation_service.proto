@@ -1,0 +1,223 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.licensing.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/licensing/v1/licensing.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Licensing.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/licensing/v1;licensingv1";
+option java_multiple_files = true;
+option java_outer_classname = "EntitlementValidationServiceProto";
+option java_package = "com.acme.licensing.v1";
+
+// Checks entitlements against the rules before anything acts on them.
+service EntitlementValidationService {
+  // Validates an entitlement.
+  rpc ValidateEntitlement(ValidateEntitlementRequest) returns (ValidateEntitlementResponse);
+
+  // Previews an entitlement.
+  rpc PreviewEntitlement(PreviewEntitlementRequest) returns (PreviewEntitlementResponse);
+
+  // Normalizes an entitlement.
+  rpc NormalizeEntitlement(NormalizeEntitlementRequest) returns (NormalizeEntitlementResponse);
+
+  // Explains an entitlement.
+  rpc ExplainEntitlementDecision(ExplainEntitlementDecisionRequest) returns (ExplainEntitlementDecisionResponse);
+
+  // Lints an entitlement.
+  rpc LintEntitlements(LintEntitlementsRequest) returns (LintEntitlementsResponse);
+
+  // Returns an entitlement.
+  rpc GetEntitlementRules(GetEntitlementRulesRequest) returns (GetEntitlementRulesResponse);
+}
+
+// The request of `ValidateEntitlement`.
+message ValidateEntitlementRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  ValidateEntitlementRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateEntitlement`.
+message ValidateEntitlementResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  ValidateEntitlementResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewEntitlement`.
+message PreviewEntitlementRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  PreviewEntitlementRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewEntitlement`.
+message PreviewEntitlementResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  PreviewEntitlementResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeEntitlement`.
+message NormalizeEntitlementRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  NormalizeEntitlementRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeEntitlement`.
+message NormalizeEntitlementResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  NormalizeEntitlementResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainEntitlementDecision`.
+message ExplainEntitlementDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  ExplainEntitlementDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainEntitlementDecision`.
+message ExplainEntitlementDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  ExplainEntitlementDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintEntitlements`.
+message LintEntitlementsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  Entitlement entitlement = 3;
+  LintEntitlementsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintEntitlements`.
+message LintEntitlementsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Entitlement entitlement = 1;
+  LintEntitlementsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetEntitlementRules`.
+message GetEntitlementRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetEntitlementRules`.
+message GetEntitlementRulesResponse {
+  Entitlement entitlement = 1;
+  acme.common.v1.OperationResult result = 2;
+}

@@ -1,0 +1,294 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.workplaces.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/workplaces/v1/workplaces.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Workplaces.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/workplaces/v1;workplacesv1";
+option java_multiple_files = true;
+option java_outer_classname = "BuildingLifecycleServiceProto";
+option java_package = "com.acme.workplaces.v1";
+
+// Moves a building between the states of its lifecycle.
+service BuildingLifecycleService {
+  // Activates a building.
+  rpc ActivateBuilding(ActivateBuildingRequest) returns (ActivateBuildingResponse);
+
+  // Suspends a building.
+  rpc SuspendBuilding(SuspendBuildingRequest) returns (SuspendBuildingResponse);
+
+  // Reinstates a building.
+  rpc ReinstateBuilding(ReinstateBuildingRequest) returns (ReinstateBuildingResponse);
+
+  // Terminates a building.
+  rpc TerminateBuilding(TerminateBuildingRequest) returns (TerminateBuildingResponse);
+
+  // Renews a building.
+  rpc RenewBuilding(RenewBuildingRequest) returns (RenewBuildingResponse);
+
+  // Expires a building.
+  rpc ExpireBuilding(ExpireBuildingRequest) returns (ExpireBuildingResponse);
+
+  // Returns a building.
+  rpc GetBuildingLifecycle(GetBuildingLifecycleRequest) returns (GetBuildingLifecycleResponse);
+
+  // Schedules a building.
+  rpc ScheduleBuildingExpiry(ScheduleBuildingExpiryRequest) returns (ScheduleBuildingExpiryResponse);
+}
+
+// The request of `ActivateBuilding`.
+message ActivateBuildingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string building_id = 2;
+  ActivateBuildingRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateBuilding`.
+message ActivateBuildingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Building building = 1;
+  ActivateBuildingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendBuilding`.
+message SuspendBuildingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string building_id = 2;
+  SuspendBuildingRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendBuilding`.
+message SuspendBuildingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Building building = 1;
+  SuspendBuildingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateBuilding`.
+message ReinstateBuildingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string building_id = 2;
+  ReinstateBuildingRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateBuilding`.
+message ReinstateBuildingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Building building = 1;
+  ReinstateBuildingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateBuilding`.
+message TerminateBuildingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string building_id = 2;
+  TerminateBuildingRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateBuilding`.
+message TerminateBuildingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Building building = 1;
+  TerminateBuildingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewBuilding`.
+message RenewBuildingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string building_id = 2;
+  RenewBuildingRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewBuilding`.
+message RenewBuildingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Building building = 1;
+  RenewBuildingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireBuilding`.
+message ExpireBuildingRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string building_id = 2;
+  ExpireBuildingRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireBuilding`.
+message ExpireBuildingResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Building building = 1;
+  ExpireBuildingResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetBuildingLifecycle`.
+message GetBuildingLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string building_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetBuildingLifecycle`.
+message GetBuildingLifecycleResponse {
+  Building building = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleBuildingExpiry`.
+message ScheduleBuildingExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string building_id = 2;
+  Building building = 3;
+  ScheduleBuildingExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleBuildingExpiry`.
+message ScheduleBuildingExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Building building = 1;
+  ScheduleBuildingExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

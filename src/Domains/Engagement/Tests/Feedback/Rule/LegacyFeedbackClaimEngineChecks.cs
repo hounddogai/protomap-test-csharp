@@ -1,0 +1,22 @@
+namespace Acme.Workforce.Engagement.Tests.Feedback.Rule;
+
+using Acme.Workforce.Engagement.Feedback.Rule;
+using Acme.Workforce.Kit.Flags;
+
+/// <summary>Checks of rule code, run by the project's runner.</summary>
+public static class LegacyFeedbackClaimEngineChecks
+{
+    public static void LegacyFeedbackClaimEngineKeepsResultsWithinBounds()
+    {
+        var engine = LegacyFeedbackClaimEngine.DefaultLegacyFeedbackClaimEngine(Flags.NewRegistry());
+        var item = LegacyFeedbackClaim.NewLegacyFeedbackClaim("code-454", "label-764");
+        var result = engine.Price(item);
+        Check.True(result >= engine.Floor && result <= engine.Ceiling, "result out of bounds");
+        Check.True(engine.Trace.Count >= 0, "trace");
+    }
+
+    public static void RunAll()
+    {
+        LegacyFeedbackClaimEngineKeepsResultsWithinBounds();
+    }
+}

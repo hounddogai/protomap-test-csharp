@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.travel.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/travel/v1/travel.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Travel.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/travel/v1;travelv1";
+option java_multiple_files = true;
+option java_outer_classname = "TravelPolicyWorkflowServiceProto";
+option java_package = "com.acme.travel.v1";
+
+// Runs the long-lived workflow that takes a travel policy from start to finish.
+service TravelPolicyWorkflowService {
+  // Starts a travel policy.
+  rpc StartTravelPolicyWorkflow(StartTravelPolicyWorkflowRequest) returns (StartTravelPolicyWorkflowResponse);
+
+  // Advances a travel policy.
+  rpc AdvanceTravelPolicyWorkflow(AdvanceTravelPolicyWorkflowRequest) returns (AdvanceTravelPolicyWorkflowResponse);
+
+  // Cancels a travel policy.
+  rpc CancelTravelPolicyWorkflow(CancelTravelPolicyWorkflowRequest) returns (CancelTravelPolicyWorkflowResponse);
+
+  // Retrys a travel policy.
+  rpc RetryTravelPolicyWorkflow(RetryTravelPolicyWorkflowRequest) returns (RetryTravelPolicyWorkflowResponse);
+
+  // Pauses a travel policy.
+  rpc PauseTravelPolicyWorkflow(PauseTravelPolicyWorkflowRequest) returns (PauseTravelPolicyWorkflowResponse);
+
+  // Resumes a travel policy.
+  rpc ResumeTravelPolicyWorkflow(ResumeTravelPolicyWorkflowRequest) returns (ResumeTravelPolicyWorkflowResponse);
+
+  // Returns a travel policy.
+  rpc InspectTravelPolicyWorkflow(InspectTravelPolicyWorkflowRequest) returns (InspectTravelPolicyWorkflowResponse);
+
+  // Lists travel policies a page at a time.
+  rpc ListTravelPolicyWorkflows(ListTravelPolicyWorkflowsRequest) returns (ListTravelPolicyWorkflowsResponse);
+
+  // Signals a travel policy.
+  rpc SignalTravelPolicyWorkflow(SignalTravelPolicyWorkflowRequest) returns (SignalTravelPolicyWorkflowResponse);
+}
+
+// The request of `StartTravelPolicyWorkflow`.
+message StartTravelPolicyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  TravelPolicy travel_policy = 3;
+  StartTravelPolicyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartTravelPolicyWorkflow`.
+message StartTravelPolicyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelPolicy travel_policy = 1;
+  StartTravelPolicyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceTravelPolicyWorkflow`.
+message AdvanceTravelPolicyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  TravelPolicy travel_policy = 3;
+  AdvanceTravelPolicyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceTravelPolicyWorkflow`.
+message AdvanceTravelPolicyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelPolicy travel_policy = 1;
+  AdvanceTravelPolicyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelTravelPolicyWorkflow`.
+message CancelTravelPolicyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  TravelPolicy travel_policy = 3;
+  CancelTravelPolicyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelTravelPolicyWorkflow`.
+message CancelTravelPolicyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelPolicy travel_policy = 1;
+  CancelTravelPolicyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryTravelPolicyWorkflow`.
+message RetryTravelPolicyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  TravelPolicy travel_policy = 3;
+  RetryTravelPolicyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryTravelPolicyWorkflow`.
+message RetryTravelPolicyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelPolicy travel_policy = 1;
+  RetryTravelPolicyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseTravelPolicyWorkflow`.
+message PauseTravelPolicyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  TravelPolicy travel_policy = 3;
+  PauseTravelPolicyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseTravelPolicyWorkflow`.
+message PauseTravelPolicyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelPolicy travel_policy = 1;
+  PauseTravelPolicyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeTravelPolicyWorkflow`.
+message ResumeTravelPolicyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  TravelPolicy travel_policy = 3;
+  ResumeTravelPolicyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeTravelPolicyWorkflow`.
+message ResumeTravelPolicyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelPolicy travel_policy = 1;
+  ResumeTravelPolicyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectTravelPolicyWorkflow`.
+message InspectTravelPolicyWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectTravelPolicyWorkflow`.
+message InspectTravelPolicyWorkflowResponse {
+  TravelPolicy travel_policy = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListTravelPolicyWorkflows`.
+message ListTravelPolicyWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated TravelPolicyStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListTravelPolicyWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListTravelPolicyWorkflows`.
+message ListTravelPolicyWorkflowsResponse {
+  repeated TravelPolicy travel_policies = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalTravelPolicyWorkflow`.
+message SignalTravelPolicyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string travel_policy_id = 2;
+  TravelPolicy travel_policy = 3;
+  SignalTravelPolicyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalTravelPolicyWorkflow`.
+message SignalTravelPolicyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TravelPolicy travel_policy = 1;
+  SignalTravelPolicyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

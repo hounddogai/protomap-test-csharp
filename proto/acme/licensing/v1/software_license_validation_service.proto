@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.licensing.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/licensing/v1/licensing.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Licensing.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/licensing/v1;licensingv1";
+option java_multiple_files = true;
+option java_outer_classname = "SoftwareLicenseValidationServiceProto";
+option java_package = "com.acme.licensing.v1";
+
+// Checks software licenses against the rules before anything acts on them.
+service SoftwareLicenseValidationService {
+  // Validates a software license.
+  rpc ValidateSoftwareLicense(ValidateSoftwareLicenseRequest) returns (ValidateSoftwareLicenseResponse);
+
+  // Previews a software license.
+  rpc PreviewSoftwareLicense(PreviewSoftwareLicenseRequest) returns (PreviewSoftwareLicenseResponse);
+
+  // Checks a software license.
+  rpc CheckSoftwareLicenseEligibility(CheckSoftwareLicenseEligibilityRequest) returns (CheckSoftwareLicenseEligibilityResponse);
+
+  // Normalizes a software license.
+  rpc NormalizeSoftwareLicense(NormalizeSoftwareLicenseRequest) returns (NormalizeSoftwareLicenseResponse);
+
+  // Explains a software license.
+  rpc ExplainSoftwareLicenseDecision(ExplainSoftwareLicenseDecisionRequest) returns (ExplainSoftwareLicenseDecisionResponse);
+
+  // Scores a software license.
+  rpc ScoreSoftwareLicense(ScoreSoftwareLicenseRequest) returns (ScoreSoftwareLicenseResponse);
+
+  // Lints a software license.
+  rpc LintSoftwareLicenses(LintSoftwareLicensesRequest) returns (LintSoftwareLicensesResponse);
+
+  // Returns a software license.
+  rpc GetSoftwareLicenseRules(GetSoftwareLicenseRulesRequest) returns (GetSoftwareLicenseRulesResponse);
+}
+
+// The request of `ValidateSoftwareLicense`.
+message ValidateSoftwareLicenseRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  SoftwareLicense software_license = 3;
+  ValidateSoftwareLicenseRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateSoftwareLicense`.
+message ValidateSoftwareLicenseResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SoftwareLicense software_license = 1;
+  ValidateSoftwareLicenseResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewSoftwareLicense`.
+message PreviewSoftwareLicenseRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  SoftwareLicense software_license = 3;
+  PreviewSoftwareLicenseRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewSoftwareLicense`.
+message PreviewSoftwareLicenseResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SoftwareLicense software_license = 1;
+  PreviewSoftwareLicenseResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckSoftwareLicenseEligibility`.
+message CheckSoftwareLicenseEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  SoftwareLicense software_license = 3;
+  CheckSoftwareLicenseEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckSoftwareLicenseEligibility`.
+message CheckSoftwareLicenseEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SoftwareLicense software_license = 1;
+  CheckSoftwareLicenseEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeSoftwareLicense`.
+message NormalizeSoftwareLicenseRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  SoftwareLicense software_license = 3;
+  NormalizeSoftwareLicenseRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeSoftwareLicense`.
+message NormalizeSoftwareLicenseResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SoftwareLicense software_license = 1;
+  NormalizeSoftwareLicenseResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainSoftwareLicenseDecision`.
+message ExplainSoftwareLicenseDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  SoftwareLicense software_license = 3;
+  ExplainSoftwareLicenseDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainSoftwareLicenseDecision`.
+message ExplainSoftwareLicenseDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SoftwareLicense software_license = 1;
+  ExplainSoftwareLicenseDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreSoftwareLicense`.
+message ScoreSoftwareLicenseRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  SoftwareLicense software_license = 3;
+  ScoreSoftwareLicenseRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreSoftwareLicense`.
+message ScoreSoftwareLicenseResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreSoftwareLicenseResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  SoftwareLicense software_license = 1;
+  ScoreSoftwareLicenseResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintSoftwareLicenses`.
+message LintSoftwareLicensesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  SoftwareLicense software_license = 3;
+  LintSoftwareLicensesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintSoftwareLicenses`.
+message LintSoftwareLicensesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SoftwareLicense software_license = 1;
+  LintSoftwareLicensesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetSoftwareLicenseRules`.
+message GetSoftwareLicenseRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string software_license_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetSoftwareLicenseRules`.
+message GetSoftwareLicenseRulesResponse {
+  SoftwareLicense software_license = 1;
+  acme.common.v1.OperationResult result = 2;
+}

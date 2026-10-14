@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.recruiting.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/recruiting/v1/recruiting.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Recruiting.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/recruiting/v1;recruitingv1";
+option java_multiple_files = true;
+option java_outer_classname = "JobOpeningApprovalServiceProto";
+option java_package = "com.acme.recruiting.v1";
+
+// Routes job openings through approval, with escalation and delegation.
+service JobOpeningApprovalService {
+  // Submits a job opening.
+  rpc SubmitJobOpening(SubmitJobOpeningRequest) returns (SubmitJobOpeningResponse);
+
+  // Approves a job opening.
+  rpc ApproveJobOpening(ApproveJobOpeningRequest) returns (ApproveJobOpeningResponse);
+
+  // Rejects a job opening.
+  rpc RejectJobOpening(RejectJobOpeningRequest) returns (RejectJobOpeningResponse);
+
+  // Escalates a job opening.
+  rpc EscalateJobOpening(EscalateJobOpeningRequest) returns (EscalateJobOpeningResponse);
+
+  // Lists job openings a page at a time.
+  rpc ListPendingJobOpenings(ListPendingJobOpeningsRequest) returns (ListPendingJobOpeningsResponse);
+
+  // Delegates a job opening.
+  rpc DelegateJobOpeningApproval(DelegateJobOpeningApprovalRequest) returns (DelegateJobOpeningApprovalResponse);
+
+  // Recalls a job opening.
+  rpc RecallJobOpening(RecallJobOpeningRequest) returns (RecallJobOpeningResponse);
+
+  // Returns a job opening.
+  rpc GetJobOpeningApprovalStatus(GetJobOpeningApprovalStatusRequest) returns (GetJobOpeningApprovalStatusResponse);
+
+  // Comments a job opening.
+  rpc CommentJobOpeningApproval(CommentJobOpeningApprovalRequest) returns (CommentJobOpeningApprovalResponse);
+}
+
+// The request of `SubmitJobOpening`.
+message SubmitJobOpeningRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  JobOpening job_opening = 3;
+  SubmitJobOpeningRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitJobOpening`.
+message SubmitJobOpeningResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  SubmitJobOpeningResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveJobOpening`.
+message ApproveJobOpeningRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  JobOpening job_opening = 3;
+  ApproveJobOpeningRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveJobOpening`.
+message ApproveJobOpeningResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  ApproveJobOpeningResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectJobOpening`.
+message RejectJobOpeningRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  JobOpening job_opening = 3;
+  RejectJobOpeningRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectJobOpening`.
+message RejectJobOpeningResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  RejectJobOpeningResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateJobOpening`.
+message EscalateJobOpeningRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  JobOpening job_opening = 3;
+  EscalateJobOpeningRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateJobOpening`.
+message EscalateJobOpeningResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  EscalateJobOpeningResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingJobOpenings`.
+message ListPendingJobOpeningsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated JobOpeningStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingJobOpeningsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingJobOpenings`.
+message ListPendingJobOpeningsResponse {
+  repeated JobOpening job_openings = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateJobOpeningApproval`.
+message DelegateJobOpeningApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  JobOpening job_opening = 3;
+  DelegateJobOpeningApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateJobOpeningApproval`.
+message DelegateJobOpeningApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  DelegateJobOpeningApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallJobOpening`.
+message RecallJobOpeningRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  JobOpening job_opening = 3;
+  RecallJobOpeningRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallJobOpening`.
+message RecallJobOpeningResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  RecallJobOpeningResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetJobOpeningApprovalStatus`.
+message GetJobOpeningApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetJobOpeningApprovalStatus`.
+message GetJobOpeningApprovalStatusResponse {
+  JobOpening job_opening = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentJobOpeningApproval`.
+message CommentJobOpeningApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string job_opening_id = 2;
+  JobOpening job_opening = 3;
+  CommentJobOpeningApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentJobOpeningApproval`.
+message CommentJobOpeningApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  JobOpening job_opening = 1;
+  CommentJobOpeningApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

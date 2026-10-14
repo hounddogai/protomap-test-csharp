@@ -1,0 +1,241 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.devices.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/devices/v1/devices.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Devices.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/devices/v1;devicesv1";
+option java_multiple_files = true;
+option java_outer_classname = "ComplianceScanLifecycleServiceProto";
+option java_package = "com.acme.devices.v1";
+
+// Moves a compliance scan between the states of its lifecycle.
+service ComplianceScanLifecycleService {
+  // Activates a compliance scan.
+  rpc ActivateComplianceScan(ActivateComplianceScanRequest) returns (ActivateComplianceScanResponse);
+
+  // Suspends a compliance scan.
+  rpc SuspendComplianceScan(SuspendComplianceScanRequest) returns (SuspendComplianceScanResponse);
+
+  // Reinstates a compliance scan.
+  rpc ReinstateComplianceScan(ReinstateComplianceScanRequest) returns (ReinstateComplianceScanResponse);
+
+  // Terminates a compliance scan.
+  rpc TerminateComplianceScan(TerminateComplianceScanRequest) returns (TerminateComplianceScanResponse);
+
+  // Expires a compliance scan.
+  rpc ExpireComplianceScan(ExpireComplianceScanRequest) returns (ExpireComplianceScanResponse);
+
+  // Schedules a compliance scan.
+  rpc ScheduleComplianceScanExpiry(ScheduleComplianceScanExpiryRequest) returns (ScheduleComplianceScanExpiryResponse);
+}
+
+// The request of `ActivateComplianceScan`.
+message ActivateComplianceScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ActivateComplianceScanRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateComplianceScan`.
+message ActivateComplianceScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  ActivateComplianceScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendComplianceScan`.
+message SuspendComplianceScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  SuspendComplianceScanRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendComplianceScan`.
+message SuspendComplianceScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  SuspendComplianceScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateComplianceScan`.
+message ReinstateComplianceScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ReinstateComplianceScanRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateComplianceScan`.
+message ReinstateComplianceScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  ReinstateComplianceScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateComplianceScan`.
+message TerminateComplianceScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  TerminateComplianceScanRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateComplianceScan`.
+message TerminateComplianceScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  TerminateComplianceScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireComplianceScan`.
+message ExpireComplianceScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ExpireComplianceScanRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireComplianceScan`.
+message ExpireComplianceScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  ExpireComplianceScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScheduleComplianceScanExpiry`.
+message ScheduleComplianceScanExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string compliance_scan_id = 2;
+  ComplianceScan compliance_scan = 3;
+  ScheduleComplianceScanExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleComplianceScanExpiry`.
+message ScheduleComplianceScanExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ComplianceScan compliance_scan = 1;
+  ScheduleComplianceScanExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

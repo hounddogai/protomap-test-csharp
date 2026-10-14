@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.benefits.v1;
+
+import "acme/benefits/v1/benefits.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Benefits.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/benefits/v1;benefitsv1";
+option java_multiple_files = true;
+option java_outer_classname = "BenefitPlanWorkflowServiceProto";
+option java_package = "com.acme.benefits.v1";
+
+// Runs the long-lived workflow that takes a benefit plan from start to finish.
+service BenefitPlanWorkflowService {
+  // Starts a benefit plan.
+  rpc StartBenefitPlanWorkflow(StartBenefitPlanWorkflowRequest) returns (StartBenefitPlanWorkflowResponse);
+
+  // Advances a benefit plan.
+  rpc AdvanceBenefitPlanWorkflow(AdvanceBenefitPlanWorkflowRequest) returns (AdvanceBenefitPlanWorkflowResponse);
+
+  // Cancels a benefit plan.
+  rpc CancelBenefitPlanWorkflow(CancelBenefitPlanWorkflowRequest) returns (CancelBenefitPlanWorkflowResponse);
+
+  // Retrys a benefit plan.
+  rpc RetryBenefitPlanWorkflow(RetryBenefitPlanWorkflowRequest) returns (RetryBenefitPlanWorkflowResponse);
+
+  // Pauses a benefit plan.
+  rpc PauseBenefitPlanWorkflow(PauseBenefitPlanWorkflowRequest) returns (PauseBenefitPlanWorkflowResponse);
+
+  // Resumes a benefit plan.
+  rpc ResumeBenefitPlanWorkflow(ResumeBenefitPlanWorkflowRequest) returns (ResumeBenefitPlanWorkflowResponse);
+
+  // Returns a benefit plan.
+  rpc InspectBenefitPlanWorkflow(InspectBenefitPlanWorkflowRequest) returns (InspectBenefitPlanWorkflowResponse);
+
+  // Lists benefit plans a page at a time.
+  rpc ListBenefitPlanWorkflows(ListBenefitPlanWorkflowsRequest) returns (ListBenefitPlanWorkflowsResponse);
+
+  // Signals a benefit plan.
+  rpc SignalBenefitPlanWorkflow(SignalBenefitPlanWorkflowRequest) returns (SignalBenefitPlanWorkflowResponse);
+}
+
+// The request of `StartBenefitPlanWorkflow`.
+message StartBenefitPlanWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string benefit_plan_id = 2;
+  BenefitPlan benefit_plan = 3;
+  StartBenefitPlanWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartBenefitPlanWorkflow`.
+message StartBenefitPlanWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BenefitPlan benefit_plan = 1;
+  StartBenefitPlanWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceBenefitPlanWorkflow`.
+message AdvanceBenefitPlanWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string benefit_plan_id = 2;
+  BenefitPlan benefit_plan = 3;
+  AdvanceBenefitPlanWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceBenefitPlanWorkflow`.
+message AdvanceBenefitPlanWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BenefitPlan benefit_plan = 1;
+  AdvanceBenefitPlanWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelBenefitPlanWorkflow`.
+message CancelBenefitPlanWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string benefit_plan_id = 2;
+  BenefitPlan benefit_plan = 3;
+  CancelBenefitPlanWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelBenefitPlanWorkflow`.
+message CancelBenefitPlanWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BenefitPlan benefit_plan = 1;
+  CancelBenefitPlanWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryBenefitPlanWorkflow`.
+message RetryBenefitPlanWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string benefit_plan_id = 2;
+  BenefitPlan benefit_plan = 3;
+  RetryBenefitPlanWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryBenefitPlanWorkflow`.
+message RetryBenefitPlanWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BenefitPlan benefit_plan = 1;
+  RetryBenefitPlanWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseBenefitPlanWorkflow`.
+message PauseBenefitPlanWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string benefit_plan_id = 2;
+  BenefitPlan benefit_plan = 3;
+  PauseBenefitPlanWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseBenefitPlanWorkflow`.
+message PauseBenefitPlanWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BenefitPlan benefit_plan = 1;
+  PauseBenefitPlanWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeBenefitPlanWorkflow`.
+message ResumeBenefitPlanWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string benefit_plan_id = 2;
+  BenefitPlan benefit_plan = 3;
+  ResumeBenefitPlanWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeBenefitPlanWorkflow`.
+message ResumeBenefitPlanWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BenefitPlan benefit_plan = 1;
+  ResumeBenefitPlanWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectBenefitPlanWorkflow`.
+message InspectBenefitPlanWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string benefit_plan_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectBenefitPlanWorkflow`.
+message InspectBenefitPlanWorkflowResponse {
+  BenefitPlan benefit_plan = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListBenefitPlanWorkflows`.
+message ListBenefitPlanWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated BenefitPlanStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListBenefitPlanWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListBenefitPlanWorkflows`.
+message ListBenefitPlanWorkflowsResponse {
+  repeated BenefitPlan benefit_plans = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalBenefitPlanWorkflow`.
+message SignalBenefitPlanWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string benefit_plan_id = 2;
+  BenefitPlan benefit_plan = 3;
+  SignalBenefitPlanWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalBenefitPlanWorkflow`.
+message SignalBenefitPlanWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BenefitPlan benefit_plan = 1;
+  SignalBenefitPlanWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

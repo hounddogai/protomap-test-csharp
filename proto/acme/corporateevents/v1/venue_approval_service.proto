@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.corporateevents.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/corporateevents/v1/corporateevents.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Corporateevents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/corporateevents/v1;corporateeventsv1";
+option java_multiple_files = true;
+option java_outer_classname = "VenueApprovalServiceProto";
+option java_package = "com.acme.corporateevents.v1";
+
+// Routes venues through approval, with escalation and delegation.
+service VenueApprovalService {
+  // Submits a venue.
+  rpc SubmitVenue(SubmitVenueRequest) returns (SubmitVenueResponse);
+
+  // Approves a venue.
+  rpc ApproveVenue(ApproveVenueRequest) returns (ApproveVenueResponse);
+
+  // Rejects a venue.
+  rpc RejectVenue(RejectVenueRequest) returns (RejectVenueResponse);
+
+  // Escalates a venue.
+  rpc EscalateVenue(EscalateVenueRequest) returns (EscalateVenueResponse);
+
+  // Lists venues a page at a time.
+  rpc ListPendingVenues(ListPendingVenuesRequest) returns (ListPendingVenuesResponse);
+
+  // Delegates a venue.
+  rpc DelegateVenueApproval(DelegateVenueApprovalRequest) returns (DelegateVenueApprovalResponse);
+
+  // Recalls a venue.
+  rpc RecallVenue(RecallVenueRequest) returns (RecallVenueResponse);
+
+  // Returns a venue.
+  rpc GetVenueApprovalStatus(GetVenueApprovalStatusRequest) returns (GetVenueApprovalStatusResponse);
+
+  // Comments a venue.
+  rpc CommentVenueApproval(CommentVenueApprovalRequest) returns (CommentVenueApprovalResponse);
+}
+
+// The request of `SubmitVenue`.
+message SubmitVenueRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  Venue venue = 3;
+  SubmitVenueRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitVenue`.
+message SubmitVenueResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Venue venue = 1;
+  SubmitVenueResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveVenue`.
+message ApproveVenueRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  Venue venue = 3;
+  ApproveVenueRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveVenue`.
+message ApproveVenueResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Venue venue = 1;
+  ApproveVenueResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectVenue`.
+message RejectVenueRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  Venue venue = 3;
+  RejectVenueRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectVenue`.
+message RejectVenueResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Venue venue = 1;
+  RejectVenueResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateVenue`.
+message EscalateVenueRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  Venue venue = 3;
+  EscalateVenueRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateVenue`.
+message EscalateVenueResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Venue venue = 1;
+  EscalateVenueResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingVenues`.
+message ListPendingVenuesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated VenueStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingVenuesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingVenues`.
+message ListPendingVenuesResponse {
+  repeated Venue venues = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateVenueApproval`.
+message DelegateVenueApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  Venue venue = 3;
+  DelegateVenueApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateVenueApproval`.
+message DelegateVenueApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Venue venue = 1;
+  DelegateVenueApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallVenue`.
+message RecallVenueRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  Venue venue = 3;
+  RecallVenueRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallVenue`.
+message RecallVenueResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Venue venue = 1;
+  RecallVenueResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetVenueApprovalStatus`.
+message GetVenueApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetVenueApprovalStatus`.
+message GetVenueApprovalStatusResponse {
+  Venue venue = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentVenueApproval`.
+message CommentVenueApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  Venue venue = 3;
+  CommentVenueApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentVenueApproval`.
+message CommentVenueApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Venue venue = 1;
+  CommentVenueApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

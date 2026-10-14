@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.documents.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/documents/v1/documents.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Documents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/documents/v1;documentsv1";
+option java_multiple_files = true;
+option java_outer_classname = "DocumentTemplateWorkflowServiceProto";
+option java_package = "com.acme.documents.v1";
+
+// Runs the long-lived workflow that takes a document template from start to finish.
+service DocumentTemplateWorkflowService {
+  // Starts a document template.
+  rpc StartDocumentTemplateWorkflow(StartDocumentTemplateWorkflowRequest) returns (StartDocumentTemplateWorkflowResponse);
+
+  // Advances a document template.
+  rpc AdvanceDocumentTemplateWorkflow(AdvanceDocumentTemplateWorkflowRequest) returns (AdvanceDocumentTemplateWorkflowResponse);
+
+  // Cancels a document template.
+  rpc CancelDocumentTemplateWorkflow(CancelDocumentTemplateWorkflowRequest) returns (CancelDocumentTemplateWorkflowResponse);
+
+  // Retrys a document template.
+  rpc RetryDocumentTemplateWorkflow(RetryDocumentTemplateWorkflowRequest) returns (RetryDocumentTemplateWorkflowResponse);
+
+  // Pauses a document template.
+  rpc PauseDocumentTemplateWorkflow(PauseDocumentTemplateWorkflowRequest) returns (PauseDocumentTemplateWorkflowResponse);
+
+  // Resumes a document template.
+  rpc ResumeDocumentTemplateWorkflow(ResumeDocumentTemplateWorkflowRequest) returns (ResumeDocumentTemplateWorkflowResponse);
+
+  // Returns a document template.
+  rpc InspectDocumentTemplateWorkflow(InspectDocumentTemplateWorkflowRequest) returns (InspectDocumentTemplateWorkflowResponse);
+
+  // Lists document templates a page at a time.
+  rpc ListDocumentTemplateWorkflows(ListDocumentTemplateWorkflowsRequest) returns (ListDocumentTemplateWorkflowsResponse);
+
+  // Signals a document template.
+  rpc SignalDocumentTemplateWorkflow(SignalDocumentTemplateWorkflowRequest) returns (SignalDocumentTemplateWorkflowResponse);
+}
+
+// The request of `StartDocumentTemplateWorkflow`.
+message StartDocumentTemplateWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  DocumentTemplate document_template = 3;
+  StartDocumentTemplateWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartDocumentTemplateWorkflow`.
+message StartDocumentTemplateWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  StartDocumentTemplateWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceDocumentTemplateWorkflow`.
+message AdvanceDocumentTemplateWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  DocumentTemplate document_template = 3;
+  AdvanceDocumentTemplateWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceDocumentTemplateWorkflow`.
+message AdvanceDocumentTemplateWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  AdvanceDocumentTemplateWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelDocumentTemplateWorkflow`.
+message CancelDocumentTemplateWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  DocumentTemplate document_template = 3;
+  CancelDocumentTemplateWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelDocumentTemplateWorkflow`.
+message CancelDocumentTemplateWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  CancelDocumentTemplateWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryDocumentTemplateWorkflow`.
+message RetryDocumentTemplateWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  DocumentTemplate document_template = 3;
+  RetryDocumentTemplateWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryDocumentTemplateWorkflow`.
+message RetryDocumentTemplateWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  RetryDocumentTemplateWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseDocumentTemplateWorkflow`.
+message PauseDocumentTemplateWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  DocumentTemplate document_template = 3;
+  PauseDocumentTemplateWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseDocumentTemplateWorkflow`.
+message PauseDocumentTemplateWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  PauseDocumentTemplateWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeDocumentTemplateWorkflow`.
+message ResumeDocumentTemplateWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  DocumentTemplate document_template = 3;
+  ResumeDocumentTemplateWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeDocumentTemplateWorkflow`.
+message ResumeDocumentTemplateWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  ResumeDocumentTemplateWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectDocumentTemplateWorkflow`.
+message InspectDocumentTemplateWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectDocumentTemplateWorkflow`.
+message InspectDocumentTemplateWorkflowResponse {
+  DocumentTemplate document_template = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListDocumentTemplateWorkflows`.
+message ListDocumentTemplateWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated DocumentTemplateStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListDocumentTemplateWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListDocumentTemplateWorkflows`.
+message ListDocumentTemplateWorkflowsResponse {
+  repeated DocumentTemplate document_templates = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalDocumentTemplateWorkflow`.
+message SignalDocumentTemplateWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_template_id = 2;
+  DocumentTemplate document_template = 3;
+  SignalDocumentTemplateWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalDocumentTemplateWorkflow`.
+message SignalDocumentTemplateWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentTemplate document_template = 1;
+  SignalDocumentTemplateWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

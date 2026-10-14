@@ -1,0 +1,247 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.employeeportal.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/employeeportal/v1/employeeportal.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Employeeportal.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/employeeportal/v1;employeeportalv1";
+option java_multiple_files = true;
+option java_outer_classname = "PortalHomeNotificationServiceProto";
+option java_package = "com.acme.employeeportal.v1";
+
+// Tells the people who follow a portal home what changed.
+service PortalHomeNotificationService {
+  // Subscribes a portal home.
+  rpc SubscribePortalHomeUpdates(SubscribePortalHomeUpdatesRequest) returns (SubscribePortalHomeUpdatesResponse);
+
+  // Unsubscribes a portal home.
+  rpc UnsubscribePortalHomeUpdates(UnsubscribePortalHomeUpdatesRequest) returns (UnsubscribePortalHomeUpdatesResponse);
+
+  // Notifys a portal home.
+  rpc NotifyPortalHomeWatchers(NotifyPortalHomeWatchersRequest) returns (NotifyPortalHomeWatchersResponse);
+
+  // Lists portal homes a page at a time.
+  rpc ListPortalHomeSubscriptions(ListPortalHomeSubscriptionsRequest) returns (ListPortalHomeSubscriptionsResponse);
+
+  // Sends a portal home.
+  rpc SendPortalHomeTestNotice(SendPortalHomeTestNoticeRequest) returns (SendPortalHomeTestNoticeResponse);
+
+  // Returns a portal home.
+  rpc GetPortalHomePreferences(GetPortalHomePreferencesRequest) returns (GetPortalHomePreferencesResponse);
+
+  // Streams the changes of portal homes as they happen.
+  rpc StreamPortalHomeNotices(StreamPortalHomeNoticesRequest) returns (stream StreamPortalHomeNoticesResponse);
+}
+
+// The request of `SubscribePortalHomeUpdates`.
+message SubscribePortalHomeUpdatesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string portal_home_id = 2;
+  SubscribePortalHomeUpdatesRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SubscribePortalHomeUpdates`.
+message SubscribePortalHomeUpdatesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  PortalHome portal_home = 1;
+  SubscribePortalHomeUpdatesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `UnsubscribePortalHomeUpdates`.
+message UnsubscribePortalHomeUpdatesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string portal_home_id = 2;
+  UnsubscribePortalHomeUpdatesRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `UnsubscribePortalHomeUpdates`.
+message UnsubscribePortalHomeUpdatesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  PortalHome portal_home = 1;
+  UnsubscribePortalHomeUpdatesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NotifyPortalHomeWatchers`.
+message NotifyPortalHomeWatchersRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string portal_home_id = 2;
+  NotifyPortalHomeWatchersRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `NotifyPortalHomeWatchers`.
+message NotifyPortalHomeWatchersResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  PortalHome portal_home = 1;
+  NotifyPortalHomeWatchersResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPortalHomeSubscriptions`.
+message ListPortalHomeSubscriptionsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated PortalHomeStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPortalHomeSubscriptionsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPortalHomeSubscriptions`.
+message ListPortalHomeSubscriptionsResponse {
+  repeated PortalHome portal_homes = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SendPortalHomeTestNotice`.
+message SendPortalHomeTestNoticeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string portal_home_id = 2;
+  SendPortalHomeTestNoticeRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SendPortalHomeTestNotice`.
+message SendPortalHomeTestNoticeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  PortalHome portal_home = 1;
+  SendPortalHomeTestNoticeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetPortalHomePreferences`.
+message GetPortalHomePreferencesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string portal_home_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetPortalHomePreferences`.
+message GetPortalHomePreferencesResponse {
+  PortalHome portal_home = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `StreamPortalHomeNotices`.
+message StreamPortalHomeNoticesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated PortalHomeStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  StreamPortalHomeNoticesRequest.Filter filter = 2;
+  google.protobuf.Timestamp since = 3;
+  int32 max_events = 4;
+  acme.common.v1.ContactInfo subscriber = 5;
+}
+
+// The response of `StreamPortalHomeNotices`.
+message StreamPortalHomeNoticesResponse {
+  PortalHome portal_home = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}

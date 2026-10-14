@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.itsm.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/itsm/v1/itsm.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Itsm.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/itsm/v1;itsmv1";
+option java_multiple_files = true;
+option java_outer_classname = "IncidentApprovalServiceProto";
+option java_package = "com.acme.itsm.v1";
+
+// Routes incidents through approval, with escalation and delegation.
+service IncidentApprovalService {
+  // Submits an incident.
+  rpc SubmitIncident(SubmitIncidentRequest) returns (SubmitIncidentResponse);
+
+  // Approves an incident.
+  rpc ApproveIncident(ApproveIncidentRequest) returns (ApproveIncidentResponse);
+
+  // Rejects an incident.
+  rpc RejectIncident(RejectIncidentRequest) returns (RejectIncidentResponse);
+
+  // Escalates an incident.
+  rpc EscalateIncident(EscalateIncidentRequest) returns (EscalateIncidentResponse);
+
+  // Lists incidents a page at a time.
+  rpc ListPendingIncidents(ListPendingIncidentsRequest) returns (ListPendingIncidentsResponse);
+
+  // Delegates an incident.
+  rpc DelegateIncidentApproval(DelegateIncidentApprovalRequest) returns (DelegateIncidentApprovalResponse);
+
+  // Recalls an incident.
+  rpc RecallIncident(RecallIncidentRequest) returns (RecallIncidentResponse);
+
+  // Returns an incident.
+  rpc GetIncidentApprovalStatus(GetIncidentApprovalStatusRequest) returns (GetIncidentApprovalStatusResponse);
+
+  // Comments an incident.
+  rpc CommentIncidentApproval(CommentIncidentApprovalRequest) returns (CommentIncidentApprovalResponse);
+}
+
+// The request of `SubmitIncident`.
+message SubmitIncidentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string incident_id = 2;
+  Incident incident = 3;
+  SubmitIncidentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitIncident`.
+message SubmitIncidentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Incident incident = 1;
+  SubmitIncidentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveIncident`.
+message ApproveIncidentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string incident_id = 2;
+  Incident incident = 3;
+  ApproveIncidentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveIncident`.
+message ApproveIncidentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Incident incident = 1;
+  ApproveIncidentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectIncident`.
+message RejectIncidentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string incident_id = 2;
+  Incident incident = 3;
+  RejectIncidentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectIncident`.
+message RejectIncidentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Incident incident = 1;
+  RejectIncidentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateIncident`.
+message EscalateIncidentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string incident_id = 2;
+  Incident incident = 3;
+  EscalateIncidentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateIncident`.
+message EscalateIncidentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Incident incident = 1;
+  EscalateIncidentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingIncidents`.
+message ListPendingIncidentsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated IncidentStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingIncidentsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingIncidents`.
+message ListPendingIncidentsResponse {
+  repeated Incident incidents = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateIncidentApproval`.
+message DelegateIncidentApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string incident_id = 2;
+  Incident incident = 3;
+  DelegateIncidentApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateIncidentApproval`.
+message DelegateIncidentApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Incident incident = 1;
+  DelegateIncidentApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallIncident`.
+message RecallIncidentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string incident_id = 2;
+  Incident incident = 3;
+  RecallIncidentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallIncident`.
+message RecallIncidentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Incident incident = 1;
+  RecallIncidentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetIncidentApprovalStatus`.
+message GetIncidentApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string incident_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetIncidentApprovalStatus`.
+message GetIncidentApprovalStatusResponse {
+  Incident incident = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentIncidentApproval`.
+message CommentIncidentApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string incident_id = 2;
+  Incident incident = 3;
+  CommentIncidentApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentIncidentApproval`.
+message CommentIncidentApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Incident incident = 1;
+  CommentIncidentApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

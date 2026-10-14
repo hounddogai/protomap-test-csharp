@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.employees.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/employees/v1/employees.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Employees.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/employees/v1;employeesv1";
+option java_multiple_files = true;
+option java_outer_classname = "OrgUnitApprovalServiceProto";
+option java_package = "com.acme.employees.v1";
+
+// Routes org units through approval, with escalation and delegation.
+service OrgUnitApprovalService {
+  // Submits an org unit.
+  rpc SubmitOrgUnit(SubmitOrgUnitRequest) returns (SubmitOrgUnitResponse);
+
+  // Approves an org unit.
+  rpc ApproveOrgUnit(ApproveOrgUnitRequest) returns (ApproveOrgUnitResponse);
+
+  // Rejects an org unit.
+  rpc RejectOrgUnit(RejectOrgUnitRequest) returns (RejectOrgUnitResponse);
+
+  // Escalates an org unit.
+  rpc EscalateOrgUnit(EscalateOrgUnitRequest) returns (EscalateOrgUnitResponse);
+
+  // Lists org units a page at a time.
+  rpc ListPendingOrgUnits(ListPendingOrgUnitsRequest) returns (ListPendingOrgUnitsResponse);
+
+  // Delegates an org unit.
+  rpc DelegateOrgUnitApproval(DelegateOrgUnitApprovalRequest) returns (DelegateOrgUnitApprovalResponse);
+
+  // Recalls an org unit.
+  rpc RecallOrgUnit(RecallOrgUnitRequest) returns (RecallOrgUnitResponse);
+
+  // Returns an org unit.
+  rpc GetOrgUnitApprovalStatus(GetOrgUnitApprovalStatusRequest) returns (GetOrgUnitApprovalStatusResponse);
+
+  // Comments an org unit.
+  rpc CommentOrgUnitApproval(CommentOrgUnitApprovalRequest) returns (CommentOrgUnitApprovalResponse);
+}
+
+// The request of `SubmitOrgUnit`.
+message SubmitOrgUnitRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string org_unit_id = 2;
+  OrgUnit org_unit = 3;
+  SubmitOrgUnitRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitOrgUnit`.
+message SubmitOrgUnitResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OrgUnit org_unit = 1;
+  SubmitOrgUnitResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveOrgUnit`.
+message ApproveOrgUnitRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string org_unit_id = 2;
+  OrgUnit org_unit = 3;
+  ApproveOrgUnitRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveOrgUnit`.
+message ApproveOrgUnitResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OrgUnit org_unit = 1;
+  ApproveOrgUnitResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectOrgUnit`.
+message RejectOrgUnitRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string org_unit_id = 2;
+  OrgUnit org_unit = 3;
+  RejectOrgUnitRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectOrgUnit`.
+message RejectOrgUnitResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OrgUnit org_unit = 1;
+  RejectOrgUnitResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateOrgUnit`.
+message EscalateOrgUnitRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string org_unit_id = 2;
+  OrgUnit org_unit = 3;
+  EscalateOrgUnitRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateOrgUnit`.
+message EscalateOrgUnitResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OrgUnit org_unit = 1;
+  EscalateOrgUnitResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingOrgUnits`.
+message ListPendingOrgUnitsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated OrgUnitStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingOrgUnitsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingOrgUnits`.
+message ListPendingOrgUnitsResponse {
+  repeated OrgUnit org_units = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateOrgUnitApproval`.
+message DelegateOrgUnitApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string org_unit_id = 2;
+  OrgUnit org_unit = 3;
+  DelegateOrgUnitApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateOrgUnitApproval`.
+message DelegateOrgUnitApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OrgUnit org_unit = 1;
+  DelegateOrgUnitApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallOrgUnit`.
+message RecallOrgUnitRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string org_unit_id = 2;
+  OrgUnit org_unit = 3;
+  RecallOrgUnitRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallOrgUnit`.
+message RecallOrgUnitResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OrgUnit org_unit = 1;
+  RecallOrgUnitResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetOrgUnitApprovalStatus`.
+message GetOrgUnitApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string org_unit_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetOrgUnitApprovalStatus`.
+message GetOrgUnitApprovalStatusResponse {
+  OrgUnit org_unit = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentOrgUnitApproval`.
+message CommentOrgUnitApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string org_unit_id = 2;
+  OrgUnit org_unit = 3;
+  CommentOrgUnitApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentOrgUnitApproval`.
+message CommentOrgUnitApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  OrgUnit org_unit = 1;
+  CommentOrgUnitApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

@@ -1,0 +1,119 @@
+namespace Acme.Workforce.Talent.Mobility.Allocation;
+
+/// <summary>A rule a primary mobility target must pass. Check returns its problems, or none.</summary>
+public interface IPrimaryMobilityTargetRule
+{
+    List<string> Check(PrimaryMobilityTarget item);
+}
+
+public sealed record PrimaryMobilityTargetChannelLengthRule(int MaxLength) : IPrimaryMobilityTargetRule
+{
+    public List<string> Check(PrimaryMobilityTarget item)
+    {
+        var size = item.Channel.Length;
+        if (size > MaxLength)
+        {
+            return new List<string> { $"channel is {size} characters, more than {MaxLength}" };
+        }
+        return new List<string>();
+    }
+}
+
+public sealed record PrimaryMobilityTargetRequiredDescriptionRule(string Message) : IPrimaryMobilityTargetRule
+{
+    public List<string> Check(PrimaryMobilityTarget item)
+    {
+        if (item.Description.Trim() == "")
+        {
+            return new List<string> { Message };
+        }
+        return new List<string>();
+    }
+}
+
+public sealed record PrimaryMobilityTargetMinimumRangeRule(double Min, double Max) : IPrimaryMobilityTargetRule
+{
+    public List<string> Check(PrimaryMobilityTarget item)
+    {
+        var valueValue = item.Minimum;
+        var problems = new List<string>();
+        if (valueValue < Min)
+        {
+            problems.Add($"minimum {valueValue} is below {Min}");
+        }
+        if (valueValue > Max)
+        {
+            problems.Add($"minimum {valueValue} is above {Max}");
+        }
+        return problems;
+    }
+}
+
+public sealed record PrimaryMobilityTargetCodeLengthRule(int MaxLength) : IPrimaryMobilityTargetRule
+{
+    public List<string> Check(PrimaryMobilityTarget item)
+    {
+        var size = item.Code.Length;
+        if (size > MaxLength)
+        {
+            return new List<string> { $"code is {size} characters, more than {MaxLength}" };
+        }
+        return new List<string>();
+    }
+}
+
+/// <summary>Runs every rule of a primary mobility target.</summary>
+public sealed record PrimaryMobilityTargetValidator(List<IPrimaryMobilityTargetRule> Rules)
+{
+    public List<string> Validate(PrimaryMobilityTarget item)
+    {
+        var problems = new List<string>();
+        foreach (var rule in Rules)
+        {
+            foreach (var problem in rule.Check(item))
+            {
+                problems.Add(problem);
+            }
+        }
+        return problems;
+    }
+
+    public void RequireValid(PrimaryMobilityTarget item)
+    {
+        var problems = Validate(item);
+        if (problems.Count > 0)
+        {
+            throw new InvalidOperationException($"{item.Label()} is invalid: {string.Join("; ", problems)}");
+        }
+    }
+
+    public Dictionary<string, List<string>> ValidateAll(List<PrimaryMobilityTarget> items)
+    {
+        var report = new Dictionary<string, List<string>>();
+        foreach (var item in items)
+        {
+            var problems = Validate(item);
+            if (problems.Count > 0)
+            {
+                report[item.Code] = problems;
+            }
+        }
+        return report;
+    }
+}
+
+/// <summary>Functions of primary mobility target rules.</summary>
+public static class PrimaryMobilityTargetRules
+{
+    public static PrimaryMobilityTargetValidator DefaultPrimaryMobilityTargetValidator()
+    {
+        return new PrimaryMobilityTargetValidator(
+            new List<IPrimaryMobilityTargetRule>
+            {
+                new PrimaryMobilityTargetChannelLengthRule(32),
+                new PrimaryMobilityTargetRequiredDescriptionRule("primary mobility target needs an entry"),
+                new PrimaryMobilityTargetMinimumRangeRule(2.1, 3827.9),
+                new PrimaryMobilityTargetCodeLengthRule(64),
+            });
+    }
+}

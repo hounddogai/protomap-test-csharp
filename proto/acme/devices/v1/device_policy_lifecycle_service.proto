@@ -1,0 +1,258 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.devices.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/devices/v1/devices.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Devices.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/devices/v1;devicesv1";
+option java_multiple_files = true;
+option java_outer_classname = "DevicePolicyLifecycleServiceProto";
+option java_package = "com.acme.devices.v1";
+
+// Moves a device policy between the states of its lifecycle.
+service DevicePolicyLifecycleService {
+  // Activates a device policy.
+  rpc ActivateDevicePolicy(ActivateDevicePolicyRequest) returns (ActivateDevicePolicyResponse);
+
+  // Suspends a device policy.
+  rpc SuspendDevicePolicy(SuspendDevicePolicyRequest) returns (SuspendDevicePolicyResponse);
+
+  // Reinstates a device policy.
+  rpc ReinstateDevicePolicy(ReinstateDevicePolicyRequest) returns (ReinstateDevicePolicyResponse);
+
+  // Terminates a device policy.
+  rpc TerminateDevicePolicy(TerminateDevicePolicyRequest) returns (TerminateDevicePolicyResponse);
+
+  // Renews a device policy.
+  rpc RenewDevicePolicy(RenewDevicePolicyRequest) returns (RenewDevicePolicyResponse);
+
+  // Returns a device policy.
+  rpc GetDevicePolicyLifecycle(GetDevicePolicyLifecycleRequest) returns (GetDevicePolicyLifecycleResponse);
+
+  // Schedules a device policy.
+  rpc ScheduleDevicePolicyExpiry(ScheduleDevicePolicyExpiryRequest) returns (ScheduleDevicePolicyExpiryResponse);
+}
+
+// The request of `ActivateDevicePolicy`.
+message ActivateDevicePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  ActivateDevicePolicyRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateDevicePolicy`.
+message ActivateDevicePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DevicePolicy device_policy = 1;
+  ActivateDevicePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendDevicePolicy`.
+message SuspendDevicePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  SuspendDevicePolicyRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendDevicePolicy`.
+message SuspendDevicePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DevicePolicy device_policy = 1;
+  SuspendDevicePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateDevicePolicy`.
+message ReinstateDevicePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  ReinstateDevicePolicyRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateDevicePolicy`.
+message ReinstateDevicePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DevicePolicy device_policy = 1;
+  ReinstateDevicePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateDevicePolicy`.
+message TerminateDevicePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  TerminateDevicePolicyRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateDevicePolicy`.
+message TerminateDevicePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DevicePolicy device_policy = 1;
+  TerminateDevicePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewDevicePolicy`.
+message RenewDevicePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  RenewDevicePolicyRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewDevicePolicy`.
+message RenewDevicePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DevicePolicy device_policy = 1;
+  RenewDevicePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetDevicePolicyLifecycle`.
+message GetDevicePolicyLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetDevicePolicyLifecycle`.
+message GetDevicePolicyLifecycleResponse {
+  DevicePolicy device_policy = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleDevicePolicyExpiry`.
+message ScheduleDevicePolicyExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string device_policy_id = 2;
+  DevicePolicy device_policy = 3;
+  ScheduleDevicePolicyExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleDevicePolicyExpiry`.
+message ScheduleDevicePolicyExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DevicePolicy device_policy = 1;
+  ScheduleDevicePolicyExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.corporateevents.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/corporateevents/v1/corporateevents.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Corporateevents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/corporateevents/v1;corporateeventsv1";
+option java_multiple_files = true;
+option java_outer_classname = "CorporateEventValidationServiceProto";
+option java_package = "com.acme.corporateevents.v1";
+
+// Checks corporate events against the rules before anything acts on them.
+service CorporateEventValidationService {
+  // Validates a corporate event.
+  rpc ValidateCorporateEvent(ValidateCorporateEventRequest) returns (ValidateCorporateEventResponse);
+
+  // Previews a corporate event.
+  rpc PreviewCorporateEvent(PreviewCorporateEventRequest) returns (PreviewCorporateEventResponse);
+
+  // Checks a corporate event.
+  rpc CheckCorporateEventEligibility(CheckCorporateEventEligibilityRequest) returns (CheckCorporateEventEligibilityResponse);
+
+  // Normalizes a corporate event.
+  rpc NormalizeCorporateEvent(NormalizeCorporateEventRequest) returns (NormalizeCorporateEventResponse);
+
+  // Explains a corporate event.
+  rpc ExplainCorporateEventDecision(ExplainCorporateEventDecisionRequest) returns (ExplainCorporateEventDecisionResponse);
+
+  // Scores a corporate event.
+  rpc ScoreCorporateEvent(ScoreCorporateEventRequest) returns (ScoreCorporateEventResponse);
+
+  // Lints a corporate event.
+  rpc LintCorporateEvents(LintCorporateEventsRequest) returns (LintCorporateEventsResponse);
+
+  // Returns a corporate event.
+  rpc GetCorporateEventRules(GetCorporateEventRulesRequest) returns (GetCorporateEventRulesResponse);
+}
+
+// The request of `ValidateCorporateEvent`.
+message ValidateCorporateEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string corporate_event_id = 2;
+  CorporateEvent corporate_event = 3;
+  ValidateCorporateEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateCorporateEvent`.
+message ValidateCorporateEventResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CorporateEvent corporate_event = 1;
+  ValidateCorporateEventResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewCorporateEvent`.
+message PreviewCorporateEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string corporate_event_id = 2;
+  CorporateEvent corporate_event = 3;
+  PreviewCorporateEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewCorporateEvent`.
+message PreviewCorporateEventResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CorporateEvent corporate_event = 1;
+  PreviewCorporateEventResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckCorporateEventEligibility`.
+message CheckCorporateEventEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string corporate_event_id = 2;
+  CorporateEvent corporate_event = 3;
+  CheckCorporateEventEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckCorporateEventEligibility`.
+message CheckCorporateEventEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CorporateEvent corporate_event = 1;
+  CheckCorporateEventEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeCorporateEvent`.
+message NormalizeCorporateEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string corporate_event_id = 2;
+  CorporateEvent corporate_event = 3;
+  NormalizeCorporateEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeCorporateEvent`.
+message NormalizeCorporateEventResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CorporateEvent corporate_event = 1;
+  NormalizeCorporateEventResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainCorporateEventDecision`.
+message ExplainCorporateEventDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string corporate_event_id = 2;
+  CorporateEvent corporate_event = 3;
+  ExplainCorporateEventDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainCorporateEventDecision`.
+message ExplainCorporateEventDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CorporateEvent corporate_event = 1;
+  ExplainCorporateEventDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreCorporateEvent`.
+message ScoreCorporateEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string corporate_event_id = 2;
+  CorporateEvent corporate_event = 3;
+  ScoreCorporateEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreCorporateEvent`.
+message ScoreCorporateEventResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreCorporateEventResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  CorporateEvent corporate_event = 1;
+  ScoreCorporateEventResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintCorporateEvents`.
+message LintCorporateEventsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string corporate_event_id = 2;
+  CorporateEvent corporate_event = 3;
+  LintCorporateEventsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintCorporateEvents`.
+message LintCorporateEventsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CorporateEvent corporate_event = 1;
+  LintCorporateEventsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetCorporateEventRules`.
+message GetCorporateEventRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string corporate_event_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetCorporateEventRules`.
+message GetCorporateEventRulesResponse {
+  CorporateEvent corporate_event = 1;
+  acme.common.v1.OperationResult result = 2;
+}

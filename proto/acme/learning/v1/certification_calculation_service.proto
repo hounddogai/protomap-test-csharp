@@ -1,0 +1,296 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.learning.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/learning/v1/learning.proto";
+import "google/protobuf/field_mask.proto";
+
+option csharp_namespace = "Acme.Learning.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/learning/v1;learningv1";
+option java_multiple_files = true;
+option java_outer_classname = "CertificationCalculationServiceProto";
+option java_package = "com.acme.learning.v1";
+
+// Computes the figures of a certification, such as totals, taxes, and estimates.
+service CertificationCalculationService {
+  // Calculates a certification.
+  rpc CalculateCertification(CalculateCertificationRequest) returns (CalculateCertificationResponse);
+
+  // Estimates a certification.
+  rpc EstimateCertification(EstimateCertificationRequest) returns (EstimateCertificationResponse);
+
+  // Quotes a certification.
+  rpc QuoteCertification(QuoteCertificationRequest) returns (QuoteCertificationResponse);
+
+  // Compares a certification.
+  rpc CompareCertificationOptions(CompareCertificationOptionsRequest) returns (CompareCertificationOptionsResponse);
+
+  // Recalculates a certification.
+  rpc RecalculateCertifications(RecalculateCertificationsRequest) returns (RecalculateCertificationsResponse);
+
+  // Simulates a certification.
+  rpc SimulateCertification(SimulateCertificationRequest) returns (SimulateCertificationResponse);
+
+  // Returns a certification.
+  rpc GetCertificationRates(GetCertificationRatesRequest) returns (GetCertificationRatesResponse);
+}
+
+// The request of `CalculateCertification`.
+message CalculateCertificationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  CalculateCertificationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateCertification`.
+message CalculateCertificationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateCertificationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Certification certification = 1;
+  CalculateCertificationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateCertification`.
+message EstimateCertificationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  EstimateCertificationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateCertification`.
+message EstimateCertificationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateCertificationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Certification certification = 1;
+  EstimateCertificationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteCertification`.
+message QuoteCertificationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  QuoteCertificationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteCertification`.
+message QuoteCertificationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteCertificationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Certification certification = 1;
+  QuoteCertificationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareCertificationOptions`.
+message CompareCertificationOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  CompareCertificationOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareCertificationOptions`.
+message CompareCertificationOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareCertificationOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Certification certification = 1;
+  CompareCertificationOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateCertifications`.
+message RecalculateCertificationsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  RecalculateCertificationsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateCertifications`.
+message RecalculateCertificationsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateCertificationsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Certification certification = 1;
+  RecalculateCertificationsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateCertification`.
+message SimulateCertificationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  Certification certification = 3;
+  SimulateCertificationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateCertification`.
+message SimulateCertificationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateCertificationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Certification certification = 1;
+  SimulateCertificationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetCertificationRates`.
+message GetCertificationRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string certification_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetCertificationRates`.
+message GetCertificationRatesResponse {
+  Certification certification = 1;
+  acme.common.v1.OperationResult result = 2;
+}

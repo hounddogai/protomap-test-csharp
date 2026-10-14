@@ -1,0 +1,35 @@
+using Acme.Workforce.Platform;
+using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using ApiCommon = Acme.Common.V1;
+using ApiCorporateevents = Acme.Corporateevents.V1;
+using ApiCustomers = Acme.Customers.V1;
+using ApiEmployees = Acme.Employees.V1;
+using ApiIdentity = Acme.Identity.V1;
+using ApiInvoicing = Acme.Invoicing.V1;
+using ApiItsm = Acme.Itsm.V1;
+using ApiMetrics = Acme.Metrics.V1;
+using ApiSearch = Acme.Search.V1;
+using ApiWorkplaces = Acme.Workplaces.V1;
+
+namespace Acme.Workforce.Workplaces;
+
+public sealed class BuildingApprovalEndpointApproveBuilding1NotificationHandler(ApiInvoicing.InvoiceBatchCalculationService.InvoiceBatchCalculationServiceClient client) : INotificationHandler
+{
+    public string Topic => "acme.workplaces.v1.BuildingApprovalService/ApproveBuilding/1";
+    public async Task HandleAsync(INotification notification, CancellationToken token)
+    {
+        if (notification is not TransportNotification<ApiInvoicing.CompareInvoiceBatchOptionsRequest> message)
+            throw new InvalidOperationException("Unexpected notification contract");
+        using var rpc = client.CompareInvoiceBatchOptionsAsync(message.Request, cancellationToken: token);
+        await rpc.ResponseAsync;
+    }
+}

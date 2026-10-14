@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.timekeeping.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/timekeeping/v1/timekeeping.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Timekeeping.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/timekeeping/v1;timekeepingv1";
+option java_multiple_files = true;
+option java_outer_classname = "ClockEventValidationServiceProto";
+option java_package = "com.acme.timekeeping.v1";
+
+// Checks clock events against the rules before anything acts on them.
+service ClockEventValidationService {
+  // Validates a clock event.
+  rpc ValidateClockEvent(ValidateClockEventRequest) returns (ValidateClockEventResponse);
+
+  // Previews a clock event.
+  rpc PreviewClockEvent(PreviewClockEventRequest) returns (PreviewClockEventResponse);
+
+  // Checks a clock event.
+  rpc CheckClockEventEligibility(CheckClockEventEligibilityRequest) returns (CheckClockEventEligibilityResponse);
+
+  // Normalizes a clock event.
+  rpc NormalizeClockEvent(NormalizeClockEventRequest) returns (NormalizeClockEventResponse);
+
+  // Explains a clock event.
+  rpc ExplainClockEventDecision(ExplainClockEventDecisionRequest) returns (ExplainClockEventDecisionResponse);
+
+  // Scores a clock event.
+  rpc ScoreClockEvent(ScoreClockEventRequest) returns (ScoreClockEventResponse);
+
+  // Lints a clock event.
+  rpc LintClockEvents(LintClockEventsRequest) returns (LintClockEventsResponse);
+
+  // Returns a clock event.
+  rpc GetClockEventRules(GetClockEventRulesRequest) returns (GetClockEventRulesResponse);
+}
+
+// The request of `ValidateClockEvent`.
+message ValidateClockEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  ValidateClockEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateClockEvent`.
+message ValidateClockEventResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  ValidateClockEventResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewClockEvent`.
+message PreviewClockEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  PreviewClockEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewClockEvent`.
+message PreviewClockEventResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  PreviewClockEventResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckClockEventEligibility`.
+message CheckClockEventEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  CheckClockEventEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckClockEventEligibility`.
+message CheckClockEventEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  CheckClockEventEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeClockEvent`.
+message NormalizeClockEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  NormalizeClockEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeClockEvent`.
+message NormalizeClockEventResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  NormalizeClockEventResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainClockEventDecision`.
+message ExplainClockEventDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  ExplainClockEventDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainClockEventDecision`.
+message ExplainClockEventDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  ExplainClockEventDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreClockEvent`.
+message ScoreClockEventRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  ScoreClockEventRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreClockEvent`.
+message ScoreClockEventResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreClockEventResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ClockEvent clock_event = 1;
+  ScoreClockEventResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintClockEvents`.
+message LintClockEventsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  ClockEvent clock_event = 3;
+  LintClockEventsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintClockEvents`.
+message LintClockEventsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ClockEvent clock_event = 1;
+  LintClockEventsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetClockEventRules`.
+message GetClockEventRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string clock_event_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetClockEventRules`.
+message GetClockEventRulesResponse {
+  ClockEvent clock_event = 1;
+  acme.common.v1.OperationResult result = 2;
+}

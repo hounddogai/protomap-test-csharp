@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.scheduling.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/scheduling/v1/scheduling.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Scheduling.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/scheduling/v1;schedulingv1";
+option java_multiple_files = true;
+option java_outer_classname = "RosterCalculationServiceProto";
+option java_package = "com.acme.scheduling.v1";
+
+// Computes the figures of a roster, such as totals, taxes, and estimates.
+service RosterCalculationService {
+  // Calculates a roster.
+  rpc CalculateRoster(CalculateRosterRequest) returns (CalculateRosterResponse);
+
+  // Estimates a roster.
+  rpc EstimateRoster(EstimateRosterRequest) returns (EstimateRosterResponse);
+
+  // Quotes a roster.
+  rpc QuoteRoster(QuoteRosterRequest) returns (QuoteRosterResponse);
+
+  // Compares a roster.
+  rpc CompareRosterOptions(CompareRosterOptionsRequest) returns (CompareRosterOptionsResponse);
+
+  // Recalculates a roster.
+  rpc RecalculateRosters(RecalculateRostersRequest) returns (RecalculateRostersResponse);
+
+  // Simulates a roster.
+  rpc SimulateRoster(SimulateRosterRequest) returns (SimulateRosterResponse);
+
+  // Explains a roster.
+  rpc ExplainRosterCalculation(ExplainRosterCalculationRequest) returns (ExplainRosterCalculationResponse);
+
+  // Returns a roster.
+  rpc GetRosterRates(GetRosterRatesRequest) returns (GetRosterRatesResponse);
+}
+
+// The request of `CalculateRoster`.
+message CalculateRosterRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  CalculateRosterRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateRoster`.
+message CalculateRosterResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateRosterResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Roster roster = 1;
+  CalculateRosterResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateRoster`.
+message EstimateRosterRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  EstimateRosterRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateRoster`.
+message EstimateRosterResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateRosterResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Roster roster = 1;
+  EstimateRosterResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteRoster`.
+message QuoteRosterRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  QuoteRosterRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteRoster`.
+message QuoteRosterResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteRosterResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Roster roster = 1;
+  QuoteRosterResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareRosterOptions`.
+message CompareRosterOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  CompareRosterOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareRosterOptions`.
+message CompareRosterOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareRosterOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Roster roster = 1;
+  CompareRosterOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateRosters`.
+message RecalculateRostersRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  RecalculateRostersRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateRosters`.
+message RecalculateRostersResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateRostersResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Roster roster = 1;
+  RecalculateRostersResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateRoster`.
+message SimulateRosterRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  SimulateRosterRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateRoster`.
+message SimulateRosterResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateRosterResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Roster roster = 1;
+  SimulateRosterResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainRosterCalculation`.
+message ExplainRosterCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  Roster roster = 3;
+  ExplainRosterCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainRosterCalculation`.
+message ExplainRosterCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Roster roster = 1;
+  ExplainRosterCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetRosterRates`.
+message GetRosterRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string roster_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetRosterRates`.
+message GetRosterRatesResponse {
+  Roster roster = 1;
+  acme.common.v1.OperationResult result = 2;
+}

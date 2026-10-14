@@ -1,0 +1,240 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.employees.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/employees/v1/employees.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Employees.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/employees/v1;employeesv1";
+option java_multiple_files = true;
+option java_outer_classname = "EmployeeApprovalServiceProto";
+option java_package = "com.acme.employees.v1";
+
+// Routes employees through approval, with escalation and delegation.
+service EmployeeApprovalService {
+  // Submits an employee.
+  rpc SubmitEmployee(SubmitEmployeeRequest) returns (SubmitEmployeeResponse);
+
+  // Approves an employee.
+  rpc ApproveEmployee(ApproveEmployeeRequest) returns (ApproveEmployeeResponse);
+
+  // Escalates an employee.
+  rpc EscalateEmployee(EscalateEmployeeRequest) returns (EscalateEmployeeResponse);
+
+  // Lists employees a page at a time.
+  rpc ListPendingEmployees(ListPendingEmployeesRequest) returns (ListPendingEmployeesResponse);
+
+  // Recalls an employee.
+  rpc RecallEmployee(RecallEmployeeRequest) returns (RecallEmployeeResponse);
+
+  // Comments an employee.
+  rpc CommentEmployeeApproval(CommentEmployeeApprovalRequest) returns (CommentEmployeeApprovalResponse);
+}
+
+// The request of `SubmitEmployee`.
+message SubmitEmployeeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employee_id = 2;
+  Employee employee = 3;
+  SubmitEmployeeRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitEmployee`.
+message SubmitEmployeeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Employee employee = 1;
+  SubmitEmployeeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveEmployee`.
+message ApproveEmployeeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employee_id = 2;
+  Employee employee = 3;
+  ApproveEmployeeRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveEmployee`.
+message ApproveEmployeeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Employee employee = 1;
+  ApproveEmployeeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateEmployee`.
+message EscalateEmployeeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employee_id = 2;
+  Employee employee = 3;
+  EscalateEmployeeRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateEmployee`.
+message EscalateEmployeeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Employee employee = 1;
+  EscalateEmployeeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingEmployees`.
+message ListPendingEmployeesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EmployeeStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingEmployeesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingEmployees`.
+message ListPendingEmployeesResponse {
+  repeated Employee employees = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallEmployee`.
+message RecallEmployeeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employee_id = 2;
+  Employee employee = 3;
+  RecallEmployeeRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallEmployee`.
+message RecallEmployeeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Employee employee = 1;
+  RecallEmployeeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CommentEmployeeApproval`.
+message CommentEmployeeApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string employee_id = 2;
+  Employee employee = 3;
+  CommentEmployeeApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentEmployeeApproval`.
+message CommentEmployeeApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Employee employee = 1;
+  CommentEmployeeApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

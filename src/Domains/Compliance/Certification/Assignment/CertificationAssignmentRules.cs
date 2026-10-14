@@ -1,0 +1,106 @@
+namespace Acme.Workforce.Compliance.Certification.Assignment;
+
+/// <summary>A rule a certification assignment must pass. Check returns its problems, or none.</summary>
+public interface ICertificationAssignmentRule
+{
+    List<string> Check(CertificationAssignment item);
+}
+
+public sealed record CertificationAssignmentDepartmentLengthRule(int MaxLength) : ICertificationAssignmentRule
+{
+    public List<string> Check(CertificationAssignment item)
+    {
+        var size = item.Department.Length;
+        if (size > MaxLength)
+        {
+            return new List<string> { $"department is {size} characters, more than {MaxLength}" };
+        }
+        return new List<string>();
+    }
+}
+
+public sealed record CertificationAssignmentCodeLengthRule(int MaxLength) : ICertificationAssignmentRule
+{
+    public List<string> Check(CertificationAssignment item)
+    {
+        var size = item.Code.Length;
+        if (size > MaxLength)
+        {
+            return new List<string> { $"code is {size} characters, more than {MaxLength}" };
+        }
+        return new List<string>();
+    }
+}
+
+public sealed record CertificationAssignmentLabelLengthRule(int MaxLength) : ICertificationAssignmentRule
+{
+    public List<string> Check(CertificationAssignment item)
+    {
+        var size = item.Label.Length;
+        if (size > MaxLength)
+        {
+            return new List<string> { $"label is {size} characters, more than {MaxLength}" };
+        }
+        return new List<string>();
+    }
+}
+
+/// <summary>Runs every rule of a certification assignment.</summary>
+public sealed record CertificationAssignmentValidator(List<ICertificationAssignmentRule> Rules)
+{
+    public List<string> Validate(CertificationAssignment item)
+    {
+        var problems = new List<string>();
+        foreach (var rule in Rules)
+        {
+            var found = rule.Check(item);
+            if (found.Count == 0)
+            {
+                continue;
+            }
+            foreach (var problem in found)
+            {
+                problems.Add($"{item.Code}: {problem}");
+            }
+        }
+        return problems;
+    }
+
+    public void RequireValid(CertificationAssignment item)
+    {
+        var problems = Validate(item);
+        if (problems.Count > 0)
+        {
+            throw new InvalidOperationException($"{item.DisplayLabel()} is invalid: {string.Join("; ", problems)}");
+        }
+    }
+
+    public Dictionary<string, List<string>> ValidateAll(List<CertificationAssignment> items)
+    {
+        var report = new Dictionary<string, List<string>>();
+        foreach (var item in items)
+        {
+            var problems = Validate(item);
+            if (problems.Count > 0)
+            {
+                report[item.Code] = problems;
+            }
+        }
+        return report;
+    }
+}
+
+/// <summary>Functions of certification assignment rules.</summary>
+public static class CertificationAssignmentRules
+{
+    public static CertificationAssignmentValidator DefaultCertificationAssignmentValidator()
+    {
+        return new CertificationAssignmentValidator(
+            new List<ICertificationAssignmentRule>
+            {
+                new CertificationAssignmentDepartmentLengthRule(120),
+                new CertificationAssignmentCodeLengthRule(16),
+                new CertificationAssignmentLabelLengthRule(80),
+            });
+    }
+}

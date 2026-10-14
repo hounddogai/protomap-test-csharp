@@ -1,0 +1,284 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.travel.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/travel/v1/travel.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Travel.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/travel/v1;travelv1";
+option java_multiple_files = true;
+option java_outer_classname = "ItinerarySyncServiceProto";
+option java_package = "com.acme.travel.v1";
+
+// Keeps itineraries in step with the systems of record in other regions.
+service ItinerarySyncService {
+  // Syncs an itinerary.
+  rpc SyncItineraries(SyncItinerariesRequest) returns (SyncItinerariesResponse);
+
+  // Pushs an itinerary.
+  rpc PushItinerary(PushItineraryRequest) returns (PushItineraryResponse);
+
+  // Pulls an itinerary.
+  rpc PullItineraries(PullItinerariesRequest) returns (PullItinerariesResponse);
+
+  // Reconciles an itinerary.
+  rpc ReconcileItineraries(ReconcileItinerariesRequest) returns (ReconcileItinerariesResponse);
+
+  // Exchanges changes of itineraries with a peer.
+  rpc StreamItineraryChanges(stream StreamItineraryChangesRequest) returns (stream StreamItineraryChangesResponse);
+
+  // Resolves an itinerary.
+  rpc ResolveItineraryConflict(ResolveItineraryConflictRequest) returns (ResolveItineraryConflictResponse);
+
+  // Returns an itinerary.
+  rpc GetItinerarySyncState(GetItinerarySyncStateRequest) returns (GetItinerarySyncStateResponse);
+
+  // Lists itineraries a page at a time.
+  rpc ListItineraryConflicts(ListItineraryConflictsRequest) returns (ListItineraryConflictsResponse);
+}
+
+// The request of `SyncItineraries`.
+message SyncItinerariesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  SyncItinerariesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SyncItineraries`.
+message SyncItinerariesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  SyncItinerariesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PushItinerary`.
+message PushItineraryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  PushItineraryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PushItinerary`.
+message PushItineraryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  PushItineraryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PullItineraries`.
+message PullItinerariesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  PullItinerariesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PullItineraries`.
+message PullItinerariesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  PullItinerariesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReconcileItineraries`.
+message ReconcileItinerariesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  ReconcileItinerariesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ReconcileItineraries`.
+message ReconcileItinerariesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  ReconcileItinerariesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `StreamItineraryChanges`.
+message StreamItineraryChangesRequest {
+  // An acknowledgment of a change the peer sent.
+  message ChangeAck {
+    int64 sequence = 1;
+    string status = 2;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  oneof frame {
+    Itinerary change = 2;
+    StreamItineraryChangesRequest.ChangeAck ack = 3;
+  }
+  string cursor = 4;
+}
+
+// The response of `StreamItineraryChanges`.
+message StreamItineraryChangesResponse {
+  Itinerary itinerary = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `ResolveItineraryConflict`.
+message ResolveItineraryConflictRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  Itinerary itinerary = 3;
+  ResolveItineraryConflictRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResolveItineraryConflict`.
+message ResolveItineraryConflictResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Itinerary itinerary = 1;
+  ResolveItineraryConflictResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetItinerarySyncState`.
+message GetItinerarySyncStateRequest {
+  acme.common.v1.RequestContext context = 1;
+  string itinerary_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetItinerarySyncState`.
+message GetItinerarySyncStateResponse {
+  Itinerary itinerary = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListItineraryConflicts`.
+message ListItineraryConflictsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated ItineraryStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListItineraryConflictsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListItineraryConflicts`.
+message ListItineraryConflictsResponse {
+  repeated Itinerary itineraries = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}

@@ -1,0 +1,223 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.documents.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/documents/v1/documents.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Documents.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/documents/v1;documentsv1";
+option java_multiple_files = true;
+option java_outer_classname = "DocumentFolderValidationServiceProto";
+option java_package = "com.acme.documents.v1";
+
+// Checks document folders against the rules before anything acts on them.
+service DocumentFolderValidationService {
+  // Validates a document folder.
+  rpc ValidateDocumentFolder(ValidateDocumentFolderRequest) returns (ValidateDocumentFolderResponse);
+
+  // Previews a document folder.
+  rpc PreviewDocumentFolder(PreviewDocumentFolderRequest) returns (PreviewDocumentFolderResponse);
+
+  // Normalizes a document folder.
+  rpc NormalizeDocumentFolder(NormalizeDocumentFolderRequest) returns (NormalizeDocumentFolderResponse);
+
+  // Explains a document folder.
+  rpc ExplainDocumentFolderDecision(ExplainDocumentFolderDecisionRequest) returns (ExplainDocumentFolderDecisionResponse);
+
+  // Lints a document folder.
+  rpc LintDocumentFolders(LintDocumentFoldersRequest) returns (LintDocumentFoldersResponse);
+
+  // Returns a document folder.
+  rpc GetDocumentFolderRules(GetDocumentFolderRulesRequest) returns (GetDocumentFolderRulesResponse);
+}
+
+// The request of `ValidateDocumentFolder`.
+message ValidateDocumentFolderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  DocumentFolder document_folder = 3;
+  ValidateDocumentFolderRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateDocumentFolder`.
+message ValidateDocumentFolderResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  ValidateDocumentFolderResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewDocumentFolder`.
+message PreviewDocumentFolderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  DocumentFolder document_folder = 3;
+  PreviewDocumentFolderRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewDocumentFolder`.
+message PreviewDocumentFolderResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  PreviewDocumentFolderResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeDocumentFolder`.
+message NormalizeDocumentFolderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  DocumentFolder document_folder = 3;
+  NormalizeDocumentFolderRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeDocumentFolder`.
+message NormalizeDocumentFolderResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  NormalizeDocumentFolderResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainDocumentFolderDecision`.
+message ExplainDocumentFolderDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  DocumentFolder document_folder = 3;
+  ExplainDocumentFolderDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainDocumentFolderDecision`.
+message ExplainDocumentFolderDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  ExplainDocumentFolderDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintDocumentFolders`.
+message LintDocumentFoldersRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  DocumentFolder document_folder = 3;
+  LintDocumentFoldersRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintDocumentFolders`.
+message LintDocumentFoldersResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  DocumentFolder document_folder = 1;
+  LintDocumentFoldersResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetDocumentFolderRules`.
+message GetDocumentFolderRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string document_folder_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetDocumentFolderRules`.
+message GetDocumentFolderRulesResponse {
+  DocumentFolder document_folder = 1;
+  acme.common.v1.OperationResult result = 2;
+}

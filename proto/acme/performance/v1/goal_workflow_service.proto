@@ -1,0 +1,296 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.performance.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/performance/v1/performance.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Performance.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/performance/v1;performancev1";
+option java_multiple_files = true;
+option java_outer_classname = "GoalWorkflowServiceProto";
+option java_package = "com.acme.performance.v1";
+
+// Runs the long-lived workflow that takes a goal from start to finish.
+service GoalWorkflowService {
+  // Starts a goal.
+  rpc StartGoalWorkflow(StartGoalWorkflowRequest) returns (StartGoalWorkflowResponse);
+
+  // Advances a goal.
+  rpc AdvanceGoalWorkflow(AdvanceGoalWorkflowRequest) returns (AdvanceGoalWorkflowResponse);
+
+  // Cancels a goal.
+  rpc CancelGoalWorkflow(CancelGoalWorkflowRequest) returns (CancelGoalWorkflowResponse);
+
+  // Retrys a goal.
+  rpc RetryGoalWorkflow(RetryGoalWorkflowRequest) returns (RetryGoalWorkflowResponse);
+
+  // Pauses a goal.
+  rpc PauseGoalWorkflow(PauseGoalWorkflowRequest) returns (PauseGoalWorkflowResponse);
+
+  // Returns a goal.
+  rpc InspectGoalWorkflow(InspectGoalWorkflowRequest) returns (InspectGoalWorkflowResponse);
+
+  // Lists goals a page at a time.
+  rpc ListGoalWorkflows(ListGoalWorkflowsRequest) returns (ListGoalWorkflowsResponse);
+
+  // Signals a goal.
+  rpc SignalGoalWorkflow(SignalGoalWorkflowRequest) returns (SignalGoalWorkflowResponse);
+}
+
+// The request of `StartGoalWorkflow`.
+message StartGoalWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string goal_id = 2;
+  Goal goal = 3;
+  StartGoalWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartGoalWorkflow`.
+message StartGoalWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Goal goal = 1;
+  StartGoalWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceGoalWorkflow`.
+message AdvanceGoalWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string goal_id = 2;
+  Goal goal = 3;
+  AdvanceGoalWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceGoalWorkflow`.
+message AdvanceGoalWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Goal goal = 1;
+  AdvanceGoalWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelGoalWorkflow`.
+message CancelGoalWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string goal_id = 2;
+  Goal goal = 3;
+  CancelGoalWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelGoalWorkflow`.
+message CancelGoalWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Goal goal = 1;
+  CancelGoalWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryGoalWorkflow`.
+message RetryGoalWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string goal_id = 2;
+  Goal goal = 3;
+  RetryGoalWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryGoalWorkflow`.
+message RetryGoalWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Goal goal = 1;
+  RetryGoalWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseGoalWorkflow`.
+message PauseGoalWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string goal_id = 2;
+  Goal goal = 3;
+  PauseGoalWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseGoalWorkflow`.
+message PauseGoalWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Goal goal = 1;
+  PauseGoalWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectGoalWorkflow`.
+message InspectGoalWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string goal_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectGoalWorkflow`.
+message InspectGoalWorkflowResponse {
+  Goal goal = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListGoalWorkflows`.
+message ListGoalWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated GoalStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListGoalWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListGoalWorkflows`.
+message ListGoalWorkflowsResponse {
+  repeated Goal goals = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalGoalWorkflow`.
+message SignalGoalWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string goal_id = 2;
+  Goal goal = 3;
+  SignalGoalWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalGoalWorkflow`.
+message SignalGoalWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Goal goal = 1;
+  SignalGoalWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

@@ -1,0 +1,144 @@
+namespace Acme.Workforce.Assets.Assignment.AssignmentClaim;
+
+using Acme.Workforce.Kit.Text;
+
+/// <summary>A rule a tiered assignment claim must pass. Check returns its problems, or none.</summary>
+public interface ITieredAssignmentClaimRule
+{
+    List<string> Check(TieredAssignmentClaim item);
+}
+
+public sealed record TieredAssignmentClaimEndsAtRangeRule(int Min, int Max) : ITieredAssignmentClaimRule
+{
+    public List<string> Check(TieredAssignmentClaim item)
+    {
+        var valueValue = item.EndsAt;
+        var problems = new List<string>();
+        if (valueValue < Min)
+        {
+            problems.Add($"ends at {valueValue} is below {Min}");
+        }
+        if (valueValue > Max)
+        {
+            problems.Add($"ends at {valueValue} is above {Max}");
+        }
+        return problems;
+    }
+}
+
+public sealed record TieredAssignmentClaimHoursRangeRule(double Min, double Max) : ITieredAssignmentClaimRule
+{
+    public List<string> Check(TieredAssignmentClaim item)
+    {
+        var valueValue = item.Hours;
+        var problems = new List<string>();
+        if (valueValue < Min)
+        {
+            problems.Add($"hours {valueValue} is below {Min}");
+        }
+        if (valueValue > Max)
+        {
+            problems.Add($"hours {valueValue} is above {Max}");
+        }
+        return problems;
+    }
+}
+
+public sealed record TieredAssignmentClaimCodeLengthRule(int MaxLength) : ITieredAssignmentClaimRule
+{
+    public List<string> Check(TieredAssignmentClaim item)
+    {
+        var size = item.Code.Length;
+        if (size > MaxLength)
+        {
+            return new List<string> { $"code is {size} characters, more than {MaxLength}" };
+        }
+        return new List<string>();
+    }
+}
+
+public sealed record TieredAssignmentClaimAllowedCodeRule(List<string> Allowed) : ITieredAssignmentClaimRule
+{
+    public List<string> Check(TieredAssignmentClaim item)
+    {
+        if (Allowed.Count == 0)
+        {
+            return new List<string>();
+        }
+        if (!Allowed.Contains(Text.Normalize(item.Code)))
+        {
+            return new List<string> { $"code {item.Code} is stale" };
+        }
+        return new List<string>();
+    }
+}
+
+public sealed record TieredAssignmentClaimNameLengthRule(int MaxLength) : ITieredAssignmentClaimRule
+{
+    public List<string> Check(TieredAssignmentClaim item)
+    {
+        var size = item.Name.Length;
+        if (size > MaxLength)
+        {
+            return new List<string> { $"name is {size} characters, more than {MaxLength}" };
+        }
+        return new List<string>();
+    }
+}
+
+/// <summary>Runs every rule of a tiered assignment claim.</summary>
+public sealed record TieredAssignmentClaimValidator(List<ITieredAssignmentClaimRule> Rules)
+{
+    public List<string> Validate(TieredAssignmentClaim item)
+    {
+        var problems = new List<string>();
+        foreach (var rule in Rules)
+        {
+            foreach (var problem in rule.Check(item))
+            {
+                problems.Add(problem);
+            }
+        }
+        return problems;
+    }
+
+    public void RequireValid(TieredAssignmentClaim item)
+    {
+        var problems = Validate(item);
+        if (problems.Count > 0)
+        {
+            throw new InvalidOperationException($"{item.Label()} is invalid: {string.Join("; ", problems)}");
+        }
+    }
+
+    public Dictionary<string, List<string>> ValidateAll(List<TieredAssignmentClaim> items)
+    {
+        var report = new Dictionary<string, List<string>>();
+        foreach (var item in items)
+        {
+            var problems = Validate(item);
+            if (problems.Count > 0)
+            {
+                report[item.Code] = problems;
+            }
+        }
+        return report;
+    }
+}
+
+/// <summary>Functions of tiered assignment claim rules.</summary>
+public static class TieredAssignmentClaimRules
+{
+    public static TieredAssignmentClaimValidator DefaultTieredAssignmentClaimValidator()
+    {
+        return new TieredAssignmentClaimValidator(
+            new List<ITieredAssignmentClaimRule>
+            {
+                new TieredAssignmentClaimEndsAtRangeRule(16, 255),
+                new TieredAssignmentClaimHoursRangeRule(3.5, 1320.8),
+                new TieredAssignmentClaimCodeLengthRule(32),
+                new TieredAssignmentClaimAllowedCodeRule(new List<string>()),
+                new TieredAssignmentClaimNameLengthRule(80),
+            });
+    }
+}

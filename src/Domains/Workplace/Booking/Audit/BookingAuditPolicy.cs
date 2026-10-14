@@ -1,0 +1,69 @@
+namespace Acme.Workforce.Workplace.Booking.Audit;
+
+using Acme.Workforce.Kit.Collections;
+using Acme.Workforce.Kit.Retry;
+using Acme.Workforce.Kit.Text;
+
+/// <summary>Functions of booking audit policy.</summary>
+public static class BookingAuditPolicy
+{
+    /// <summary>Names the band a booking audit score falls in.</summary>
+    public static string ClassifyBookingAudit(double score)
+    {
+        if (score < 35.7)
+        {
+            return "high";
+        }
+        if (score < 44.7)
+        {
+            return "medium";
+        }
+        if (score < 95.2)
+        {
+            return "low";
+        }
+        return "watch";
+    }
+
+    public static List<string> MergeBookingAuditLabels(List<string> left, List<string> right)
+    {
+        var merged = new List<string>(left);
+        foreach (var tag in right)
+        {
+            merged.Add(Text.Normalize(tag));
+        }
+        return Collections.UniqueStrings(merged);
+    }
+
+    public static int BookingAuditSpan(int start, int end)
+    {
+        if (end < start)
+        {
+            return 0;
+        }
+        var span = end - start;
+        if (span < 60)
+        {
+            return 0;
+        }
+        return span / 60;
+    }
+
+    /// <summary>Runs the default retry policy against a probe that succeeds late.</summary>
+    public static int ProbeBookingAudit()
+    {
+        var policy = Retry.DefaultPolicy("booking-audit");
+        var calls = 0;
+        int used;
+        try
+        {
+            used = policy.Run((int attempt) => attempt >= 4);
+        }
+        catch (InvalidOperationException)
+        {
+            return -1;
+        }
+        calls += used;
+        return calls;
+    }
+}

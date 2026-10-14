@@ -1,0 +1,214 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.licensing.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/licensing/v1/licensing.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Licensing.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/licensing/v1;licensingv1";
+option java_multiple_files = true;
+option java_outer_classname = "EntitlementQueryServiceProto";
+option java_package = "com.acme.licensing.v1";
+
+// Answers read-only questions about entitlements, for screens and reports.
+service EntitlementQueryService {
+  // Returns an entitlement.
+  rpc LookupEntitlement(LookupEntitlementRequest) returns (LookupEntitlementResponse);
+
+  // Lists entitlements a page at a time.
+  rpc BrowseEntitlements(BrowseEntitlementsRequest) returns (BrowseEntitlementsResponse);
+
+  // Lists entitlements a page at a time.
+  rpc FindEntitlements(FindEntitlementsRequest) returns (FindEntitlementsResponse);
+
+  // Counts entitlements by status.
+  rpc CountEntitlements(CountEntitlementsRequest) returns (CountEntitlementsResponse);
+
+  // Returns several entitlements at once.
+  rpc ResolveEntitlements(ResolveEntitlementsRequest) returns (ResolveEntitlementsResponse);
+
+  // Streams every matching entitlement.
+  rpc ExportEntitlements(ExportEntitlementsRequest) returns (stream ExportEntitlementsResponse);
+
+  // Lists entitlements a page at a time.
+  rpc SuggestEntitlements(SuggestEntitlementsRequest) returns (SuggestEntitlementsResponse);
+
+  // Returns an entitlement.
+  rpc PeekEntitlement(PeekEntitlementRequest) returns (PeekEntitlementResponse);
+}
+
+// The request of `LookupEntitlement`.
+message LookupEntitlementRequest {
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `LookupEntitlement`.
+message LookupEntitlementResponse {
+  Entitlement entitlement = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `BrowseEntitlements`.
+message BrowseEntitlementsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EntitlementStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  BrowseEntitlementsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `BrowseEntitlements`.
+message BrowseEntitlementsResponse {
+  repeated Entitlement entitlements = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `FindEntitlements`.
+message FindEntitlementsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EntitlementStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  FindEntitlementsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `FindEntitlements`.
+message FindEntitlementsResponse {
+  repeated Entitlement entitlements = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CountEntitlements`.
+message CountEntitlementsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EntitlementStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  CountEntitlementsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `CountEntitlements`.
+message CountEntitlementsResponse {
+  int64 count = 1;
+  map<string, int64> by_status = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResolveEntitlements`.
+message ResolveEntitlementsRequest {
+  acme.common.v1.RequestContext context = 1;
+  repeated string entitlement_ids = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `ResolveEntitlements`.
+message ResolveEntitlementsResponse {
+  repeated Entitlement entitlements = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExportEntitlements`.
+message ExportEntitlementsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EntitlementStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  ExportEntitlementsRequest.Filter filter = 2;
+  string format = 3;
+  google.protobuf.FieldMask fields = 4;
+  string destination_uri = 5;
+}
+
+// The response of `ExportEntitlements`.
+message ExportEntitlementsResponse {
+  Entitlement entitlement = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SuggestEntitlements`.
+message SuggestEntitlementsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EntitlementStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SuggestEntitlementsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SuggestEntitlements`.
+message SuggestEntitlementsResponse {
+  repeated Entitlement entitlements = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PeekEntitlement`.
+message PeekEntitlementRequest {
+  acme.common.v1.RequestContext context = 1;
+  string entitlement_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `PeekEntitlement`.
+message PeekEntitlementResponse {
+  Entitlement entitlement = 1;
+  acme.common.v1.OperationResult result = 2;
+}

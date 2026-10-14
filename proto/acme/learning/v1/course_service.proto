@@ -1,0 +1,143 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.learning.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/learning/v1/learning.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Learning.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/learning/v1;learningv1";
+option java_multiple_files = true;
+option java_outer_classname = "CourseServiceProto";
+option java_package = "com.acme.learning.v1";
+
+// Manages courses: creates, reads, changes, and lists them.
+service CourseService {
+  // Creates a course.
+  rpc CreateCourse(CreateCourseRequest) returns (CreateCourseResponse);
+
+  // Returns a course.
+  rpc GetCourse(GetCourseRequest) returns (GetCourseResponse);
+
+  // Changes a course.
+  rpc UpdateCourse(UpdateCourseRequest) returns (UpdateCourseResponse);
+
+  // Deletes a course.
+  rpc DeleteCourse(DeleteCourseRequest) returns (DeleteCourseResponse);
+
+  // Takes a stream of courses and answers once at the end.
+  rpc BatchCreateCourses(stream BatchCreateCoursesRequest) returns (BatchCreateCoursesResponse);
+
+  // Creates a course.
+  rpc CloneCourse(CloneCourseRequest) returns (CloneCourseResponse);
+}
+
+// The request of `CreateCourse`.
+message CreateCourseRequest {
+  acme.common.v1.RequestContext context = 1;
+  Course course = 2;
+  string request_id = 3;
+  bool validate_only = 4;
+}
+
+// The response of `CreateCourse`.
+message CreateCourseResponse {
+  Course course = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `GetCourse`.
+message GetCourseRequest {
+  acme.common.v1.RequestContext context = 1;
+  string course_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetCourse`.
+message GetCourseResponse {
+  Course course = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `UpdateCourse`.
+message UpdateCourseRequest {
+  acme.common.v1.RequestContext context = 1;
+  Course course = 2;
+  google.protobuf.FieldMask update_mask = 3;
+  bool allow_missing = 4;
+}
+
+// The response of `UpdateCourse`.
+message UpdateCourseResponse {
+  Course course = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `DeleteCourse`.
+message DeleteCourseRequest {
+  acme.common.v1.RequestContext context = 1;
+  string course_id = 2;
+  string reason = 3;
+  string etag = 4;
+  bool force = 5;
+}
+
+// The response of `DeleteCourse`.
+message DeleteCourseResponse {
+  acme.common.v1.OperationResult result = 1;
+  google.protobuf.Timestamp effective_at = 2;
+}
+
+// The request of `BatchCreateCourses`.
+message BatchCreateCoursesRequest {
+  // What a stream of records starts with.
+  message StreamHeader {
+    string source = 1;
+    string format = 2;
+    int64 total_records = 3;
+    acme.common.v1.ContactInfo submitted_by = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  oneof chunk {
+    BatchCreateCoursesRequest.StreamHeader header = 2;
+    Course record = 3;
+  }
+  int64 sequence = 4;
+}
+
+// The response of `BatchCreateCourses`.
+message BatchCreateCoursesResponse {
+  // A record the import turned down.
+  message Rejection {
+    int64 sequence = 1;
+    string reason = 2;
+    string course_id = 3;
+  }
+
+  int64 accepted = 1;
+  int64 rejected = 2;
+  repeated BatchCreateCoursesResponse.Rejection rejections = 3;
+  acme.common.v1.OperationResult result = 4;
+}
+
+// The request of `CloneCourse`.
+message CloneCourseRequest {
+  acme.common.v1.RequestContext context = 1;
+  Course course = 2;
+  string request_id = 3;
+  bool validate_only = 4;
+}
+
+// The response of `CloneCourse`.
+message CloneCourseResponse {
+  Course course = 1;
+  acme.common.v1.OperationResult result = 2;
+}

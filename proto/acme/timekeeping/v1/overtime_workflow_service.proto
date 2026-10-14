@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.timekeeping.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/timekeeping/v1/timekeeping.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Timekeeping.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/timekeeping/v1;timekeepingv1";
+option java_multiple_files = true;
+option java_outer_classname = "OvertimeWorkflowServiceProto";
+option java_package = "com.acme.timekeeping.v1";
+
+// Runs the long-lived workflow that takes an overtime from start to finish.
+service OvertimeWorkflowService {
+  // Starts an overtime.
+  rpc StartOvertimeWorkflow(StartOvertimeWorkflowRequest) returns (StartOvertimeWorkflowResponse);
+
+  // Advances an overtime.
+  rpc AdvanceOvertimeWorkflow(AdvanceOvertimeWorkflowRequest) returns (AdvanceOvertimeWorkflowResponse);
+
+  // Cancels an overtime.
+  rpc CancelOvertimeWorkflow(CancelOvertimeWorkflowRequest) returns (CancelOvertimeWorkflowResponse);
+
+  // Retrys an overtime.
+  rpc RetryOvertimeWorkflow(RetryOvertimeWorkflowRequest) returns (RetryOvertimeWorkflowResponse);
+
+  // Pauses an overtime.
+  rpc PauseOvertimeWorkflow(PauseOvertimeWorkflowRequest) returns (PauseOvertimeWorkflowResponse);
+
+  // Resumes an overtime.
+  rpc ResumeOvertimeWorkflow(ResumeOvertimeWorkflowRequest) returns (ResumeOvertimeWorkflowResponse);
+
+  // Returns an overtime.
+  rpc InspectOvertimeWorkflow(InspectOvertimeWorkflowRequest) returns (InspectOvertimeWorkflowResponse);
+
+  // Lists overtimes a page at a time.
+  rpc ListOvertimeWorkflows(ListOvertimeWorkflowsRequest) returns (ListOvertimeWorkflowsResponse);
+
+  // Signals an overtime.
+  rpc SignalOvertimeWorkflow(SignalOvertimeWorkflowRequest) returns (SignalOvertimeWorkflowResponse);
+}
+
+// The request of `StartOvertimeWorkflow`.
+message StartOvertimeWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  StartOvertimeWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartOvertimeWorkflow`.
+message StartOvertimeWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  StartOvertimeWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceOvertimeWorkflow`.
+message AdvanceOvertimeWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  AdvanceOvertimeWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceOvertimeWorkflow`.
+message AdvanceOvertimeWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  AdvanceOvertimeWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelOvertimeWorkflow`.
+message CancelOvertimeWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  CancelOvertimeWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelOvertimeWorkflow`.
+message CancelOvertimeWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  CancelOvertimeWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryOvertimeWorkflow`.
+message RetryOvertimeWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  RetryOvertimeWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryOvertimeWorkflow`.
+message RetryOvertimeWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  RetryOvertimeWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseOvertimeWorkflow`.
+message PauseOvertimeWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  PauseOvertimeWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseOvertimeWorkflow`.
+message PauseOvertimeWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  PauseOvertimeWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeOvertimeWorkflow`.
+message ResumeOvertimeWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  ResumeOvertimeWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeOvertimeWorkflow`.
+message ResumeOvertimeWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  ResumeOvertimeWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectOvertimeWorkflow`.
+message InspectOvertimeWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectOvertimeWorkflow`.
+message InspectOvertimeWorkflowResponse {
+  Overtime overtime = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListOvertimeWorkflows`.
+message ListOvertimeWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated OvertimeStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListOvertimeWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListOvertimeWorkflows`.
+message ListOvertimeWorkflowsResponse {
+  repeated Overtime overtimes = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalOvertimeWorkflow`.
+message SignalOvertimeWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  SignalOvertimeWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalOvertimeWorkflow`.
+message SignalOvertimeWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  SignalOvertimeWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

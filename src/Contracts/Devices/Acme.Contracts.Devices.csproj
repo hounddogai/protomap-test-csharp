@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../Common/Acme.Contracts.Common.csproj" />
+    <ProjectReference Include="../Identity/Acme.Contracts.Identity.csproj" />
+    <ProjectReference Include="../Recruiting/Acme.Contracts.Recruiting.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" />
+    <PackageReference Include="Grpc.Core.Api" />
+    <PackageReference Include="Grpc.Tools" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="../../../proto/acme/devices/v1/compliance_scan_approval_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/devices/v1/compliance_scan_calculation_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/devices/v1/compliance_scan_lifecycle_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/devices/v1/compliance_scan_validation_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/devices/v1/compliance_scan_workflow_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/devices/v1/device_policy_approval_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/devices/v1/device_policy_calculation_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/devices/v1/device_policy_lifecycle_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/devices/v1/device_policy_query_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/devices/v1/device_policy_validation_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/devices/v1/device_policy_workflow_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/devices/v1/devices.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/devices/v1/managed_device_approval_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/devices/v1/managed_device_calculation_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/devices/v1/managed_device_query_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/devices/v1/managed_device_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/devices/v1/managed_device_validation_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/devices/v1/managed_device_workflow_service.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+    <Protobuf Include="../../../proto/acme/devices/v1/refs.proto" ProtoRoot="../../../proto" GrpcServices="Both" />
+  </ItemGroup>
+</Project>

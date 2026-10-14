@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../../Kit/Acme.Workforce.Kit.csproj" />
+  </ItemGroup>
+  <ItemGroup><Compile Remove="Tests/**" /></ItemGroup>
+</Project>

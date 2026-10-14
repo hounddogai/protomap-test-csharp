@@ -1,0 +1,294 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.timekeeping.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/timekeeping/v1/timekeeping.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Timekeeping.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/timekeeping/v1;timekeepingv1";
+option java_multiple_files = true;
+option java_outer_classname = "OvertimeLifecycleServiceProto";
+option java_package = "com.acme.timekeeping.v1";
+
+// Moves an overtime between the states of its lifecycle.
+service OvertimeLifecycleService {
+  // Activates an overtime.
+  rpc ActivateOvertime(ActivateOvertimeRequest) returns (ActivateOvertimeResponse);
+
+  // Suspends an overtime.
+  rpc SuspendOvertime(SuspendOvertimeRequest) returns (SuspendOvertimeResponse);
+
+  // Reinstates an overtime.
+  rpc ReinstateOvertime(ReinstateOvertimeRequest) returns (ReinstateOvertimeResponse);
+
+  // Terminates an overtime.
+  rpc TerminateOvertime(TerminateOvertimeRequest) returns (TerminateOvertimeResponse);
+
+  // Renews an overtime.
+  rpc RenewOvertime(RenewOvertimeRequest) returns (RenewOvertimeResponse);
+
+  // Expires an overtime.
+  rpc ExpireOvertime(ExpireOvertimeRequest) returns (ExpireOvertimeResponse);
+
+  // Returns an overtime.
+  rpc GetOvertimeLifecycle(GetOvertimeLifecycleRequest) returns (GetOvertimeLifecycleResponse);
+
+  // Schedules an overtime.
+  rpc ScheduleOvertimeExpiry(ScheduleOvertimeExpiryRequest) returns (ScheduleOvertimeExpiryResponse);
+}
+
+// The request of `ActivateOvertime`.
+message ActivateOvertimeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  ActivateOvertimeRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateOvertime`.
+message ActivateOvertimeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  ActivateOvertimeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendOvertime`.
+message SuspendOvertimeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  SuspendOvertimeRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendOvertime`.
+message SuspendOvertimeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  SuspendOvertimeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateOvertime`.
+message ReinstateOvertimeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  ReinstateOvertimeRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateOvertime`.
+message ReinstateOvertimeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  ReinstateOvertimeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateOvertime`.
+message TerminateOvertimeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  TerminateOvertimeRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateOvertime`.
+message TerminateOvertimeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  TerminateOvertimeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewOvertime`.
+message RenewOvertimeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  RenewOvertimeRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewOvertime`.
+message RenewOvertimeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  RenewOvertimeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireOvertime`.
+message ExpireOvertimeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  ExpireOvertimeRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireOvertime`.
+message ExpireOvertimeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  ExpireOvertimeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetOvertimeLifecycle`.
+message GetOvertimeLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetOvertimeLifecycle`.
+message GetOvertimeLifecycleResponse {
+  Overtime overtime = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleOvertimeExpiry`.
+message ScheduleOvertimeExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string overtime_id = 2;
+  Overtime overtime = 3;
+  ScheduleOvertimeExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleOvertimeExpiry`.
+message ScheduleOvertimeExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Overtime overtime = 1;
+  ScheduleOvertimeExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
